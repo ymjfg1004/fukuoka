@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>후쿠오카·유후인 가족여행</title>
+<meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
+<meta name="theme-color" content="#0f766e">
+<style>
+:root{
+  --bg:#f6f7f5; --card:#fff; --text:#1c2321; --muted:#5d6b66; --line:#e1e6e3;
+  --accent:#0f766e; --accent-soft:#d9f0ec; --warn:#b45309; --warn-soft:#fef3c7;
+  --bad:#b42318; --bad-soft:#fee4e2; --ok:#067647; --ok-soft:#dcfae6;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1513; --card:#182120; --text:#e8eeec; --muted:#9bb0aa; --line:#2a3836;
+    --accent:#4fd1c0; --accent-soft:#17332f; --warn:#fbbf24; --warn-soft:#3a2f10;
+    --bad:#fda29b; --bad-soft:#3b1a17; --ok:#75e0a7; --ok-soft:#10301f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --card:#182120; --text:#e8eeec; --muted:#9bb0aa; --line:#2a3836;
+  --accent:#4fd1c0; --accent-soft:#17332f; --warn:#fbbf24; --warn-soft:#3a2f10;
+  --bad:#fda29b; --bad-soft:#3b1a17; --ok:#75e0a7; --ok-soft:#10301f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header.hero{background:var(--accent);color:#fff;padding:32px 0 24px}
+header.hero h1{margin:0 0 4px;font-size:clamp(1.5rem,5vw,2.2rem)}
+header.hero p{margin:0;opacity:.92}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{background:rgba(255,255,255,.18);padding:4px 12px;border-radius:999px;font-size:.85rem}
+nav.top{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;scrollbar-width:none;align-items:center}
+nav.top a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.9rem}
+nav.top a:hover{background:var(--accent-soft);color:var(--accent)}
+#theme{margin-left:auto;border:1px solid var(--line);background:none;color:var(--text);border-radius:8px;padding:4px 10px;cursor:pointer}
+section{padding:28px 0 4px}
+h2{font-size:1.35rem;margin:0 0 12px}
+h3{font-size:1.05rem;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.muted{color:var(--muted);font-size:.9rem}
+.note{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 14px;font-size:.9rem;margin:10px 0}
+.pill{display:inline-block;padding:1px 10px;border-radius:999px;font-size:.78rem;font-weight:600;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.todo{background:var(--bad-soft);color:var(--bad)}
+.pill.mid{background:var(--warn-soft);color:var(--warn)}
+.status{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.status .card{margin:0}
+.status b{display:block;margin-bottom:2px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:12px 0}
+.tabs button{flex:1 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);
+  padding:10px 16px;border-radius:10px;cursor:pointer;font:inherit}
+.tabs button[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.day{display:none}.day.on{display:block}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:104px 1fr;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.tl li:last-child{border-bottom:0}
+.tl time{font-weight:600;color:var(--accent);font-size:.9rem}
+.tl .t{font-weight:600}
+.tl .d{color:var(--muted);font-size:.88rem}
+.tl li.opt .t::before{content:"선택 · ";color:var(--warn)}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer}
+.checks input{margin-top:6px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.checks input:checked+span{text-decoration:line-through;color:var(--muted)}
+.checks h3{margin-top:14px}.checks h3:first-child{margin-top:0}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:480px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.92rem;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+.risk{border-left:4px solid var(--warn)}
+.risk.high{border-left-color:var(--bad)}
+.risk h3{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.risk p{margin:4px 0}
+.fin input{width:100%;min-width:90px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+.total{font-weight:700;font-size:1.05rem;margin-top:10px}
+textarea{width:100%;min-height:90px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center}
+@media (max-width:520px){ .tl li{grid-template-columns:1fr;gap:2px} }
+@media print{nav.top,#theme{display:none}.day{display:block!important}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>후쿠오카 · 유후인 가족여행</h1>
+    <p>2026.10.04 SUN — 10.07 WED · 부모님 + 딸, 3인</p>
+    <div class="chips">
+      <span class="chip" id="dday">D-?</span>
+      <span class="chip">컨셉: 부모님 컨디션 우선</span>
+      <span class="chip">남은 핵심 예약: 무소우엔 + 음식점</span>
+    </div>
+  </div>
+</header>
+
+<nav class="top">
+  <div class="wrap">
+    <a href="#status">현황</a><a href="#plan">일정</a><a href="#check">점검</a>
+    <a href="#book">예약·비용</a><a href="#food">음식·쇼핑</a><a href="#pack">준비물</a>
+    <a href="#todo">할 일</a>
+    <button id="theme" type="button" aria-label="테마 전환">◐</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="status">
+  <h2>예약 현황</h2>
+  <div class="status">
+    <div class="card"><b>항공 <span class="pill ok">완료</span></b><span class="muted">10/4 08:05 인천 → 09:30 후쿠오카<br>10/7 17:00 후쿠오카 → 18:35 인천 · 에어서울</span></div>
+    <div class="card"><b>10/4 숙소 <span class="pill ok">완료</span></b><span class="muted">호텔 몬토레 라 스루 후쿠오카 · 250,122원</span></div>
+    <div class="card"><b>10/5 료칸 <span class="pill todo">예약 전</span></b><span class="muted">무소우엔 1박 · 조식+석식 · 예산 150만원 이하</span></div>
+    <div class="card"><b>10/6 숙소 <span class="pill ok">완료</span></b><span class="muted">호텔 몬토레 후쿠오카 · 273,543원</span></div>
+    <div class="card"><b>렌터카 <span class="pill ok">완료</span></b><span class="muted">10/5 09:00 → 10/6 20:00 · 텐진키타점 · 경차 · 16,385엔 현장결제</span></div>
+    <div class="card"><b>식당 <span class="pill todo">미정</span></b><span class="muted">10/4 저녁 무사시자 예약 여부, 오징어회 식당</span></div>
+  </div>
+</section>
+
+<section id="plan">
+  <h2>전체 일정</h2>
+  <div class="card tablewrap">
+    <table>
+      <tr><th>날짜</th><th>지역</th><th>핵심 동선</th></tr>
+      <tr><td>10/4 일</td><td>텐진</td><td>공항 → 호텔 짐 보관 → 스시 → 지하상가 → Standard Products → 오호리공원 → 저녁</td></tr>
+      <tr><td>10/5 월</td><td>유후인·료칸</td><td>09:00 렌터카 → 휴게소 → 유후인 관광·점심 → 15:00 무소우엔 → 온천·석식</td></tr>
+      <tr><td>10/6 화</td><td>사파리·복귀</td><td>11:00 체크아웃 → 아프리칸 사파리(최우선) → (가마도지옥) → 호텔 → 20:00 렌터카 반납 → 돈키</td></tr>
+      <tr><td>10/7 수</td><td>하카타·귀국</td><td>대욕장 → CARGO PASS 배송 → 캐널시티·하카타역 → 공항 → 17:00 출국</td></tr>
+    </table>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-day="1">10/4 일</button>
+    <button role="tab" aria-selected="false" data-day="2">10/5 월</button>
+    <button role="tab" aria-selected="false" data-day="3">10/6 화</button>
+    <button role="tab" aria-selected="false" data-day="4">10/7 수</button>
+  </div>
+
+  <div class="card day on" data-day="1">
+    <h3>DAY 1 · 텐진 가볍게</h3>
+    <ul class="tl">
+      <li><time>04:30</time><div><div class="t">석바위 출발 → 인천공항 T2 예약주차장</div><div class="d">05:20~05:30 도착 · 셔틀로 공항 이동, 출국 수속</div></div></li>
+      <li><time>08:05~09:30</time><div><div class="t">인천 → 후쿠오카 (에어서울)</div><div class="d">예약완료</div></div></li>
+      <li><time>09:30~10:30</time><div><div class="t">공항 → 호텔 (택시)</div><div class="d">호텔 몬토레 라 스루 후쿠오카에 짐 보관</div></div></li>
+      <li><time>10:30~12:15</time><div><div class="t">점심: 스시사카바사시스 텐진점</div><div class="d">11시 오픈에 맞춰 도보 이동 · 오픈런</div></div></li>
+      <li><time>12:20~13:20</time><div><div class="t">텐진 지하상가 + Standard Products</div><div class="d">부피 작은 쇼핑 위주. 그릇·대형 수납용품은 마지막에</div></div></li>
+      <li><time>13:20~15:00</time><div><div class="t">오호리공원</div><div class="d">지하철(공항선) 이동 · 호숫가 40~60분 + 휴식/카페</div></div></li>
+      <li><time>15:00 이후</time><div><div class="t">텐진 복귀 · 호텔 체크인 또는 카페/쇼핑</div></div></li>
+      <li><time>17:00 전후</time><div><div class="t">저녁: 텐진 스미게키죠 무사시자 (후보)</div><div class="d">너무 늦지 않게, 첫날은 일찍 휴식</div></div></li>
+    </ul>
+    <p class="note">첫날 돈키호테 본쇼핑은 하지 않습니다. 경차에 쇼핑짐까지 싣는 부담을 피하려고 10/6 밤으로 옮겼습니다.</p>
+  </div>
+
+  <div class="card day" data-day="2">
+    <h3>DAY 2 · 유후인 + 무소우엔</h3>
+    <ul class="tl">
+      <li><time>08:20~08:40</time><div><div class="t">체크아웃 준비 (아침식사 별도 없음)</div></div></li>
+      <li><time>08:40~09:00</time><div><div class="t">호텔 → 렌터카 텐진키타점 (도보)</div></div></li>
+      <li><time>09:00</time><div><div class="t">렌터카 수령 (경차) · 16,385엔 현장결제</div><div class="d">결제수단, 보험, 통행료(ETC) 방식 확인</div></div></li>
+      <li><time>09:10~10:00</time><div><div class="t">후쿠오카 → 유후인 방향 출발</div></div></li>
+      <li><time>10:00 전후</time><div><div class="t">휴게소 1회 정차</div><div class="d">화장실 + 커피/주먹밥/우동으로 아침</div></div></li>
+      <li><time>10:30~11:30</time><div><div class="t">유후인 도착</div><div class="d">교통에 따라 변동 · 주차장 위치 미리 확인</div></div></li>
+      <li><time>11:30~14:20</time><div><div class="t">유후인 관광 (도보)</div><div class="d">긴린코 → 유노츠보 거리 → 점심/간식/쇼핑</div></div></li>
+      <li><time>14:20~15:00</time><div><div class="t">무소우엔 이동 · 체크인</div><div class="d">15:00 체크인 목표</div></div></li>
+      <li><time>15:00 이후</time><div><div class="t">온천 → 휴식 → 석식 → 온천</div></div></li>
+    </ul>
+    <p class="muted"><b>유후인 후보:</b> 긴린코, 유노츠보 거리, Floral Village, B-speak, Milch, Miffy Mori no Kitchen &amp; Bakery, Donguri no Mori<br>
+    <b>간식 후보:</b> 금상고로케, 푸딩/치즈 디저트, 소프트아이스크림, 말차 디저트, 빵류</p>
+  </div>
+
+  <div class="card day" data-day="3">
+    <h3>DAY 3 · 사파리 우선 + 후쿠오카 복귀</h3>
+    <ul class="tl">
+      <li><time>07:00~09:00</time><div><div class="t">료칸 조식 + 아침온천</div></div></li>
+      <li><time>09:00~10:40</time><div><div class="t">온천/휴식/짐 정리</div></div></li>
+      <li><time>11:00</time><div><div class="t">무소우엔 체크아웃 → 사파리로 직행</div></div></li>
+      <li><time>11:40~12:00</time><div><div class="t">아프리칸 사파리 도착</div></div></li>
+      <li><time>12:00~14:30</time><div><div class="t">아프리칸 사파리 (자차 관람)</div><div class="d">정글버스보다 일정 유연성 우선</div></div></li>
+      <li><time>14:30</time><div><div class="t">선택 분기: 부모님 컨디션·시간 확인</div></div></li>
+      <li class="opt"><time>OPTION A</time><div><div class="t">가마도지옥 30~40분만</div><div class="d">여유 있을 때만. 후쿠오카 복귀 시간이 늦어지므로 아래 점검 참고</div></div></li>
+      <li><time>OPTION B</time><div><div class="t">후쿠오카 직행</div><div class="d">사파리를 충분히 즐겼거나 피곤하면 바로 복귀</div></div></li>
+      <li><time>18:00~19:00</time><div><div class="t">호텔 몬토레 후쿠오카 · 부모님 + 캐리어 먼저 하차</div></div></li>
+      <li><time>이후</time><div><div class="t">주유 → 텐진키타점</div></div></li>
+      <li><time>20:00</time><div><div class="t">렌터카 반납 (시간 고정)</div></div></li>
+      <li><time>20:00 이후</time><div><div class="t">돈키호테 본쇼핑 (혼자)</div><div class="d">술/과자/선물</div></div></li>
+    </ul>
+    <p class="note">사파리가 길어지면 가마도지옥은 미련 없이 생략합니다.</p>
+  </div>
+
+  <div class="card day" data-day="4">
+    <h3>DAY 4 · 하카타 + 귀국</h3>
+    <ul class="tl">
+      <li><time>07:30~09:00</time><div><div class="t">호텔 대욕장 + 준비</div></div></li>
+      <li><time>09:00~10:00</time><div><div class="t">체크아웃 · CARGO PASS 접수 (10:00 이전)</div><div class="d">호텔 프런트 · 기내용 1 + 26인치 2 예상 · 접수 마감 사전 확인</div></div></li>
+      <li><time>10:10~11:30</time><div><div class="t">캐널시티 하카타 (짐 없이)</div><div class="d">택시/대중교통</div></div></li>
+      <li><time>11:30~11:45</time><div><div class="t">캐널시티 → 하카타역 (도보 10~15분)</div></div></li>
+      <li><time>11:45~13:30</time><div><div class="t">하카타역: 점심 + 한큐/아뮤플라자/기념품</div><div class="d">모츠나베 / 츠케멘 / 오징어회 중 현장 선택</div></div></li>
+      <li><time>13:30~14:00</time><div><div class="t">하카타역 → 공항 (지하철 공항선)</div></div></li>
+      <li><time>14:00 이후</time><div><div class="t">CARGO PASS 수령 → 체크인/수하물 위탁</div></div></li>
+      <li><time>17:00~18:35</time><div><div class="t">후쿠오카 → 인천 (에어서울)</div><div class="d">귀국 후 T2 예약주차장 셔틀, 출국장 5A 정류장</div></div></li>
+    </ul>
+  </div>
+</section>
+
+<section id="check">
+  <h2>계획 점검 (확인 필요한 곳)</h2>
+  <p class="muted">GPT와 정리한 계획을 훑어보고 빈틈이나 위험한 곳을 골랐습니다. 소요시간과 요금은 제 추정이라 출발 전 지도 앱으로 확인하세요.</p>
+
+  <div class="card risk high">
+    <h3><span class="pill todo">가장 중요</span> 무소우엔 예약이 아직 안 됨</h3>
+    <p>출발이 며칠 남지 않았으니 먼저 처리하세요. 예약 직전에 확인할 것: 인원이 <b>성인 3명</b>으로 잡혔는지, 취소 규정, 입탕세·세금 포함 총액, 석식 시간, 알레르기·식이 요청.</p>
+    <p>OTA의 유아마테이가 공식 홈페이지보다 저렴하게 나왔고 예산 안입니다. 코보우테이는 OTA 기준 약 100만원으로 상위 후보입니다. 같은 방이 판매처마다 다른 이름으로 표기될 수 있으니 방 크기(6+8, 8+8)로 비교하세요.</p>
+  </div>
+
+  <div class="card risk high">
+    <h3><span class="pill todo">높음</span> 경차 트렁크에 3명 + 캐리어 2.5개는 들어가지 않을 가능성이 큼</h3>
+    <p>10/5 아침에 라 스루 호텔을 체크아웃하면 캐리어가 전부 차에 실립니다. 경차는 트렁크가 매우 작아서 26인치 2개 + 기내용 1개와 3인 탑승이 어렵습니다.</p>
+    <p><b>대안:</b> ① 10/6 숙소(몬토레 후쿠오카)에 큰 캐리어를 미리 택배로 보내거나 보관 가능한지 문의 ② 유후인 1박용 짐을 가방 1개로 압축 ③ 차종을 한 단계 키우기 (렌터카 예약 변경 가능 여부 확인).</p>
+  </div>
+
+  <div class="card risk">
+    <h3><span class="pill mid">중간</span> 10/6 저녁 식사가 비어 있음</h3>
+    <p>부모님을 18~19시에 호텔에 내려 드리고 20:00에 차를 반납하는 동선이라 저녁이 계획에 없습니다. 오징어회도 날짜가 미정입니다.</p>
+    <p><b>제안:</b> 10/6은 사파리 후 휴게소나 호텔 근처에서 가볍게 먹고, 오징어회는 10/7 점심(하카타역권)이나 10/4 저녁으로 확정하세요. 인기 식당은 예약이 필요할 수 있습니다.</p>
+  </div>
+
+  <div class="card risk">
+    <h3><span class="pill mid">중간</span> 가마도지옥(Option A)은 복귀 시간이 빠듯함</h3>
+    <p>사파리와 가마도지옥(벳푸)은 후쿠오카와 반대 방향 쪽입니다. 호텔 하차, 주유, 20:00 반납까지 고려하면 여유가 거의 없습니다.</p>
+    <p><b>제안:</b> 벳푸에서 늦어도 16:00에는 출발한다는 컷오프를 정해 두고, 못 지키면 생략하세요. 반납 시간에 늦으면 추가요금이 붙을 수 있습니다.</p>
+  </div>
+
+  <div class="card risk">
+    <h3><span class="pill mid">중간</span> 고속도로 통행료·주차·주유 비용이 예산에 없음</h3>
+    <p>후쿠오카 ↔ 유후인 왕복, 사파리 구간 통행료와 유후인 주차비, 반납 시 만땅 주유 비용이 필요합니다. 렌터카 수령 때 <b>ETC 카드 대여</b> 여부와 현금 결제 가능 여부를 물어보세요. 면책보상(NOC) 포함 여부도 확인하세요.</p>
+  </div>
+
+  <div class="card risk">
+    <h3><span class="pill mid">확인</span> 인천공항 터미널 (T1/T2)</h3>
+    <p>계획은 T2 예약주차장 기준입니다. 에어서울의 이용 터미널은 항공사 통합에 따라 바뀔 수 있으니, 출발 전에 e-티켓과 항공사 공지로 확인하세요. 주차장과 셔틀 위치가 달라집니다.</p>
+  </div>
+
+  <div class="card risk">
+    <h3><span class="pill mid">확인</span> 입국 서류와 날씨</h3>
+    <p>준비물에 <b>Visit Japan Web</b> 등록(입국심사·세관)이 빠져 있어서 추가했습니다. 10월 초는 태풍 영향이 있을 수 있으니 출발 2~3일 전과 전날 예보를 보고, 비가 오면 사파리·유후인 일정 순서를 조정하세요.</p>
+  </div>
+
+  <div class="card risk">
+    <h3><span class="pill ok">좋은 점</span> 이미 잘 짜인 부분</h3>
+    <p>첫날은 짐 보관 후 가볍게, 쇼핑 짐은 렌터카 반납 이후로 미룬 점, 사파리를 1순위로 두고 나머지는 유동적으로 둔 점, 마지막 날 CARGO PASS로 짐 없이 시내를 도는 점이 부모님 동반 여행에 잘 맞습니다.</p>
+  </div>
+</section>
+
+<section id="book">
+  <h2>예약 · 비용</h2>
+  <div class="card tablewrap">
+    <table>
+      <tr><th>항목</th><th>내용</th><th>금액</th></tr>
+      <tr><td>10/4 숙소</td><td>호텔 몬토레 라 스루 후쿠오카 (Trip.com)</td><td>250,122원</td></tr>
+      <tr><td>10/6 숙소</td><td>호텔 몬토레 후쿠오카 (Trip.com)</td><td>273,543원</td></tr>
+      <tr><td>숙소 확정 합계</td><td></td><td><b>523,665원</b></td></tr>
+      <tr><td>10/5 료칸</td><td>무소우엔 유아마테이 6+8 (OTA, 조식+석식)</td><td>약 922,908원</td></tr>
+      <tr><td>10/5 료칸 (상위)</td><td>무소우엔 코보우테이 8+8 (OTA, 조식+석식)</td><td>약 1,006,963원</td></tr>
+      <tr><td>공식 홈페이지</td><td>유아마테이 / 코보우테이</td><td>122,850엔 / 132,750엔</td></tr>
+      <tr><td>렌터카</td><td>텐진키타점 경차, 35시간, 현장결제</td><td>16,385엔</td></tr>
+      <tr><td>CARGO PASS</td><td>기내용 550엔 + 26인치 1,100엔×2 (예상)</td><td>약 2,750엔</td></tr>
+    </table>
+  </div>
+  <p class="muted">숙소 합계는 유아마테이 선택 시 약 1,446,573원, 코보우테이 선택 시 약 1,530,628원입니다. 150만원 예산이면 유아마테이가 안전합니다. 항공권 제외, 환율과 최종 결제금액 기준으로 다시 확인하세요.</p>
+
+  <h2 style="margin-top:24px">현지 지출 기록 (엔)</h2>
+  <div class="card fin">
+    <p class="muted">트래블로그 시작 잔액 228,334엔. 결제 단말기에서 통화 선택이 나오면 <b>JPY(엔화)</b>를 고르고 KRW 결제는 피하세요. 현금은 처음 3~5만엔만 ATM에서 출금합니다.</p>
+    <div class="tablewrap">
+      <table>
+        <tr><th>항목</th><th>사용액(엔)</th></tr>
+        <tr><td>식비</td><td><input type="number" inputmode="numeric" data-s="f"></td></tr>
+        <tr><td>교통 (택시, 통행료, 주유, 주차)</td><td><input type="number" inputmode="numeric" data-s="t"></td></tr>
+        <tr><td>렌터카 현장결제</td><td><input type="number" inputmode="numeric" data-s="c" placeholder="16385"></td></tr>
+        <tr><td>입장료 (사파리 등)</td><td><input type="number" inputmode="numeric" data-s="e"></td></tr>
+        <tr><td>쇼핑 (돈키, 하카타역, 공항)</td><td><input type="number" inputmode="numeric" data-s="s"></td></tr>
+        <tr><td>기타</td><td><input type="number" inputmode="numeric" data-s="o"></td></tr>
+      </table>
+    </div>
+    <div class="total">사용 <span id="used">0</span>엔 · 남은 잔액 <span id="left">228,334</span>엔</div>
+  </div>
+</section>
+
+<section id="food">
+  <h2>음식 · 쇼핑</h2>
+  <div class="card tablewrap">
+    <table>
+      <tr><th>시점</th><th>후보</th><th>메모</th></tr>
+      <tr><td>10/4 점심</td><td>스시사카바사시스 텐진점</td><td>11시 오픈에 맞춰 방문</td></tr>
+      <tr><td>10/4 저녁</td><td>텐진 스미게키죠 무사시자</td><td>예약 여부 결정 필요</td></tr>
+      <tr><td>10/6 또는 10/7</td><td>오징어회</td><td>식당 미정, 예약 후보 찾기</td></tr>
+      <tr><td>대안</td><td>야키니쿠</td><td>오징어회가 어렵거나 부모님 선호 시</td></tr>
+      <tr><td>10/7 점심</td><td>모츠나베 / 츠케멘</td><td>하카타역권, 현장 선택</td></tr>
+    </table>
+  </div>
+  <div class="card tablewrap">
+    <table>
+      <tr><th>쇼핑 장소</th><th>추천일</th><th>전략</th></tr>
+      <tr><td>텐진 지하상가</td><td>10/4</td><td>첫날 가볍게 구경</td></tr>
+      <tr><td>Standard Products</td><td>10/4</td><td>작은 생활용품 위주, 부피 큰 것은 마지막에</td></tr>
+      <tr><td>돈키호테</td><td>10/6 밤</td><td>렌터카 반납 후 혼자 본쇼핑</td></tr>
+      <tr><td>하카타역 / 공항</td><td>10/7</td><td>기념품, 마지막 추가 구매</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="pack">
+  <h2>준비물</h2>
+  <div class="card checks">
+    <h3>서류</h3>
+    <label><input type="checkbox" data-k="p1"><span>여권 3명 (유효기간 확인)</span></label>
+    <label><input type="checkbox" data-k="p2"><span>항공 예약 / 모바일 탑승 정보</span></label>
+    <label><input type="checkbox" data-k="p3"><span>숙소 예약 확인서 3곳 (캡처 포함)</span></label>
+    <label><input type="checkbox" data-k="p4"><span>Visit Japan Web 등록 · QR 캡처 (3명)</span></label>
+    <label><input type="checkbox" data-k="p5"><span>여행자보험 증권 · 긴급 연락처</span></label>
+
+    <h3>운전</h3>
+    <label><input type="checkbox" data-k="p6"><span>국제운전면허증 + 한국 운전면허증</span></label>
+    <label><input type="checkbox" data-k="p7"><span>렌터카 예약 확인서, 보험(NOC) · ETC 카드 확인</span></label>
+    <label><input type="checkbox" data-k="p8"><span>휴대폰 거치대, 차량용 충전기</span></label>
+
+    <h3>돈 · 통신</h3>
+    <label><input type="checkbox" data-k="p9"><span>트래블로그 카드 (잔액 228,334엔)</span></label>
+    <label><input type="checkbox" data-k="p10"><span>엔화 ATM 출금 계획 (처음 3~5만엔)</span></label>
+    <label><input type="checkbox" data-k="p11"><span>유심 / eSIM / 로밍</span></label>
+    <label><input type="checkbox" data-k="p12"><span>휴대폰 충전기, 보조배터리, 변환 플러그</span></label>
+
+    <h3>건강 · 옷</h3>
+    <label><input type="checkbox" data-k="p13"><span>상비약, 부모님 개인약 (처방전 사본)</span></label>
+    <label><input type="checkbox" data-k="p14"><span>우산(접이식), 가벼운 겉옷</span></label>
+    <label><input type="checkbox" data-k="p15"><span>온천 후 편한 옷, 슬리퍼, 작은 수건</span></label>
+
+    <h3>짐</h3>
+    <label><input type="checkbox" data-k="p16"><span>캐리어 이름표</span></label>
+    <label><input type="checkbox" data-k="p17"><span>유후인 1박용 작은 가방 (경차용)</span></label>
+    <label><input type="checkbox" data-k="p18"><span>쇼핑용 보조가방</span></label>
+    <label><input type="checkbox" data-k="p19"><span>CARGO PASS 접수 마감·요금 확인</span></label>
+  </div>
+</section>
+
+<section id="todo">
+  <h2>출발 전 할 일</h2>
+  <div class="card checks">
+    <label><input type="checkbox" data-k="t1"><span><b>[최우선]</b> 무소우엔 객실 최종 선택 및 예약</span></label>
+    <label><input type="checkbox" data-k="t2"><span>경차 짐 문제 해결 (택배 / 압축 / 차종 변경)</span></label>
+    <label><input type="checkbox" data-k="t3"><span>Visit Japan Web 등록</span></label>
+    <label><input type="checkbox" data-k="t4"><span>10/4 저녁 무사시자 예약 여부 결정</span></label>
+    <label><input type="checkbox" data-k="t5"><span>오징어회 식당 후보 선정 / 예약 가능 여부</span></label>
+    <label><input type="checkbox" data-k="t6"><span>10/6 저녁 식사 계획 정하기</span></label>
+    <label><input type="checkbox" data-k="t7"><span>렌터카 수령 시 결제수단, ETC, 보험 확인</span></label>
+    <label><input type="checkbox" data-k="t8"><span>텐진 → 유후인 휴게소 1곳 확정</span></label>
+    <label><input type="checkbox" data-k="t9"><span>10/6 사파리 운영시간 · 입장 마감 재확인</span></label>
+    <label><input type="checkbox" data-k="t10"><span>인천공항 터미널(T1/T2) 확인</span></label>
+    <label><input type="checkbox" data-k="t11"><span>CARGO PASS 호텔 접수마감 · 요금 재확인</span></label>
+    <label><input type="checkbox" data-k="t12"><span>날씨 확인 후 옷 · 우산 최종 조정 (전날)</span></label>
+  </div>
+  <div class="card">
+    <h3>메모</h3>
+    <textarea id="memo" placeholder="예약번호, 렌터카 연락처, 보험 증권번호 등" aria-label="메모"></textarea>
+    <p class="muted">체크, 지출, 메모는 이 기기 브라우저에만 저장됩니다.</p>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다</div></footer>
+
+<script>
+(function(){
+  var S = {
+    get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  };
+
+  // D-day
+  var el = document.getElementById('dday');
+  var now = new Date(); now.setHours(0,0,0,0);
+  var start = new Date(2026,9,4), end = new Date(2026,9,7);
+  var diff = Math.round((start - now)/86400000);
+  el.textContent = diff > 0 ? 'D-' + diff : (now <= end ? '여행 중' : '여행 종료');
+
+  // Tabs (open today's day during the trip)
+  var tabs = document.querySelectorAll('.tabs button');
+  var days = document.querySelectorAll('.day');
+  function show(n){
+    tabs.forEach(function(b){b.setAttribute('aria-selected', b.dataset.day===n)});
+    days.forEach(function(d){d.classList.toggle('on', d.dataset.day===n)});
+    S.set('day', n);
+  }
+  tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.day)})});
+  var today = diff <= 0 && now <= end ? String(1 - diff) : null;
+  show(today || S.get('day') || '1');
+
+  // Checkboxes
+  document.querySelectorAll('.checks input').forEach(function(c){
+    c.checked = S.get('c_'+c.dataset.k)==='1';
+    c.addEventListener('change',function(){S.set('c_'+c.dataset.k, c.checked?'1':'0')});
+  });
+
+  // Spending tracker
+  var START = 228334;
+  var used = document.getElementById('used'), left = document.getElementById('left');
+  function calc(){
+    var t = 0;
+    document.querySelectorAll('[data-s]').forEach(function(i){t += Number(i.value)||0});
+    used.textContent = t.toLocaleString('ko-KR');
+    left.textContent = (START - t).toLocaleString('ko-KR');
+  }
+  document.querySelectorAll('[data-s]').forEach(function(i){
+    var v = S.get('s_'+i.dataset.s); if(v!==null) i.value = v;
+    i.addEventListener('input',function(){S.set('s_'+i.dataset.s, i.value); calc()});
+  });
+  calc();
+
+  // Memo
+  var memo = document.getElementById('memo');
+  memo.value = S.get('memo') || '';
+  memo.addEventListener('input',function(){S.set('memo', memo.value)});
+
+  // Theme
+  var root = document.documentElement;
+  var saved = S.get('theme'); if(saved) root.dataset.theme = saved;
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark = root.dataset.theme
+      ? root.dataset.theme==='dark'
+      : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    S.set('theme', root.dataset.theme);
+  });
+})();
+</script>
+</body>
+</html>
