@@ -70,16 +70,14 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .st-h{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-bottom:2px}
 .st-h b{font-size:1rem}
 
-/* overview */
-.ov{display:grid;gap:10px}
-.ov-item{display:grid;grid-template-columns:58px minmax(0,1fr);gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
-.ov-date{background:var(--accent-soft);border-radius:14px;text-align:center;padding:8px 0;line-height:1.25}
-.ov-date b{display:block;font-size:1.05rem;font-weight:800;color:var(--accent-text)}
+/* overview: every day as a timeline */
+.ov{display:grid;gap:14px}
+.ov .card{margin:0}
+.ov-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.ov-date{flex:none;width:58px;background:var(--accent-soft);border-radius:14px;text-align:center;padding:8px 0;line-height:1.25}
+.ov-date b{display:block;font-size:1.05rem;font-weight:800}
 .ov-date small{font-size:.74rem;font-weight:600;color:var(--muted)}
-.ov-body h3{margin:0 0 8px}
-.route{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;font-size:.88rem}
-.route li{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 11px}
-.route li+li::before{content:"→ ";color:var(--accent-text);font-weight:700}
+.ov-head h3{display:flex;flex-direction:column;margin:0;font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
 
 /* day tabs */
 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 14px}
@@ -133,10 +131,26 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .tag{display:inline-block;margin-bottom:4px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-size:.74rem;font-weight:700}
 .item b{display:block}
 .item p{margin:0;color:var(--muted);font-size:.88rem}
-.fin .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)}
-.fin .row span{flex:1 1 auto}
-.fin input{flex:0 0 120px;width:120px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);font:inherit;text-align:right}
 .total{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--accent-soft);font-weight:700}
+.catsum{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.catsum:empty{display:none}
+.csum{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 11px;font-size:.82rem;font-weight:600}
+.xform{display:grid;gap:12px;margin-top:18px;padding-top:18px;border-top:1px dashed var(--line)}
+.xform input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
+.cats{display:flex;flex-wrap:wrap;gap:8px}
+.cat{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:6px 12px;font:inherit;font-size:.9rem;cursor:pointer}
+.cat[aria-pressed="true"]{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.xadd{border:0;border-radius:14px;padding:13px;background:var(--fill);color:var(--on-fill);font:inherit;font-weight:800;cursor:pointer}
+.xlist{margin-top:6px}
+.x{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.x:last-child{border-bottom:0;padding-bottom:0}
+.x-ic{flex:none;width:40px;height:40px;border-radius:13px;background:var(--accent-soft);display:grid;place-items:center;font-size:1.2rem}
+.x-body{flex:1 1 auto}
+.x-t{font-weight:700;line-height:1.4}
+.x-s{color:var(--muted);font-size:.82rem}
+.x-amt{flex:none;font-weight:800;white-space:nowrap}
+.x-del{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--accent-soft);color:var(--muted);font:inherit;cursor:pointer}
+.x-empty{margin:14px 0 0;color:var(--muted);font-size:.9rem;text-align:center}
 textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
 footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
 
@@ -154,7 +168,7 @@ nav.top a.on{background:var(--fill);color:var(--on-fill)}
 main{min-height:60vh}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{nav.top,.topbar{display:none}.page,.day{display:block!important}body{background:#fff;padding:0}.card,.ov-item{box-shadow:none}}
+@media print{nav.top,.topbar{display:none}.page,.day{display:block!important}body{background:#fff;padding:0}.card{box-shadow:none}.ov-h,#overview{display:none}}
 </style>
 <noscript><style>.page{display:block!important}</style></noscript>
 </head>
@@ -283,29 +297,8 @@ main{min-height:60vh}
     <div class="item"><span class="tag">10/7</span><b>하카타역 / 공항</b><p>기념품, 마지막 추가 구매</p></div>
   </div>
 
-  <h2 style="margin-top:28px">📋 전체 일정</h2>
-  <div class="ov">
-    <div class="ov-item">
-      <div class="ov-date"><b>10/4</b><small>일</small></div>
-      <div class="ov-body"><h3>텐진</h3>
-        <ul class="route"><li>공항</li><li>호텔 짐 보관</li><li>스시</li><li>지하상가</li><li>Standard Products</li><li>오호리공원</li><li>저녁</li></ul></div>
-    </div>
-    <div class="ov-item">
-      <div class="ov-date"><b>10/5</b><small>월</small></div>
-      <div class="ov-body"><h3>유후인·료칸</h3>
-        <ul class="route"><li>09:00 렌터카</li><li>휴게소</li><li>유후인 관광·점심</li><li>15:00 무소우엔</li><li>온천·석식</li></ul></div>
-    </div>
-    <div class="ov-item">
-      <div class="ov-date"><b>10/6</b><small>화</small></div>
-      <div class="ov-body"><h3>사파리·복귀</h3>
-        <ul class="route"><li>11:00 체크아웃</li><li>아프리칸 사파리(최우선)</li><li>(가마도지옥)</li><li>호텔</li><li>20:00 렌터카 반납</li><li>돈키</li></ul></div>
-    </div>
-    <div class="ov-item">
-      <div class="ov-date"><b>10/7</b><small>수</small></div>
-      <div class="ov-body"><h3>하카타·귀국</h3>
-        <ul class="route"><li>대욕장</li><li>CARGO PASS 배송</li><li>캐널시티·하카타역</li><li>공항</li><li>17:00 출국</li></ul></div>
-    </div>
-  </div>
+  <h2 class="ov-h" style="margin-top:28px">📋 전체 일정</h2>
+  <div class="ov" id="overview"></div>
 </section>
 
 <section id="status" class="page">
@@ -335,13 +328,15 @@ main{min-height:60vh}
   <h2 style="margin-top:28px">🧾 현지 지출 기록 (엔)</h2>
   <div class="card fin">
     <p class="muted" style="margin-top:0">트래블로그 시작 잔액 228,334엔. 결제 단말기에서 통화 선택이 나오면 <b>JPY(엔화)</b>를 고르고 KRW 결제는 피하세요. 현금은 처음 3~5만엔만 ATM에서 출금합니다.</p>
-    <label class="row"><span>식비</span><input type="number" inputmode="numeric" data-s="f" placeholder="0"></label>
-    <label class="row"><span>교통 (택시, 통행료, 주유, 주차)</span><input type="number" inputmode="numeric" data-s="t" placeholder="0"></label>
-    <label class="row"><span>렌터카 현장결제</span><input type="number" inputmode="numeric" data-s="c" placeholder="16385"></label>
-    <label class="row"><span>입장료 (사파리 등)</span><input type="number" inputmode="numeric" data-s="e" placeholder="0"></label>
-    <label class="row"><span>쇼핑 (돈키, 하카타역, 공항)</span><input type="number" inputmode="numeric" data-s="s" placeholder="0"></label>
-    <label class="row"><span>기타</span><input type="number" inputmode="numeric" data-s="o" placeholder="0"></label>
     <div class="total"><span>사용 <span id="used">0</span>엔</span><span>남은 잔액 <span id="left">228,334</span>엔</span></div>
+    <div class="catsum" id="catsum"></div>
+    <form class="xform" id="xform" autocomplete="off">
+      <input type="number" id="xamt" inputmode="numeric" min="1" step="1" placeholder="금액 (엔)" aria-label="금액 (엔)" required>
+      <div class="cats" id="xcats" role="group" aria-label="카테고리"></div>
+      <input type="text" id="xmemo" maxlength="40" placeholder="메모 (예: 스시사카바사시스)" aria-label="메모">
+      <button type="submit" class="xadd">＋ 지출 추가</button>
+    </form>
+    <div class="xlist" id="xlist"></div>
   </div>
 </section>
 
@@ -486,6 +481,29 @@ main{min-height:60vh}
   var today = diff <= 0 && now <= end ? String(1 - diff) : null;
   show(today || S.get('day') || '1');
 
+  function mk(tag, cls, text){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(text != null) e.textContent = text;
+    return e;
+  }
+
+  // Full overview: every day's timeline in one scroll, built from the day cards above
+  var ov = document.getElementById('overview');
+  days.forEach(function(d, i){
+    var h = d.querySelector('h3'), tab = tabs[i];
+    var card = mk('div', 'card'), head = mk('div', 'ov-head'), date = mk('div', 'ov-date'), title = mk('h3');
+    date.appendChild(mk('b', '', tab.querySelector('b').textContent));
+    date.appendChild(mk('small', '', tab.querySelector('small').textContent));
+    title.appendChild(mk('span', 'dn', h.querySelector('.dn').textContent));
+    title.appendChild(document.createTextNode(h.lastChild.textContent));
+    head.appendChild(date);
+    head.appendChild(title);
+    card.appendChild(head);
+    Array.prototype.forEach.call(d.children, function(c){ if(c !== h) card.appendChild(c.cloneNode(true)); });
+    ov.appendChild(card);
+  });
+
   // Bottom tabs switch pages: only one section is shown at a time
   var pages = document.querySelectorAll('main .page');
   var links = document.querySelectorAll('nav.top a');
@@ -516,20 +534,106 @@ main{min-height:60vh}
     c.addEventListener('change',function(){S.set('c_'+c.dataset.k, c.checked?'1':'0')});
   });
 
-  // Spending tracker
+  // Spending log: one entry per payment, with a category
   var START = 228334;
-  var used = document.getElementById('used'), left = document.getElementById('left');
-  function calc(){
-    var t = 0;
-    document.querySelectorAll('[data-s]').forEach(function(i){t += Number(i.value)||0});
-    used.textContent = t.toLocaleString('ko-KR');
-    left.textContent = (START - t).toLocaleString('ko-KR');
+  var BASE = [['식비','🍴'],['교통','🚕'],['렌터카','🚗'],['입장료','🎟️'],['쇼핑','🛍️'],['기타','📦']];
+  function load(k, fallback){
+    try{ var v = JSON.parse(S.get(k)); return v == null ? fallback : v }catch(e){ return fallback }
   }
-  document.querySelectorAll('[data-s]').forEach(function(i){
-    var v = S.get('s_'+i.dataset.s); if(v!==null) i.value = v;
-    i.addEventListener('input',function(){S.set('s_'+i.dataset.s, i.value); calc()});
+  var extra = load('x_cats', []);       // categories added by the user
+  var entries = load('x_list', null);
+  if(entries === null){                 // carry over amounts typed into the old per-category boxes
+    entries = [];
+    [['f','식비'],['t','교통'],['c','렌터카'],['e','입장료'],['s','쇼핑'],['o','기타']].forEach(function(p, i){
+      var v = Number(S.get('s_'+p[0])) || 0;
+      if(v > 0) entries.push({id:'old'+i, amt:v, cat:p[1], memo:'이전 입력', date:''});
+    });
+    S.set('x_list', JSON.stringify(entries));
+  }
+  var selected = BASE[0][0];
+  var fmt = function(n){ return n.toLocaleString('ko-KR') };
+  var amtEl = document.getElementById('xamt'), memoEl = document.getElementById('xmemo');
+  function catNames(){ return BASE.map(function(c){return c[0]}).concat(extra) }
+  function emojiOf(name){
+    for(var i = 0; i < BASE.length; i++) if(BASE[i][0] === name) return BASE[i][1];
+    return '🏷️';
+  }
+  function save(){ S.set('x_list', JSON.stringify(entries)) }
+
+  function renderCats(){
+    var box = document.getElementById('xcats');
+    box.textContent = '';
+    catNames().forEach(function(name){
+      var b = mk('button', 'cat', emojiOf(name) + ' ' + name);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(name === selected));
+      b.addEventListener('click', function(){ selected = name; renderCats() });
+      box.appendChild(b);
+    });
+    var add = mk('button', 'cat', '＋ 추가');
+    add.type = 'button';
+    add.addEventListener('click', function(){
+      var name = (window.prompt('새 카테고리 이름 (최대 8자)') || '').trim().slice(0, 8);
+      if(!name) return;
+      if(catNames().indexOf(name) < 0){ extra.push(name); S.set('x_cats', JSON.stringify(extra)) }
+      selected = name;
+      renderCats();
+    });
+    box.appendChild(add);
+  }
+
+  function renderLog(){
+    var used = 0, byCat = {};
+    entries.forEach(function(e){ used += e.amt; byCat[e.cat] = (byCat[e.cat] || 0) + e.amt });
+    document.getElementById('used').textContent = fmt(used);
+    document.getElementById('left').textContent = fmt(START - used);
+
+    var sum = document.getElementById('catsum');
+    sum.textContent = '';
+    Object.keys(byCat).sort(function(a, b){ return byCat[b] - byCat[a] }).forEach(function(name){
+      sum.appendChild(mk('span', 'csum', emojiOf(name) + ' ' + name + ' ' + fmt(byCat[name]) + '엔'));
+    });
+
+    var list = document.getElementById('xlist');
+    list.textContent = '';
+    if(!entries.length){
+      list.appendChild(mk('p', 'x-empty', '아직 기록이 없어요. 금액을 입력하고 지출을 추가하세요.'));
+      return;
+    }
+    entries.slice().reverse().forEach(function(e){
+      var row = mk('div', 'x'), body = mk('div', 'x-body'), del = mk('button', 'x-del', '✕');
+      body.appendChild(mk('div', 'x-t', e.memo || e.cat));
+      body.appendChild(mk('div', 'x-s', (e.date ? e.date + ' · ' : '') + e.cat));
+      del.type = 'button';
+      del.setAttribute('aria-label', '삭제');
+      del.addEventListener('click', function(){
+        if(!window.confirm('이 지출을 삭제할까요?')) return;
+        entries = entries.filter(function(x){ return x.id !== e.id });
+        save();
+        renderLog();
+      });
+      row.appendChild(mk('div', 'x-ic', emojiOf(e.cat)));
+      row.appendChild(body);
+      row.appendChild(mk('div', 'x-amt', fmt(e.amt) + '엔'));
+      row.appendChild(del);
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById('xform').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var amt = Math.round(Number(amtEl.value));
+    if(!(amt > 0)){ amtEl.focus(); return; }
+    var d = new Date();
+    entries.push({id: String(Date.now()) + Math.random().toString(36).slice(2, 6), amt: amt, cat: selected,
+      memo: memoEl.value.trim(), date: (d.getMonth() + 1) + '/' + d.getDate()});
+    save();
+    amtEl.value = '';
+    memoEl.value = '';
+    renderLog();
   });
-  calc();
+  renderCats();
+  renderLog();
 
   // Memo
   var memo = document.getElementById('memo');
