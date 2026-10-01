@@ -104,6 +104,14 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .tl li.opt::before{border-color:var(--muted)}
 .tl li.opt .t::before{content:"선택 · ";color:var(--ok)}
 
+/* addresses and map codes */
+.loc{margin-top:8px;padding:10px 12px;border-radius:12px;background:var(--accent-soft);color:var(--text);font-size:.84rem;line-height:1.55;word-break:normal;overflow-wrap:anywhere}
+.loc+.loc{margin-top:6px}
+.loc>*{display:block}
+.loc b{margin-bottom:2px;font-size:.88rem}
+.loc code{display:inline;font:inherit;font-weight:700;letter-spacing:.02em;-webkit-user-select:all;user-select:all}
+.loc a{margin-top:4px;font-weight:700;color:var(--ok);text-decoration:none}
+
 /* checklists */
 .checks label{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer}
 .checks label:last-of-type{border-bottom:0}
@@ -131,6 +139,15 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .tag{display:inline-block;margin-bottom:4px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-size:.74rem;font-weight:700}
 .item b{display:block}
 .item p{margin:0;color:var(--muted);font-size:.88rem}
+/* collapsible blocks */
+.fold{margin-bottom:14px}
+.fold>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;cursor:pointer;
+  padding:14px 18px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::after{content:"";flex:none;width:9px;height:9px;margin:-4px 4px 0 0;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
+.fold[open]>summary{margin-bottom:14px}
+.fold[open]>summary::after{margin-top:4px;transform:rotate(-135deg)}
+.fold h2{margin:0;font-size:1.15rem}
 .total{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--accent-soft);font-weight:700}
 .catsum{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .catsum:empty{display:none}
@@ -143,7 +160,10 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .xadd{border:0;border-radius:14px;padding:13px;background:var(--fill);color:var(--on-fill);font:inherit;font-weight:800;cursor:pointer}
 .xlist{margin-top:6px}
 .x{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
-.x:last-child{border-bottom:0;padding-bottom:0}
+.x.last{border-bottom:0;padding-bottom:6px}
+.xg{margin-top:20px}
+.x-day{font-weight:800;font-size:.95rem}
+.x-dsum{display:flex;justify-content:space-between;gap:12px;margin-top:8px;padding:10px 14px;border-radius:12px;background:var(--accent-soft);font-weight:800;font-size:.92rem}
 .x-ic{flex:none;width:40px;height:40px;border-radius:13px;background:var(--accent-soft);display:grid;place-items:center;font-size:1.2rem}
 .x-body{flex:1 1 auto}
 .x-t{font-weight:700;line-height:1.4}
@@ -233,18 +253,19 @@ main{min-height:60vh}
   <div class="card day" data-day="2">
     <h3><span class="dn">DAY 2</span>유후인 + 무소우엔</h3>
     <ul class="tl">
-      <li><time>08:20~08:40</time><div><div class="t">체크아웃 준비 (아침식사 별도 없음)</div></div></li>
-      <li><time>08:40~09:00</time><div><div class="t">호텔 → 렌터카 텐진키타점 (도보)</div></div></li>
+      <li><time>08:20~08:40</time><div><div class="t">체크아웃 준비 (아침식사 별도 없음)</div><div class="loc"><b>ホテルモントレ ラ・スール福岡</b><span>📍 福岡県福岡市中央区大名2-8-27</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 092-726-7111</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%20%E3%83%A9%E3%83%BB%E3%82%B9%E3%83%BC%E3%83%AB%E7%A6%8F%E5%B2%A1%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A7%E5%90%8D2-8-27" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
+      <li><time>08:40~09:00</time><div><div class="t">호텔 → 렌터카 텐진키타점 (도보)</div><div class="loc"><b>バジェット・レンタカー 天神北店</b><span>📍 福岡県福岡市中央区舞鶴1-2-3</span><span>🧭 맵코드 <code>13 317 496*08</code></span><span>📞 092-752-0543</span><span>🕗 영업 08:00~20:00</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%90%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%BB%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E5%A4%A9%E7%A5%9E%E5%8C%97%E5%BA%97%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%88%9E%E9%B6%B41-2-3" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>09:00</time><div><div class="t">렌터카 수령 (경차) · 16,385엔 현장결제</div><div class="d">결제수단, 보험, 통행료(ETC) 방식 확인</div></div></li>
       <li><time>09:10~10:00</time><div><div class="t">후쿠오카 → 유후인 방향 출발</div></div></li>
       <li><time>10:00 전후</time><div><div class="t">휴게소 1회 정차</div><div class="d">화장실 + 커피/주먹밥/우동으로 아침</div></div></li>
-      <li><time>10:30~11:30</time><div><div class="t">유후인 도착</div><div class="d">교통에 따라 변동 · 주차장 위치 미리 확인</div></div></li>
-      <li><time>11:30~14:20</time><div><div class="t">유후인 관광 (도보)</div><div class="d">긴린코 → 유노츠보 거리 → 점심/간식/쇼핑</div></div></li>
-      <li><time>14:20~15:00</time><div><div class="t">무소우엔 이동 · 체크인</div><div class="d">15:00 체크인 목표</div></div></li>
+      <li><time>10:30~11:30</time><div><div class="t">유후인 도착</div><div class="d">교통에 따라 변동 · 주차장 위치 미리 확인</div><div class="loc"><b>タイムズ湯布院金鱗湖第2駐車場</b><span>📍 大分県由布市湯布院町川上</span><span>🧭 맵코드 <code>269 359 671*78</code></span><span>🅿️ 24시간 · 약 24대 · 주차 후보 (금린호 쪽)</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E6%B9%AF%E5%B8%83%E9%99%A2%E9%87%91%E9%B1%97%E6%B9%96%E7%AC%AC2%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A" target="_blank" rel="noopener">구글지도로 열기</a></div><div class="loc"><b>タイムズ湯布院</b><span>📍 大分県由布市湯布院町川上3021</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>🅿️ 약 67대 · 유노츠보 거리까지 도보 1분 · 평일 700엔, 주말·공휴일 최대 1,200엔 (변동 가능)</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E6%B9%AF%E5%B8%83%E9%99%A2%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A3021" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
+      <li><time>11:30~14:20</time><div><div class="t">유후인 관광 (도보)</div><div class="d">긴린코 → 유노츠보 거리 → 점심/간식/쇼핑</div><div class="loc"><b>金鱗湖</b><span>📍 大分県由布市湯布院町川上1561-1</span><span>🧭 맵코드 <code>269 359 525*10</code></span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E9%87%91%E9%B1%97%E6%B9%96%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A1561-1" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
+      <li><time>14:20~15:00</time><div><div class="t">무소우엔 이동 · 체크인</div><div class="d">15:00 체크인 목표</div><div class="loc"><b>山のホテル 夢想園</b><span>📍 〒879-5103 大分県由布市湯布院町川南1243</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 0977-84-2171</span><span>🅿️ 무료 주차 약 60대</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B1%B1%E3%81%AE%E3%83%9B%E3%83%86%E3%83%AB%20%E5%A4%A2%E6%83%B3%E5%9C%92%20879-5103%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%971243" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>15:00 이후</time><div><div class="t">온천 → 휴식 → 석식 → 온천</div></div></li>
     </ul>
     <p class="muted"><b>유후인 후보:</b> 긴린코, 유노츠보 거리, Floral Village, B-speak, Milch, Miffy Mori no Kitchen &amp; Bakery, Donguri no Mori<br>
     <b>간식 후보:</b> 금상고로케, 푸딩/치즈 디저트, 소프트아이스크림, 말차 디저트, 빵류</p>
+    <p class="muted">📍 맵코드는 검색으로 찾은 값이에요. 내비에 넣은 뒤 화면에 뜬 지명·주소가 맞는지 꼭 확인하세요. 렌터카 매장은 '텐진키타점'을 Budget 天神北店으로 보고 넣었으니 예약 확인서의 회사·주소와 대조하세요. 휴게소는 아직 정해지지 않아 넣지 못했어요.</p>
   </div>
 
   <div class="card day" data-day="3">
@@ -253,17 +274,18 @@ main{min-height:60vh}
       <li><time>07:00~09:00</time><div><div class="t">료칸 조식 + 아침온천</div></div></li>
       <li><time>09:00~10:40</time><div><div class="t">온천/휴식/짐 정리</div></div></li>
       <li><time>11:00</time><div><div class="t">무소우엔 체크아웃 → 사파리로 직행</div></div></li>
-      <li><time>11:40~12:00</time><div><div class="t">아프리칸 사파리 도착</div></div></li>
+      <li><time>11:40~12:00</time><div><div class="t">아프리칸 사파리 도착</div><div class="loc"><b>九州自然動物公園 アフリカンサファリ</b><span>📍 〒872-0722 大分県宇佐市安心院町南畑2-1755-1</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 0978-48-2331</span><span>🅿️ 무료 주차 · 별부만 스마트IC에서 약 6km, 7분</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E4%B9%9D%E5%B7%9E%E8%87%AA%E7%84%B6%E5%8B%95%E7%89%A9%E5%85%AC%E5%9C%92%20%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E3%83%B3%E3%82%B5%E3%83%95%E3%82%A1%E3%83%AA%20872-0722%20%E5%A4%A7%E5%88%86%E7%9C%8C%E5%AE%87%E4%BD%90%E5%B8%82%E5%AE%89%E5%BF%83%E9%99%A2%E7%94%BA%E5%8D%97%E7%95%912-1755-1" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>12:00~14:30</time><div><div class="t">아프리칸 사파리 (자차 관람)</div><div class="d">정글버스보다 일정 유연성 우선</div></div></li>
       <li><time>14:30</time><div><div class="t">선택 분기: 부모님 컨디션·시간 확인</div></div></li>
-      <li class="opt"><time>OPTION A</time><div><div class="t">가마도지옥 30~40분만</div><div class="d">여유 있을 때만. 후쿠오카 복귀 시간이 늦어지므로 아래 점검 참고</div></div></li>
+      <li class="opt"><time>OPTION A</time><div><div class="t">가마도지옥 30~40분만</div><div class="d">여유 있을 때만. 후쿠오카 복귀 시간이 늦어지므로 아래 점검 참고</div><div class="loc"><b>かまど地獄</b><span>📍 〒874-0045 大分県別府市大字鉄輪621</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 0977-66-0178</span><span>🅿️ 무료 주차 약 50대 · 영업 08:00~17:00 · 입장 대인 400엔</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%81%8B%E3%81%BE%E3%81%A9%E5%9C%B0%E7%8D%84%20874-0045%20%E5%A4%A7%E5%88%86%E7%9C%8C%E5%88%A5%E5%BA%9C%E5%B8%82%E5%A4%A7%E5%AD%97%E9%89%84%E8%BC%AA621" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>OPTION B</time><div><div class="t">후쿠오카 직행</div><div class="d">사파리를 충분히 즐겼거나 피곤하면 바로 복귀</div></div></li>
-      <li><time>18:00~19:00</time><div><div class="t">호텔 몬토레 후쿠오카 · 부모님 + 캐리어 먼저 하차</div></div></li>
+      <li><time>18:00~19:00</time><div><div class="t">호텔 몬토레 후쿠오카 · 부모님 + 캐리어 먼저 하차</div><div class="loc"><b>ホテルモントレ福岡</b><span>📍 〒810-0004 福岡県福岡市中央区渡辺通3-4-13</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%E7%A6%8F%E5%B2%A1%20810-0004%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%B8%A1%E8%BE%BA%E9%80%9A3-4-13" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>이후</time><div><div class="t">주유 → 텐진키타점</div></div></li>
-      <li><time>20:00</time><div><div class="t">렌터카 반납 (시간 고정)</div></div></li>
+      <li><time>20:00</time><div><div class="t">렌터카 반납 (시간 고정)</div><div class="loc"><b>バジェット・レンタカー 天神北店</b><span>📍 福岡県福岡市中央区舞鶴1-2-3</span><span>🧭 맵코드 <code>13 317 496*08</code></span><span>📞 092-752-0543</span><span>🕗 영업 08:00~20:00 · 반납은 시간 엄수</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%90%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%BB%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E5%A4%A9%E7%A5%9E%E5%8C%97%E5%BA%97%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%88%9E%E9%B6%B41-2-3" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>20:00 이후</time><div><div class="t">돈키호테 본쇼핑 (혼자)</div><div class="d">술/과자/선물</div></div></li>
     </ul>
     <p class="note">사파리가 길어지면 가마도지옥은 미련 없이 생략합니다.</p>
+    <p class="muted">📍 맵코드가 없는 곳은 내비에서 전화번호로 검색하세요. 맵코드는 입력 후 화면의 지명·주소가 맞는지 확인하세요.</p>
   </div>
 
   <div class="card day" data-day="4">
@@ -302,7 +324,7 @@ main{min-height:60vh}
 </section>
 
 <section id="status" class="page">
-  <h2>🎫 예약 현황</h2>
+  <details class="fold"><summary><h2>🎫 예약 현황</h2></summary>
   <div class="status">
     <div class="card"><span class="ic">✈️</span><div><div class="st-h"><b>항공</b><span class="pill ok">완료</span></div><span class="muted">10/4 08:05 인천 → 09:30 후쿠오카<br>10/7 17:00 후쿠오카 → 18:35 인천 · 에어서울</span></div></div>
     <div class="card"><span class="ic">🏨</span><div><div class="st-h"><b>10/4 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 라 스루 후쿠오카 · 250,122원</span></div></div>
@@ -311,8 +333,9 @@ main{min-height:60vh}
     <div class="card"><span class="ic">🚗</span><div><div class="st-h"><b>렌터카</b><span class="pill ok">완료</span></div><span class="muted">10/5 09:00 → 10/6 20:00 · 텐진키타점 · 경차 · 16,385엔 현장결제</span></div></div>
     <div class="card"><span class="ic">🍽️</span><div><div class="st-h"><b>식당</b><span class="pill todo">미정</span></div><span class="muted">10/4 저녁 무사시자 예약 여부, 오징어회 식당</span></div></div>
   </div>
+  </details>
 
-  <h2 style="margin-top:28px">💴 예약 · 비용</h2>
+  <details class="fold"><summary><h2>💴 예약 · 비용</h2></summary>
   <div class="card">
     <div class="cost"><div class="cost-top"><b>10/4 숙소</b><span class="amt">250,122원</span></div><div class="cost-sub">호텔 몬토레 라 스루 후쿠오카 (Trip.com)</div></div>
     <div class="cost"><div class="cost-top"><b>10/6 숙소</b><span class="amt">273,543원</span></div><div class="cost-sub">호텔 몬토레 후쿠오카 (Trip.com)</div></div>
@@ -325,6 +348,9 @@ main{min-height:60vh}
   </div>
   <p class="muted">숙소 합계는 유아마테이 선택 시 약 1,446,573원, 코보우테이 선택 시 약 1,530,628원입니다. 150만원 예산이면 유아마테이가 안전합니다. 항공권 제외, 환율과 최종 결제금액 기준으로 다시 확인하세요.</p>
 
+  
+  </details>
+
   <h2 style="margin-top:28px">🧾 현지 지출 기록 (엔)</h2>
   <div class="card fin">
     <p class="muted" style="margin-top:0">트래블로그 시작 잔액 228,334엔. 결제 단말기에서 통화 선택이 나오면 <b>JPY(엔화)</b>를 고르고 KRW 결제는 피하세요. 현금은 처음 3~5만엔만 ATM에서 출금합니다.</p>
@@ -332,6 +358,7 @@ main{min-height:60vh}
     <div class="catsum" id="catsum"></div>
     <form class="xform" id="xform" autocomplete="off">
       <input type="number" id="xamt" inputmode="numeric" min="1" step="1" placeholder="금액 (엔)" aria-label="금액 (엔)" required>
+      <div class="cats" id="xdates" role="group" aria-label="날짜"></div>
       <div class="cats" id="xcats" role="group" aria-label="카테고리"></div>
       <input type="text" id="xmemo" maxlength="40" placeholder="메모 (예: 스시사카바사시스)" aria-label="메모">
       <button type="submit" class="xadd">＋ 지출 추가</button>
@@ -394,34 +421,111 @@ main{min-height:60vh}
 <section id="pack" class="page">
   <h2>🧳 준비물</h2>
   <div class="card checks">
-    <h3>서류</h3>
+    <h3>📄 서류 · 예약</h3>
     <label><input type="checkbox" data-k="p1"><span>여권 3명 (유효기간 확인)</span></label>
+    <label><input type="checkbox" data-k="q1"><span>여권 사본 + 여권 사진 파일 (분실 대비, 폰에도 저장)</span></label>
+    <label><input type="checkbox" data-k="q2"><span>여권용 사진 1~2매 (분실 시 긴급여권 발급용)</span></label>
     <label><input type="checkbox" data-k="p2"><span>항공 예약 / 모바일 탑승 정보</span></label>
+    <label><input type="checkbox" data-k="q3"><span>에어서울 온라인 체크인 · 좌석 지정 (가능한 경우, 출발 전날)</span></label>
     <label><input type="checkbox" data-k="p3"><span>숙소 예약 확인서 3곳 (캡처 포함)</span></label>
     <label><input type="checkbox" data-k="p4"><span>Visit Japan Web 등록 · QR 캡처 (3명)</span></label>
     <label><input type="checkbox" data-k="p5"><span>여행자보험 증권 · 긴급 연락처</span></label>
-
-    <h3>운전</h3>
+    <label><input type="checkbox" data-k="q4"><span>인천공항 T2 예약주차장 예약 확인서 · 셔틀 안내</span></label>
+    <label><input type="checkbox" data-k="q5"><span>영사콜센터 +82-2-3210-0404 연락처 저장 (해외 사건·사고)</span></label>
+    <label><input type="checkbox" data-k="q6"><span>가족 비상 연락처 · 보험사 긴급전화 메모 (종이 + 폰)</span></label>
+    <h3>🚗 운전 · 렌터카</h3>
     <label><input type="checkbox" data-k="p6"><span>국제운전면허증 + 한국 운전면허증</span></label>
     <label><input type="checkbox" data-k="p7"><span>렌터카 예약 확인서, 보험(NOC) · ETC 카드 확인</span></label>
     <label><input type="checkbox" data-k="p8"><span>휴대폰 거치대, 차량용 충전기</span></label>
-
-    <h3>돈 · 통신</h3>
+    <label><input type="checkbox" data-k="q7"><span>차량용 충전 케이블 여분 (USB-C / 라이트닝)</span></label>
+    <label><input type="checkbox" data-k="q8"><span>구글맵 오프라인 지도 다운로드 (후쿠오카 · 오이타)</span></label>
+    <label><input type="checkbox" data-k="q9"><span>목적지 주소 · 맵코드 캡처 (일정 탭에 정리됨)</span></label>
+    <label><input type="checkbox" data-k="q10"><span>선글라스 (운전용)</span></label>
+    <label><input type="checkbox" data-k="q11"><span>동전 · 소액 현금 (주차장, 통행료, 자판기)</span></label>
+    <label><input type="checkbox" data-k="q12"><span>차 안 쓰레기봉투 · 물티슈 · 휴지</span></label>
+    <label><input type="checkbox" data-k="q13"><span>일본 운전 규칙 확인 (좌측통행, 일시정지 표지, 보행자 우선)</span></label>
+    <h3>💴 돈 · 통신</h3>
     <label><input type="checkbox" data-k="p9"><span>트래블로그 카드 (잔액 228,334엔)</span></label>
+    <label><input type="checkbox" data-k="q14"><span>예비 신용카드 1~2장 (VISA / Mastercard)</span></label>
     <label><input type="checkbox" data-k="p10"><span>엔화 ATM 출금 계획 (처음 3~5만엔)</span></label>
+    <label><input type="checkbox" data-k="q15"><span>동전 지갑 · 잔돈 주머니</span></label>
+    <label><input type="checkbox" data-k="q16"><span>카드 분실 신고 전화번호 메모</span></label>
     <label><input type="checkbox" data-k="p11"><span>유심 / eSIM / 로밍</span></label>
+    <label><input type="checkbox" data-k="q17"><span>앱 설치 · 로그인 확인 (구글맵, 파파고, 트래블로그, 에어서울, Visit Japan Web)</span></label>
+    <h3>🔌 전자기기</h3>
     <label><input type="checkbox" data-k="p12"><span>휴대폰 충전기, 보조배터리, 변환 플러그</span></label>
-
-    <h3>건강 · 옷</h3>
+    <label><input type="checkbox" data-k="q18"><span>보조배터리는 기내 휴대만 (위탁 금지), 100Wh 이하</span></label>
+    <label><input type="checkbox" data-k="q19"><span>일본용 변환 플러그 (A형 2핀, 100V) · 여행용 멀티탭</span></label>
+    <label><input type="checkbox" data-k="q20"><span>충전 케이블 여분 · 3in1 케이블</span></label>
+    <label><input type="checkbox" data-k="q21"><span>이어폰 (유선 / 블루투스) + 충전 케이블</span></label>
+    <label><input type="checkbox" data-k="q22"><span>카메라 · 메모리카드 · 충전기 (선택)</span></label>
+    <label><input type="checkbox" data-k="q23"><span>셀카봉 · 미니 삼각대 (선택)</span></label>
+    <h3>💊 건강 · 상비약</h3>
     <label><input type="checkbox" data-k="p13"><span>상비약, 부모님 개인약 (처방전 사본)</span></label>
+    <label><input type="checkbox" data-k="q24"><span>부모님 평소 복용약 (여행 일수 + 여유 2~3일치)</span></label>
+    <label><input type="checkbox" data-k="q25"><span>소화제 · 지사제 · 해열진통제 · 감기약</span></label>
+    <label><input type="checkbox" data-k="q26"><span>멀미약 (비행 · 유후인 산길)</span></label>
+    <label><input type="checkbox" data-k="q27"><span>밴드 · 소독약 · 연고 · 파스</span></label>
+    <label><input type="checkbox" data-k="q28"><span>인공눈물 · 안약 · 렌즈 보관액</span></label>
+    <label><input type="checkbox" data-k="q29"><span>마스크 · 손소독제</span></label>
+    <label><input type="checkbox" data-k="q30"><span>혈압계 등 개인 의료기기 (해당 시)</span></label>
+    <label><input type="checkbox" data-k="q31"><span>안경 · 돋보기 (여분)</span></label>
+    <h3>🧴 세면 · 위생</h3>
+    <label><input type="checkbox" data-k="q32"><span>칫솔 · 치약</span></label>
+    <label><input type="checkbox" data-k="q33"><span>면도기 · 빗 · 헤어 제품</span></label>
+    <label><input type="checkbox" data-k="q34"><span>스킨케어 소분 (100ml 이하 여행용 용기)</span></label>
+    <label><input type="checkbox" data-k="q35"><span>선크림 · 립밤</span></label>
+    <label><input type="checkbox" data-k="q36"><span>클렌징 · 화장품 · 화장솜</span></label>
+    <label><input type="checkbox" data-k="q37"><span>생리용품 (여분 포함)</span></label>
+    <label><input type="checkbox" data-k="q38"><span>물티슈 · 휴대용 티슈</span></label>
+    <label><input type="checkbox" data-k="q39"><span>손톱깎이 · 면봉 · 작은 거울</span></label>
+    <label><input type="checkbox" data-k="q40"><span>머리끈 · 머리핀 (온천용)</span></label>
+    <label><input type="checkbox" data-k="q41"><span>작은 수건 + 지퍼백 (젖은 수건 보관)</span></label>
+    <h3>👕 옷 · 신발</h3>
     <label><input type="checkbox" data-k="p14"><span>우산(접이식), 가벼운 겉옷</span></label>
     <label><input type="checkbox" data-k="p15"><span>온천 후 편한 옷, 슬리퍼, 작은 수건</span></label>
-
-    <h3>짐</h3>
+    <label><input type="checkbox" data-k="q42"><span>속옷 · 양말 (3박 4일 + 여분 1벌)</span></label>
+    <label><input type="checkbox" data-k="q43"><span>낮에 입을 얇은 반팔 · 편한 바지</span></label>
+    <label><input type="checkbox" data-k="q44"><span>얇은 긴팔 · 가디건 (유후인 아침저녁 쌀쌀)</span></label>
+    <label><input type="checkbox" data-k="q45"><span>잠옷 (료칸은 유카타 제공, 호텔용)</span></label>
+    <label><input type="checkbox" data-k="q46"><span>편한 운동화 (많이 걷는 날 대비)</span></label>
+    <label><input type="checkbox" data-k="q47"><span>여벌 양말 (다다미 료칸용)</span></label>
+    <label><input type="checkbox" data-k="q48"><span>모자 · 선글라스</span></label>
+    <h3>🧳 짐 · 가방</h3>
     <label><input type="checkbox" data-k="p16"><span>캐리어 이름표</span></label>
+    <label><input type="checkbox" data-k="q49"><span>캐리어 자물쇠 (TSA) · 벨트</span></label>
     <label><input type="checkbox" data-k="p17"><span>유후인 1박용 작은 가방 (경차용)</span></label>
     <label><input type="checkbox" data-k="p18"><span>쇼핑용 보조가방</span></label>
+    <label><input type="checkbox" data-k="q50"><span>접이식 보조 가방 (쇼핑이 늘어날 때)</span></label>
+    <label><input type="checkbox" data-k="q51"><span>에코백 · 장바구니 (일본 편의점 봉투는 유료)</span></label>
+    <label><input type="checkbox" data-k="q52"><span>지퍼백 대 · 소 여러 장 (젖은 옷, 액체, 간식)</span></label>
+    <label><input type="checkbox" data-k="q53"><span>비닐봉지 · 세탁물 주머니</span></label>
+    <label><input type="checkbox" data-k="q54"><span>기내 가방 정리: 여권 · 지갑 · 약 · 보조배터리 · 충전기 · 귀중품</span></label>
+    <label><input type="checkbox" data-k="q55"><span>액체류 100ml 이하 용기 + 투명 지퍼백 (기내 반입)</span></label>
+    <label><input type="checkbox" data-k="q56"><span>휴대용 저울 (수하물 무게 확인)</span></label>
+    <label><input type="checkbox" data-k="q57"><span>캐리어 사진 (분실 대비, 외관 + 이름표)</span></label>
     <label><input type="checkbox" data-k="p19"><span>CARGO PASS 접수 마감·요금 확인</span></label>
+    <label><input type="checkbox" data-k="q58"><span>면세 · 택스리펀 쇼핑용 여권 (돈키, 공항)</span></label>
+    <h3>✈️ 기내 · 이동 편의</h3>
+    <label><input type="checkbox" data-k="q59"><span>목베개 · 안대 · 귀마개</span></label>
+    <label><input type="checkbox" data-k="q60"><span>얇은 담요 · 스카프 (기내 냉방)</span></label>
+    <label><input type="checkbox" data-k="q61"><span>영상 · 책 다운로드 (태블릿 / 폰)</span></label>
+    <label><input type="checkbox" data-k="q62"><span>껌 · 사탕 (이착륙 때 귀 먹먹함)</span></label>
+    <label><input type="checkbox" data-k="q63"><span>빈 텀블러 (보안검색 후 물 채우기)</span></label>
+    <label><input type="checkbox" data-k="q64"><span>간식 (부모님 컨디션 관리)</span></label>
+    <h3>🎁 먹거리 · 선물</h3>
+    <label><input type="checkbox" data-k="q65"><span>한식 비상식량 (컵밥, 김, 소포장 고추장) (선택)</span></label>
+    <label><input type="checkbox" data-k="q66"><span>선물 리스트 (누구에게 무엇을, 예산) 메모</span></label>
+    <label><input type="checkbox" data-k="q67"><span>깨지기 쉬운 선물용 완충재 · 쇼핑백</span></label>
+    <label><input type="checkbox" data-k="q68"><span>영수증 보관용 지퍼백 (면세, 가계부 정리용)</span></label>
+    <h3>🏠 출발 전날 · 당일 점검</h3>
+    <label><input type="checkbox" data-k="q69"><span>휴대폰 · 보조배터리 완충 (전날 밤)</span></label>
+    <label><input type="checkbox" data-k="q70"><span>집 문단속 · 가스 / 전기 / 수도 점검</span></label>
+    <label><input type="checkbox" data-k="q71"><span>냉장고 정리 · 음식물 쓰레기 비우기</span></label>
+    <label><input type="checkbox" data-k="q72"><span>부재 중 택배 · 화분 등 처리 (해당 시)</span></label>
+    <label><input type="checkbox" data-k="q73"><span>지갑 속 불필요한 카드 빼기 (분실 대비)</span></label>
+    <label><input type="checkbox" data-k="q74"><span>오프라인 지도 · 앱 업데이트 확인</span></label>
+    <label><input type="checkbox" data-k="q75"><span>일기예보 최종 확인 (전날 밤)</span></label>
   </div>
 
   <h2 style="margin-top:28px">✅ 출발 전 할 일</h2>
@@ -534,9 +638,10 @@ main{min-height:60vh}
     c.addEventListener('change',function(){S.set('c_'+c.dataset.k, c.checked?'1':'0')});
   });
 
-  // Spending log: one entry per payment, with a category
+  // Spending log: one entry per payment, grouped by day with a daily total
   var START = 228334;
   var BASE = [['식비','🍴'],['교통','🚕'],['렌터카','🚗'],['입장료','🎟️'],['쇼핑','🛍️'],['기타','📦']];
+  var TRIP = ['10/4','10/5','10/6','10/7'], WEEK = ['일','월','화','수','목','금','토'];
   function load(k, fallback){
     try{ var v = JSON.parse(S.get(k)); return v == null ? fallback : v }catch(e){ return fallback }
   }
@@ -551,6 +656,7 @@ main{min-height:60vh}
     S.set('x_list', JSON.stringify(entries));
   }
   var selected = BASE[0][0];
+  var selectedDate = today ? TRIP[Number(today) - 1] : (diff > 0 ? TRIP[0] : TRIP[TRIP.length - 1]);
   var fmt = function(n){ return n.toLocaleString('ko-KR') };
   var amtEl = document.getElementById('xamt'), memoEl = document.getElementById('xmemo');
   function catNames(){ return BASE.map(function(c){return c[0]}).concat(extra) }
@@ -558,7 +664,22 @@ main{min-height:60vh}
     for(var i = 0; i < BASE.length; i++) if(BASE[i][0] === name) return BASE[i][1];
     return '🏷️';
   }
+  function parts(md){ return /^(\d+)\/(\d+)$/.exec(md || '') }
+  function weekday(md){ var m = parts(md); return m ? WEEK[new Date(2026, m[1] - 1, m[2]).getDay()] : '' }
+  function dayKey(md){ var m = parts(md); return m ? Number(m[1]) * 100 + Number(m[2]) : -1 }
   function save(){ S.set('x_list', JSON.stringify(entries)) }
+
+  function renderDates(){
+    var box = document.getElementById('xdates');
+    box.textContent = '';
+    TRIP.forEach(function(d){
+      var b = mk('button', 'cat', d + ' ' + weekday(d));
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(d === selectedDate));
+      b.addEventListener('click', function(){ selectedDate = d; renderDates() });
+      box.appendChild(b);
+    });
+  }
 
   function renderCats(){
     var box = document.getElementById('xcats');
@@ -582,9 +703,34 @@ main{min-height:60vh}
     box.appendChild(add);
   }
 
+  function entryRow(e, last){
+    var row = mk('div', last ? 'x last' : 'x'), body = mk('div', 'x-body'), del = mk('button', 'x-del', '✕');
+    body.appendChild(mk('div', 'x-t', e.memo || e.cat));
+    body.appendChild(mk('div', 'x-s', e.cat));
+    del.type = 'button';
+    del.setAttribute('aria-label', '삭제');
+    del.addEventListener('click', function(){
+      if(!window.confirm('이 지출을 삭제할까요?')) return;
+      entries = entries.filter(function(x){ return x.id !== e.id });
+      save();
+      renderLog();
+    });
+    row.appendChild(mk('div', 'x-ic', emojiOf(e.cat)));
+    row.appendChild(body);
+    row.appendChild(mk('div', 'x-amt', fmt(e.amt) + '엔'));
+    row.appendChild(del);
+    return row;
+  }
+
   function renderLog(){
-    var used = 0, byCat = {};
-    entries.forEach(function(e){ used += e.amt; byCat[e.cat] = (byCat[e.cat] || 0) + e.amt });
+    var used = 0, byCat = {}, groups = {}, order = [];
+    entries.forEach(function(e){
+      used += e.amt;
+      byCat[e.cat] = (byCat[e.cat] || 0) + e.amt;
+      var k = e.date || '';
+      if(!groups[k]){ groups[k] = []; order.push(k) }
+      groups[k].push(e);
+    });
     document.getElementById('used').textContent = fmt(used);
     document.getElementById('left').textContent = fmt(START - used);
 
@@ -600,23 +746,17 @@ main{min-height:60vh}
       list.appendChild(mk('p', 'x-empty', '아직 기록이 없어요. 금액을 입력하고 지출을 추가하세요.'));
       return;
     }
-    entries.slice().reverse().forEach(function(e){
-      var row = mk('div', 'x'), body = mk('div', 'x-body'), del = mk('button', 'x-del', '✕');
-      body.appendChild(mk('div', 'x-t', e.memo || e.cat));
-      body.appendChild(mk('div', 'x-s', (e.date ? e.date + ' · ' : '') + e.cat));
-      del.type = 'button';
-      del.setAttribute('aria-label', '삭제');
-      del.addEventListener('click', function(){
-        if(!window.confirm('이 지출을 삭제할까요?')) return;
-        entries = entries.filter(function(x){ return x.id !== e.id });
-        save();
-        renderLog();
-      });
-      row.appendChild(mk('div', 'x-ic', emojiOf(e.cat)));
-      row.appendChild(body);
-      row.appendChild(mk('div', 'x-amt', fmt(e.amt) + '엔'));
-      row.appendChild(del);
-      list.appendChild(row);
+    order.sort(function(a, b){ return dayKey(b) - dayKey(a) });
+    order.forEach(function(k){
+      var g = groups[k].slice().reverse(), total = 0;
+      var box = mk('div', 'xg');
+      box.appendChild(mk('div', 'x-day', k ? k + ' (' + weekday(k) + ')' : '날짜 없음'));
+      g.forEach(function(e, i){ total += e.amt; box.appendChild(entryRow(e, i === g.length - 1)) });
+      var foot = mk('div', 'x-dsum');
+      foot.appendChild(mk('span', '', (k ? k + ' ' + weekday(k) + ' ' : '') + '일 계'));
+      foot.appendChild(mk('span', '', fmt(total) + '엔'));
+      box.appendChild(foot);
+      list.appendChild(box);
     });
   }
 
@@ -624,16 +764,26 @@ main{min-height:60vh}
     ev.preventDefault();
     var amt = Math.round(Number(amtEl.value));
     if(!(amt > 0)){ amtEl.focus(); return; }
-    var d = new Date();
     entries.push({id: String(Date.now()) + Math.random().toString(36).slice(2, 6), amt: amt, cat: selected,
-      memo: memoEl.value.trim(), date: (d.getMonth() + 1) + '/' + d.getDate()});
+      memo: memoEl.value.trim(), date: selectedDate});
     save();
     amtEl.value = '';
     memoEl.value = '';
     renderLog();
   });
+  renderDates();
   renderCats();
   renderLog();
+
+  // Print everything: open the folded blocks while printing
+  var folds = document.querySelectorAll('details.fold'), wasOpen = [];
+  window.addEventListener('beforeprint', function(){
+    wasOpen = Array.prototype.map.call(folds, function(d){ return d.open });
+    folds.forEach(function(d){ d.open = true });
+  });
+  window.addEventListener('afterprint', function(){
+    folds.forEach(function(d, i){ d.open = !!wasOpen[i] });
+  });
 
   // Memo
   var memo = document.getElementById('memo');
