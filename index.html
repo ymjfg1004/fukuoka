@@ -5,38 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>후쿠오카·유후인 가족여행</title>
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
-<meta name="theme-color" content="#f5963a">
+<meta name="theme-color" content="#8ecff5">
 <style>
 :root{
-  --bg:#fff8f1; --card:#fff; --text:#25232e; --muted:#6b6675; --line:#f1e7db;
-  --accent:#f59a3d; --accent-text:#b45309; --accent-soft:#fff0dc;
-  --fill:#c95f0b; --on-fill:#fff;
-  --teal:#0b8577; --navy:#2b2d6e; --pink:#cc2f5a;
-  --ok:#0b7a52; --ok-soft:#e1f6ec; --warn:#a85408; --warn-soft:#fff1dc;
-  --bad:#c42b4b; --bad-soft:#fde6ea;
-  --hero-from:#ffc27a; --hero-to:#f5963a; --hero-text:#2b1a08; --glass:rgba(255,255,255,.6);
-  --nav-bg:rgba(255,255,255,.92); --shadow:0 6px 20px rgba(120,70,10,.09);
+  --bg:#f3f8fc; --card:#fff; --text:#12232f; --muted:#5a6b78; --line:#dbe8f1;
+  --accent:#4aa8e0; --accent-text:#165f96; --accent-soft:#e3f3fd;
+  --fill:#1a73b5; --on-fill:#fff;
+  --ok:#165f96; --ok-soft:#e3f3fd; --warn:#4a5965; --warn-soft:#edf2f6;
+  --bad:#c42b4b; --bad-soft:#fde8ec;
+  --hero:#8ecff5; --hero-text:#0b2a40; --glass:rgba(255,255,255,.62);
+  --nav-bg:rgba(243,248,252,.94); --shadow:0 6px 20px rgba(20,60,90,.08);
   --r:20px;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#16141a; --card:#211e27; --text:#f3eee8; --muted:#aaa3b3; --line:#332f3b;
-    --accent:#ffb15c; --accent-text:#ffc27d; --accent-soft:#3a2a18;
-    --fill:#ffb15c; --on-fill:#2b1a08;
-    --ok:#6ee0a9; --ok-soft:#12301f; --warn:#ffc27d; --warn-soft:#3a2a12;
+    --bg:#0e1720; --card:#16222d; --text:#e8f1f8; --muted:#9fb2c1; --line:#263544;
+    --accent:#6cc0f2; --accent-text:#8fd0f5; --accent-soft:#16344a;
+    --fill:#6cc0f2; --on-fill:#06243a;
+    --ok:#8fd0f5; --ok-soft:#16344a; --warn:#b4c3cf; --warn-soft:#1e2c38;
     --bad:#ff9fb2; --bad-soft:#3b1a22;
-    --hero-from:#4d3216; --hero-to:#2f1d0c; --hero-text:#ffe9cf; --glass:rgba(255,255,255,.14);
-    --nav-bg:rgba(33,30,39,.94); --shadow:0 6px 20px rgba(0,0,0,.35);
+    --hero:#1c3a52; --hero-text:#e3f3fd; --glass:rgba(255,255,255,.12);
+    --nav-bg:rgba(14,23,32,.94); --shadow:0 6px 20px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#16141a; --card:#211e27; --text:#f3eee8; --muted:#aaa3b3; --line:#332f3b;
-  --accent:#ffb15c; --accent-text:#ffc27d; --accent-soft:#3a2a18;
-  --fill:#ffb15c; --on-fill:#2b1a08;
-  --ok:#6ee0a9; --ok-soft:#12301f; --warn:#ffc27d; --warn-soft:#3a2a12;
+  --bg:#0e1720; --card:#16222d; --text:#e8f1f8; --muted:#9fb2c1; --line:#263544;
+  --accent:#6cc0f2; --accent-text:#8fd0f5; --accent-soft:#16344a;
+  --fill:#6cc0f2; --on-fill:#06243a;
+  --ok:#8fd0f5; --ok-soft:#16344a; --warn:#b4c3cf; --warn-soft:#1e2c38;
   --bad:#ff9fb2; --bad-soft:#3b1a22;
-  --hero-from:#4d3216; --hero-to:#2f1d0c; --hero-text:#ffe9cf; --glass:rgba(255,255,255,.14);
-  --nav-bg:rgba(33,30,39,.94); --shadow:0 6px 20px rgba(0,0,0,.35);
+  --hero:#1c3a52; --hero-text:#e3f3fd; --glass:rgba(255,255,255,.12);
+  --nav-bg:rgba(14,23,32,.94); --shadow:0 6px 20px rgba(0,0,0,.35);
 }
 *,*::before,*::after{box-sizing:border-box}
 *{min-width:0}
@@ -51,10 +50,7 @@ b{font-weight:700}
 
 /* hero */
 header.hero{position:relative;overflow:hidden;color:var(--hero-text);padding:20px 0 70px;
-  background:linear-gradient(160deg,var(--hero-from),var(--hero-to));border-radius:0 0 34px 34px}
-header.hero::before,header.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.2)}
-header.hero::before{width:230px;height:230px;right:-80px;top:-70px}
-header.hero::after{width:150px;height:150px;right:70px;bottom:-70px;background:rgba(255,255,255,.14)}
+  background:var(--hero);border-radius:0 0 34px 34px}
 .hero .wrap{position:relative;z-index:1}
 .hero-top{display:flex;justify-content:space-between;align-items:center}
 .eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.16em;opacity:.8}
@@ -67,10 +63,9 @@ header.hero p{margin:0;font-weight:500;opacity:.85}
 /* stat tiles */
 .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:-44px;margin-bottom:16px;position:relative;z-index:2}
 @media (min-width:600px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.stat{border-radius:18px;padding:14px 16px;color:#fff;box-shadow:var(--shadow)}
-.stat small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.12em;opacity:.88}
-.stat b{display:block;font-size:1.45rem;line-height:1.3;font-weight:800}
-.stat.t1{background:var(--teal)}.stat.t2{background:var(--navy)}.stat.t3{background:var(--pink)}.stat.t4{background:#c95f0b}
+.stat{border-radius:18px;padding:14px 16px;background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:var(--shadow)}
+.stat small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.12em;color:var(--muted)}
+.stat b{display:block;font-size:1.45rem;line-height:1.3;font-weight:800;color:var(--accent-text)}
 
 /* sections & cards */
 section{padding:30px 0 4px;scroll-margin-top:12px}
@@ -88,7 +83,8 @@ h3{font-size:1.05rem;margin:0 0 8px}
 /* reservation status */
 .status{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}
 .status .card{margin:0;display:flex;gap:14px;align-items:flex-start}
-.ic{flex:none;width:46px;height:46px;border-radius:15px;background:var(--accent-soft);display:grid;place-items:center;font-size:1.4rem}
+.ic{flex:none;width:46px;height:46px;border-radius:15px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent-text)}
+.ic .ico{width:24px;height:24px}
 .st-h{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-bottom:2px}
 .st-h b{font-size:1rem}
 
@@ -125,8 +121,8 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .tl time{display:inline-block;margin-bottom:3px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-size:.78rem;font-weight:700}
 .tl .t{font-weight:700;line-height:1.5}
 .tl .d{color:var(--muted);font-size:.88rem;margin-top:2px}
-.tl li.opt::before{border-color:var(--teal)}
-.tl li.opt .t::before{content:"선택 · ";color:var(--teal)}
+.tl li.opt::before{border-color:var(--muted)}
+.tl li.opt .t::before{content:"선택 · ";color:var(--accent-text)}
 
 /* checklists */
 .checks label{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer}
@@ -195,6 +191,11 @@ main{min-height:60vh}
     <symbol id="i-book" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
     <symbol id="i-food" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
     <symbol id="i-pack" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol>
+    <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z"/><path d="M21 15v7"/></symbol>
     <symbol id="i-todo" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
   </defs>
 </svg>
@@ -238,12 +239,12 @@ main{min-height:60vh}
 <section id="status" class="page on">
   <h2>예약 현황</h2>
   <div class="status">
-    <div class="card"><span class="ic">✈️</span><div><div class="st-h"><b>항공</b><span class="pill ok">완료</span></div><span class="muted">10/4 08:05 인천 → 09:30 후쿠오카<br>10/7 17:00 후쿠오카 → 18:35 인천 · 에어서울</span></div></div>
-    <div class="card"><span class="ic">🏨</span><div><div class="st-h"><b>10/4 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 라 스루 후쿠오카 · 250,122원</span></div></div>
-    <div class="card"><span class="ic">♨️</span><div><div class="st-h"><b>10/5 료칸</b><span class="pill todo">예약 전</span></div><span class="muted">무소우엔 1박 · 조식+석식 · 예산 150만원 이하</span></div></div>
-    <div class="card"><span class="ic">🏨</span><div><div class="st-h"><b>10/6 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 후쿠오카 · 273,543원</span></div></div>
-    <div class="card"><span class="ic">🚗</span><div><div class="st-h"><b>렌터카</b><span class="pill ok">완료</span></div><span class="muted">10/5 09:00 → 10/6 20:00 · 텐진키타점 · 경차 · 16,385엔 현장결제</span></div></div>
-    <div class="card"><span class="ic">🍽️</span><div><div class="st-h"><b>식당</b><span class="pill todo">미정</span></div><span class="muted">10/4 저녁 무사시자 예약 여부, 오징어회 식당</span></div></div>
+    <div class="card"><span class="ic"><svg class="ico"><use href="#i-plane"/></svg></span><div><div class="st-h"><b>항공</b><span class="pill ok">완료</span></div><span class="muted">10/4 08:05 인천 → 09:30 후쿠오카<br>10/7 17:00 후쿠오카 → 18:35 인천 · 에어서울</span></div></div>
+    <div class="card"><span class="ic"><svg class="ico"><use href="#i-bed"/></svg></span><div><div class="st-h"><b>10/4 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 라 스루 후쿠오카 · 250,122원</span></div></div>
+    <div class="card"><span class="ic"><svg class="ico"><use href="#i-home"/></svg></span><div><div class="st-h"><b>10/5 료칸</b><span class="pill todo">예약 전</span></div><span class="muted">무소우엔 1박 · 조식+석식 · 예산 150만원 이하</span></div></div>
+    <div class="card"><span class="ic"><svg class="ico"><use href="#i-bed"/></svg></span><div><div class="st-h"><b>10/6 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 후쿠오카 · 273,543원</span></div></div>
+    <div class="card"><span class="ic"><svg class="ico"><use href="#i-car"/></svg></span><div><div class="st-h"><b>렌터카</b><span class="pill ok">완료</span></div><span class="muted">10/5 09:00 → 10/6 20:00 · 텐진키타점 · 경차 · 16,385엔 현장결제</span></div></div>
+    <div class="card"><span class="ic"><svg class="ico"><use href="#i-utensils"/></svg></span><div><div class="st-h"><b>식당</b><span class="pill todo">미정</span></div><span class="muted">10/4 저녁 무사시자 예약 여부, 오징어회 식당</span></div></div>
   </div>
 </section>
 
