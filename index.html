@@ -104,6 +104,20 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .tl li.opt::before{border-color:var(--muted)}
 .tl li.opt .t::before{content:"선택 · ";color:var(--ok)}
 
+/* shopping list: tick = bought, the picture folds away */
+.buy-count{margin-left:6px;padding:1px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font-size:.76rem;font-weight:700;vertical-align:middle}
+.buy-count:empty{display:none}
+.buy{padding:14px 0;border-bottom:1px dashed var(--line)}
+.buy:last-child{border-bottom:0;padding-bottom:0}
+.buy-head{display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer}
+.buy-head input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--fill)}
+.buy.done .buy-head span{color:var(--muted);text-decoration:line-through}
+.buy-note{margin:2px 0 0 34px;color:var(--muted);font-size:.84rem}
+.buy-fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s ease}
+.buy-inner{overflow:hidden;min-height:0}
+.buy.done .buy-fold{grid-template-rows:0fr}
+.buy-inner img{display:block;width:100%;height:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}
+
 /* addresses and map codes */
 .loc{margin-top:8px;padding:10px 12px;border-radius:12px;background:var(--accent-soft);color:var(--text);font-size:.84rem;line-height:1.55;word-break:normal;overflow-wrap:anywhere}
 .loc+.loc{margin-top:6px}
@@ -318,6 +332,12 @@ main{min-height:60vh}
     <div class="item"><span class="tag">10/6 밤</span><b>돈키호테</b><p>렌터카 반납 후 혼자 본쇼핑</p></div>
     <div class="item"><span class="tag">10/7</span><b>하카타역 / 공항</b><p>기념품, 마지막 추가 구매</p></div>
   </div>
+  <div class="card buylist" id="buylist">
+    <h3>🛒 살 것 <span class="buy-count" id="buy-count"></span></h3>
+    <p class="muted" style="margin:0 0 4px">산 것은 체크하세요. 체크하면 이미지가 접혀요.</p>
+    <div id="buy-list"></div>
+    <script type="application/json" id="buy-data">[]</script>
+  </div>
 
   <h2 class="ov-h" style="margin-top:28px">📋 전체 일정</h2>
   <div class="ov" id="overview"></div>
@@ -514,6 +534,9 @@ main{min-height:60vh}
     <label><input type="checkbox" data-k="q63"><span>빈 텀블러 (보안검색 후 물 채우기)</span></label>
     <label><input type="checkbox" data-k="q64"><span>간식 (부모님 컨디션 관리)</span></label>
     <h3>🎁 먹거리 · 선물</h3>
+    <label><input type="checkbox" data-k="q76"><span>보냉백 (료칸 갈 때 편의점 음식 보관용, 접이식이면 경차 트렁크에 유리)</span></label>
+    <label><input type="checkbox" data-k="q77"><span>아이스팩 · 작은 냉매 (편의점에서 얼음을 사도 됨)</span></label>
+    <label><input type="checkbox" data-k="q78"><span>일회용 젓가락 · 숟가락 · 종이컵 (편의점 음식용)</span></label>
     <label><input type="checkbox" data-k="q65"><span>한식 비상식량 (컵밥, 김, 소포장 고추장) (선택)</span></label>
     <label><input type="checkbox" data-k="q66"><span>선물 리스트 (누구에게 무엇을, 예산) 메모</span></label>
     <label><input type="checkbox" data-k="q67"><span>깨지기 쉬운 선물용 완충재 · 쇼핑백</span></label>
@@ -784,6 +807,44 @@ main{min-height:60vh}
   window.addEventListener('afterprint', function(){
     folds.forEach(function(d, i){ d.open = !!wasOpen[i] });
   });
+
+  // Shopping list: screenshots of things to buy; ticking one folds its picture
+  var buyBox = document.getElementById('buy-list'), buyCount = document.getElementById('buy-count');
+  var buyItems = [];
+  try{ buyItems = JSON.parse(document.getElementById('buy-data').textContent) || [] }catch(e){ buyItems = [] }
+  function isBought(it){ return S.get('b_' + it.id) === '1' }
+  function countBuy(){
+    var left = buyItems.filter(function(it){ return !isBought(it) }).length;
+    buyCount.textContent = !buyItems.length ? '' : (left ? left + '개 남음' : '모두 구매 완료 🎉');
+  }
+  buyItems.forEach(function(it){
+    var done = isBought(it);
+    var row = mk('div', done ? 'buy done' : 'buy');
+    var label = mk('label', 'buy-head'), box = document.createElement('input');
+    box.type = 'checkbox';
+    box.checked = done;
+    box.addEventListener('change', function(){
+      S.set('b_' + it.id, box.checked ? '1' : '0');
+      row.classList.toggle('done', box.checked);
+      countBuy();
+    });
+    label.appendChild(box);
+    label.appendChild(mk('span', '', it.title || '살 것'));
+    row.appendChild(label);
+    if(it.note) row.appendChild(mk('div', 'buy-note', it.note));
+    var fold = mk('div', 'buy-fold'), inner = mk('div', 'buy-inner'), img = document.createElement('img');
+    img.src = it.img;
+    img.alt = it.title || '살 것';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    if(it.w && it.h){ img.width = it.w; img.height = it.h }
+    inner.appendChild(img);
+    fold.appendChild(inner);
+    row.appendChild(fold);
+    buyBox.appendChild(row);
+  });
+  if(!buyItems.length) buyBox.appendChild(mk('p', 'x-empty', '아직 담은 게 없어요.'));
+  countBuy();
 
   // Memo
   var memo = document.getElementById('memo');
