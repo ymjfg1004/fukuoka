@@ -6,6 +6,7 @@
 <title>후쿠오카·유후인 가족여행</title>
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
+<meta name="color-scheme" content="light">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -13,29 +14,10 @@
   --fill:#111; --on-fill:#fff;
   --ok:#1d4ed8; --ok-soft:#e8f0fe; --warn:#444; --warn-soft:#f4f4f4;
   --bad:#d3202a; --bad-soft:#fde9ea;
-  --hero:#111; --hero-text:#fff; --glass:rgba(255,255,255,.16);
+  --hero:#111; --hero-text:#fff;
   --nav-bg:rgba(255,255,255,.94); --shadow:0 1px 3px rgba(0,0,0,.06);
   --r:20px;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0b0b0b; --card:#151515; --text:#f2f2f2; --muted:#a0a0a0; --line:#2a2a2a;
-    --accent:#f2f2f2; --accent-text:#f2f2f2; --accent-soft:#1f1f1f;
-    --fill:#f2f2f2; --on-fill:#111;
-    --ok:#8ab4ff; --ok-soft:#14233f; --warn:#c8c8c8; --warn-soft:#1f1f1f;
-    --bad:#ff7b80; --bad-soft:#3a1517;
-    --hero:#1c1c1c; --hero-text:#fff; --glass:rgba(255,255,255,.14);
-    --nav-bg:rgba(21,21,21,.94); --shadow:0 1px 3px rgba(0,0,0,.4);
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0b0b0b; --card:#151515; --text:#f2f2f2; --muted:#a0a0a0; --line:#2a2a2a;
-  --accent:#f2f2f2; --accent-text:#f2f2f2; --accent-soft:#1f1f1f;
-  --fill:#f2f2f2; --on-fill:#111;
-  --ok:#8ab4ff; --ok-soft:#14233f; --warn:#c8c8c8; --warn-soft:#1f1f1f;
-  --bad:#ff7b80; --bad-soft:#3a1517;
-  --hero:#1c1c1c; --hero-text:#fff; --glass:rgba(255,255,255,.14);
-  --nav-bg:rgba(21,21,21,.94); --shadow:0 1px 3px rgba(0,0,0,.4);
+  color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
 *{min-width:0}
@@ -54,13 +36,11 @@ header.hero{position:relative;overflow:hidden;color:var(--hero-text);padding:20p
 .hero .wrap{position:relative;z-index:1}
 .hero-top{display:flex;justify-content:space-between;align-items:center}
 .eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.16em;opacity:.8}
-.theme-btn{width:40px;height:40px;border-radius:50%;border:0;background:var(--glass);color:inherit;font-size:1.1rem;cursor:pointer}
 body:not(.home) header.hero,body:not(.home) .stats{display:none}
 .topbar{display:none}
 body:not(.home) .topbar{display:block}
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:2px}
 .trip{font-weight:800;letter-spacing:-.02em}
-.topbar .theme-btn{background:var(--accent-soft);color:var(--text)}
 header.hero h1{margin:20px 0 8px;font-size:clamp(1.9rem,8.4vw,2.7rem);line-height:1.18;font-weight:800;letter-spacing:-.035em}
 header.hero p{margin:0;font-weight:500;opacity:.85}
 
@@ -174,7 +154,7 @@ nav.top a.on{background:var(--fill);color:var(--on-fill)}
 main{min-height:60vh}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{nav.top,.theme-btn,.topbar{display:none}.page,.day{display:block!important}body{background:#fff;padding:0}.card,.ov-item{box-shadow:none}}
+@media print{nav.top,.topbar{display:none}.page,.day{display:block!important}body{background:#fff;padding:0}.card,.ov-item{box-shadow:none}}
 </style>
 <noscript><style>.page{display:block!important}</style></noscript>
 </head>
@@ -182,14 +162,12 @@ main{min-height:60vh}
 
 <div class="topbar"><div class="wrap">
   <span class="trip">후쿠오카 · 유후인 가족여행</span>
-  <button class="theme-btn" type="button" aria-label="테마 전환">◐</button>
 </div></div>
 
 <header class="hero">
   <div class="wrap">
     <div class="hero-top">
       <span class="eyebrow">FUKUOKA · YUFUIN</span>
-      <button class="theme-btn" type="button" aria-label="테마 전환">◐</button>
     </div>
     <h1>후쿠오카 · 유후인<br>가족여행</h1>
     <p>2026.10.04 SUN — 10.07 WED · 부모님 + 딸, 3인</p>
@@ -562,19 +540,6 @@ main{min-height:60vh}
   var memo = document.getElementById('memo');
   memo.value = S.get('memo') || '';
   memo.addEventListener('input',function(){S.set('memo', memo.value)});
-
-  // Theme
-  var root = document.documentElement;
-  var saved = S.get('theme'); if(saved) root.dataset.theme = saved;
-  document.querySelectorAll('.theme-btn').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var dark = root.dataset.theme
-        ? root.dataset.theme==='dark'
-        : matchMedia('(prefers-color-scheme: dark)').matches;
-      root.dataset.theme = dark ? 'light' : 'dark';
-      S.set('theme', root.dataset.theme);
-    });
-  });
 })();
 </script>
 </body>
