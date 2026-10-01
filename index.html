@@ -2,109 +2,228 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>후쿠오카·유후인 가족여행</title>
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#f5963a">
 <style>
 :root{
-  --bg:#f6f7f5; --card:#fff; --text:#1c2321; --muted:#5d6b66; --line:#e1e6e3;
-  --accent:#0f766e; --accent-soft:#d9f0ec; --warn:#b45309; --warn-soft:#fef3c7;
-  --bad:#b42318; --bad-soft:#fee4e2; --ok:#067647; --ok-soft:#dcfae6;
+  --bg:#fff8f1; --card:#fff; --text:#25232e; --muted:#6b6675; --line:#f1e7db;
+  --accent:#f59a3d; --accent-text:#b45309; --accent-soft:#fff0dc;
+  --fill:#c95f0b; --on-fill:#fff;
+  --teal:#0b8577; --navy:#2b2d6e; --pink:#cc2f5a;
+  --ok:#0b7a52; --ok-soft:#e1f6ec; --warn:#a85408; --warn-soft:#fff1dc;
+  --bad:#c42b4b; --bad-soft:#fde6ea;
+  --hero-from:#ffc27a; --hero-to:#f5963a; --hero-text:#2b1a08; --glass:rgba(255,255,255,.6);
+  --nav-bg:rgba(255,255,255,.92); --shadow:0 6px 20px rgba(120,70,10,.09);
+  --r:20px;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0f1513; --card:#182120; --text:#e8eeec; --muted:#9bb0aa; --line:#2a3836;
-    --accent:#4fd1c0; --accent-soft:#17332f; --warn:#fbbf24; --warn-soft:#3a2f10;
-    --bad:#fda29b; --bad-soft:#3b1a17; --ok:#75e0a7; --ok-soft:#10301f;
+    --bg:#16141a; --card:#211e27; --text:#f3eee8; --muted:#aaa3b3; --line:#332f3b;
+    --accent:#ffb15c; --accent-text:#ffc27d; --accent-soft:#3a2a18;
+    --fill:#ffb15c; --on-fill:#2b1a08;
+    --ok:#6ee0a9; --ok-soft:#12301f; --warn:#ffc27d; --warn-soft:#3a2a12;
+    --bad:#ff9fb2; --bad-soft:#3b1a22;
+    --hero-from:#4d3216; --hero-to:#2f1d0c; --hero-text:#ffe9cf; --glass:rgba(255,255,255,.14);
+    --nav-bg:rgba(33,30,39,.94); --shadow:0 6px 20px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0f1513; --card:#182120; --text:#e8eeec; --muted:#9bb0aa; --line:#2a3836;
-  --accent:#4fd1c0; --accent-soft:#17332f; --warn:#fbbf24; --warn-soft:#3a2f10;
-  --bad:#fda29b; --bad-soft:#3b1a17; --ok:#75e0a7; --ok-soft:#10301f;
+  --bg:#16141a; --card:#211e27; --text:#f3eee8; --muted:#aaa3b3; --line:#332f3b;
+  --accent:#ffb15c; --accent-text:#ffc27d; --accent-soft:#3a2a18;
+  --fill:#ffb15c; --on-fill:#2b1a08;
+  --ok:#6ee0a9; --ok-soft:#12301f; --warn:#ffc27d; --warn-soft:#3a2a12;
+  --bad:#ff9fb2; --bad-soft:#3b1a22;
+  --hero-from:#4d3216; --hero-to:#2f1d0c; --hero-text:#ffe9cf; --glass:rgba(255,255,255,.14);
+  --nav-bg:rgba(33,30,39,.94); --shadow:0 6px 20px rgba(0,0,0,.35);
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:64px}
-body{margin:0;background:var(--bg);color:var(--text);
-  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
-.wrap{max-width:960px;margin:0 auto;padding:0 16px}
-header.hero{background:var(--accent);color:#fff;padding:32px 0 24px}
-header.hero h1{margin:0 0 4px;font-size:clamp(1.5rem,5vw,2.2rem)}
-header.hero p{margin:0;opacity:.92}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.chip{background:rgba(255,255,255,.18);padding:4px 12px;border-radius:999px;font-size:.85rem}
-nav.top{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line)}
-nav.top .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;scrollbar-width:none;align-items:center}
-nav.top a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.9rem}
-nav.top a:hover{background:var(--accent-soft);color:var(--accent)}
-#theme{margin-left:auto;border:1px solid var(--line);background:none;color:var(--text);border-radius:8px;padding:4px 10px;cursor:pointer}
-section{padding:28px 0 4px}
-h2{font-size:1.35rem;margin:0 0 12px}
-h3{font-size:1.05rem;margin:0 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+*,*::before,*::after{box-sizing:border-box}
+*{min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:16px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);overflow-x:clip;
+  padding-bottom:calc(96px + env(safe-area-inset-bottom));
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
 .muted{color:var(--muted);font-size:.9rem}
-.note{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 14px;font-size:.9rem;margin:10px 0}
-.pill{display:inline-block;padding:1px 10px;border-radius:999px;font-size:.78rem;font-weight:600;white-space:nowrap}
+b{font-weight:700}
+
+/* hero */
+header.hero{position:relative;overflow:hidden;color:var(--hero-text);padding:20px 0 70px;
+  background:linear-gradient(160deg,var(--hero-from),var(--hero-to));border-radius:0 0 34px 34px}
+header.hero::before,header.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.2)}
+header.hero::before{width:230px;height:230px;right:-80px;top:-70px}
+header.hero::after{width:150px;height:150px;right:70px;bottom:-70px;background:rgba(255,255,255,.14)}
+.hero .wrap{position:relative;z-index:1}
+.hero-top{display:flex;justify-content:space-between;align-items:center}
+.eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.16em;opacity:.8}
+#theme{width:40px;height:40px;border-radius:50%;border:0;background:var(--glass);color:inherit;font-size:1.1rem;cursor:pointer}
+header.hero h1{margin:20px 0 8px;font-size:clamp(1.9rem,8.4vw,2.7rem);line-height:1.18;font-weight:800;letter-spacing:-.035em}
+header.hero p{margin:0;font-weight:500;opacity:.85}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{background:var(--glass);padding:5px 12px;border-radius:999px;font-size:.82rem;font-weight:600}
+
+/* stat tiles */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:-44px;position:relative;z-index:2}
+@media (min-width:600px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{border-radius:18px;padding:14px 16px;color:#fff;box-shadow:var(--shadow)}
+.stat small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.12em;opacity:.88}
+.stat b{display:block;font-size:1.45rem;line-height:1.3;font-weight:800}
+.stat.t1{background:var(--teal)}.stat.t2{background:var(--navy)}.stat.t3{background:var(--pink)}.stat.t4{background:#c95f0b}
+
+/* sections & cards */
+section{padding:30px 0 4px;scroll-margin-top:12px}
+h2{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:1.4rem;font-weight:800;letter-spacing:-.03em}
+h2::before{content:"";flex:none;width:6px;height:22px;border-radius:3px;background:var(--accent)}
+h3{font-size:1.05rem;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card>:last-child{margin-bottom:0}
+.note{background:var(--warn-soft);color:var(--warn);border-radius:14px;padding:12px 14px;font-size:.9rem;margin:14px 0 0}
+.pill{display:inline-block;padding:1px 10px;border-radius:999px;font-size:.76rem;font-weight:700;white-space:nowrap}
 .pill.ok{background:var(--ok-soft);color:var(--ok)}
 .pill.todo{background:var(--bad-soft);color:var(--bad)}
 .pill.mid{background:var(--warn-soft);color:var(--warn)}
-.status{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.status .card{margin:0}
-.status b{display:block;margin-bottom:2px}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin:12px 0}
-.tabs button{flex:1 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);
-  padding:10px 16px;border-radius:10px;cursor:pointer;font:inherit}
-.tabs button[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* reservation status */
+.status{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}
+.status .card{margin:0;display:flex;gap:14px;align-items:flex-start}
+.ic{flex:none;width:46px;height:46px;border-radius:15px;background:var(--accent-soft);display:grid;place-items:center;font-size:1.4rem}
+.st-h{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-bottom:2px}
+.st-h b{font-size:1rem}
+
+/* overview */
+.ov{display:grid;gap:10px}
+.ov-item{display:grid;grid-template-columns:58px minmax(0,1fr);gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.ov-date{background:var(--accent-soft);border-radius:14px;text-align:center;padding:8px 0;line-height:1.25}
+.ov-date b{display:block;font-size:1.05rem;font-weight:800;color:var(--accent-text)}
+.ov-date small{font-size:.74rem;font-weight:600;color:var(--muted)}
+.ov-body h3{margin:0 0 8px}
+.route{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;font-size:.88rem}
+.route li{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 11px}
+.route li+li::before{content:"→ ";color:var(--accent-text);font-weight:700}
+
+/* day tabs */
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0 14px}
+.tabs button{display:flex;flex-direction:column;align-items:center;line-height:1.3;padding:9px 0 8px;border-radius:16px;
+  border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;cursor:pointer;box-shadow:var(--shadow)}
+.tabs small{font-size:.74rem;font-weight:600;color:var(--muted)}
+.tabs b{font-size:1.05rem;font-weight:800}
+.tabs button[aria-selected="true"]{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.tabs button[aria-selected="true"] small{color:inherit;opacity:.92}
 .day{display:none}.day.on{display:block}
+.day h3{display:flex;flex-direction:column;gap:0;font-size:1.25rem;font-weight:800;margin:0 0 16px;letter-spacing:-.02em}
+.dn{font-size:.72rem;font-weight:800;letter-spacing:.16em;color:var(--accent-text)}
+
+/* timeline */
 .tl{list-style:none;margin:0;padding:0}
-.tl li{display:grid;grid-template-columns:104px 1fr;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
-.tl li:last-child{border-bottom:0}
-.tl time{font-weight:600;color:var(--accent);font-size:.9rem}
-.tl .t{font-weight:600}
-.tl .d{color:var(--muted);font-size:.88rem}
-.tl li.opt .t::before{content:"선택 · ";color:var(--warn)}
-.checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer}
-.checks input{margin-top:6px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.tl li{position:relative;padding:0 0 20px 30px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:2px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--card);border:4px solid var(--accent)}
+.tl li::after{content:"";position:absolute;left:9px;top:24px;bottom:-4px;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl time{display:inline-block;margin-bottom:3px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-size:.78rem;font-weight:700}
+.tl .t{font-weight:700;line-height:1.5}
+.tl .d{color:var(--muted);font-size:.88rem;margin-top:2px}
+.tl li.opt::before{border-color:var(--teal)}
+.tl li.opt .t::before{content:"선택 · ";color:var(--teal)}
+
+/* checklists */
+.checks label{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.checks label:last-of-type{border-bottom:0}
+.checks input{flex:none;width:22px;height:22px;margin:2px 0 0;accent-color:var(--fill)}
 .checks input:checked+span{text-decoration:line-through;color:var(--muted)}
-.checks h3{margin-top:14px}.checks h3:first-child{margin-top:0}
-.tablewrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:480px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.92rem;vertical-align:top}
-th{background:var(--accent-soft);color:var(--accent)}
-.risk{border-left:4px solid var(--warn)}
-.risk.high{border-left-color:var(--bad)}
-.risk h3{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.risk p{margin:4px 0}
-.fin input{width:100%;min-width:90px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
-.total{font-weight:700;font-size:1.05rem;margin-top:10px}
-textarea{width:100%;min-height:90px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
-footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center}
-@media (max-width:520px){ .tl li{grid-template-columns:1fr;gap:2px} }
-@media print{nav.top,#theme{display:none}.day{display:block!important}body{background:#fff}}
+.checks h3{margin:20px 0 4px;font-size:.8rem;font-weight:800;letter-spacing:.12em;color:var(--accent-text)}
+.checks h3:first-child{margin-top:0}
+
+/* risk cards */
+.risk{position:relative;overflow:hidden;padding-left:24px}
+.risk::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent)}
+.risk.high::before{background:var(--bad)}
+.risk h3{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.risk p{margin:6px 0 0}
+
+/* costs, lists, forms */
+.cost{padding:12px 0;border-bottom:1px dashed var(--line)}
+.cost:first-child{padding-top:0}
+.cost:last-child{border-bottom:0;padding-bottom:0}
+.cost-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.cost-top b{flex:1 1 auto}
+.amt{flex:0 1 auto;text-align:right;font-weight:800;color:var(--accent-text)}
+.cost-sub{color:var(--muted);font-size:.88rem}
+.cost.sum{background:var(--accent-soft);border:0;border-radius:14px;padding:12px 14px;margin:6px 0}
+.items .item{padding:12px 0;border-bottom:1px dashed var(--line)}
+.items .item:first-of-type{padding-top:0}
+.items .item:last-child{border-bottom:0;padding-bottom:0}
+.tag{display:inline-block;margin-bottom:4px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-size:.74rem;font-weight:700}
+.item b{display:block}
+.item p{margin:0;color:var(--muted);font-size:.88rem}
+.fin .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.fin .row span{flex:1 1 auto}
+.fin input{flex:0 0 120px;width:120px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);font:inherit;text-align:right}
+.total{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--accent-soft);font-weight:700}
+textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
+footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
+
+/* bottom tab bar (replaces the sideways-scrolling menu) */
+nav.top{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 10px calc(10px + env(safe-area-inset-bottom))}
+nav.top .bar{max-width:560px;margin:0 auto;padding:6px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;
+  background:var(--nav-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:24px;box-shadow:0 10px 30px rgba(60,30,0,.2)}
+nav.top a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0 6px;border-radius:17px;
+  color:var(--muted);text-decoration:none;font-size:.66rem;font-weight:700;white-space:nowrap}
+nav.top a.on{background:var(--fill);color:var(--on-fill)}
+.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{nav.top,#theme{display:none}.day{display:block!important}body{background:#fff;padding:0}.card,.ov-item{box-shadow:none}}
 </style>
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-status" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+    <symbol id="i-plan" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+    <symbol id="i-food" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-pack" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-todo" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  </defs>
+</svg>
+
 <header class="hero">
   <div class="wrap">
-    <h1>후쿠오카 · 유후인 가족여행</h1>
+    <div class="hero-top">
+      <span class="eyebrow">FUKUOKA · YUFUIN</span>
+      <button id="theme" type="button" aria-label="테마 전환">◐</button>
+    </div>
+    <h1>후쿠오카 · 유후인<br>가족여행</h1>
     <p>2026.10.04 SUN — 10.07 WED · 부모님 + 딸, 3인</p>
     <div class="chips">
-      <span class="chip" id="dday">D-?</span>
       <span class="chip">컨셉: 부모님 컨디션 우선</span>
       <span class="chip">남은 핵심 예약: 무소우엔 + 음식점</span>
     </div>
   </div>
 </header>
 
-<nav class="top">
-  <div class="wrap">
-    <a href="#status">현황</a><a href="#plan">일정</a><a href="#check">점검</a>
-    <a href="#book">예약·비용</a><a href="#food">음식·쇼핑</a><a href="#pack">준비물</a>
-    <a href="#todo">할 일</a>
-    <button id="theme" type="button" aria-label="테마 전환">◐</button>
+<div class="wrap stats">
+  <div class="stat t1"><small>D-DAY</small><b id="dday">D-?</b></div>
+  <div class="stat t2"><small>일정</small><b>3박 4일</b></div>
+  <div class="stat t3"><small>인원</small><b>3명</b></div>
+  <div class="stat t4"><small>예약 완료</small><b id="resv">4/6</b></div>
+</div>
+
+<nav class="top" aria-label="섹션 이동">
+  <div class="bar">
+    <a href="#status" class="on"><svg class="ico"><use href="#i-status"/></svg>현황</a>
+    <a href="#plan"><svg class="ico"><use href="#i-plan"/></svg>일정</a>
+    <a href="#check"><svg class="ico"><use href="#i-check"/></svg>점검</a>
+    <a href="#book"><svg class="ico"><use href="#i-book"/></svg>비용</a>
+    <a href="#food"><svg class="ico"><use href="#i-food"/></svg>음식</a>
+    <a href="#pack"><svg class="ico"><use href="#i-pack"/></svg>준비물</a>
+    <a href="#todo"><svg class="ico"><use href="#i-todo"/></svg>할 일</a>
   </div>
 </nav>
 
@@ -113,36 +232,49 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
 <section id="status">
   <h2>예약 현황</h2>
   <div class="status">
-    <div class="card"><b>항공 <span class="pill ok">완료</span></b><span class="muted">10/4 08:05 인천 → 09:30 후쿠오카<br>10/7 17:00 후쿠오카 → 18:35 인천 · 에어서울</span></div>
-    <div class="card"><b>10/4 숙소 <span class="pill ok">완료</span></b><span class="muted">호텔 몬토레 라 스루 후쿠오카 · 250,122원</span></div>
-    <div class="card"><b>10/5 료칸 <span class="pill todo">예약 전</span></b><span class="muted">무소우엔 1박 · 조식+석식 · 예산 150만원 이하</span></div>
-    <div class="card"><b>10/6 숙소 <span class="pill ok">완료</span></b><span class="muted">호텔 몬토레 후쿠오카 · 273,543원</span></div>
-    <div class="card"><b>렌터카 <span class="pill ok">완료</span></b><span class="muted">10/5 09:00 → 10/6 20:00 · 텐진키타점 · 경차 · 16,385엔 현장결제</span></div>
-    <div class="card"><b>식당 <span class="pill todo">미정</span></b><span class="muted">10/4 저녁 무사시자 예약 여부, 오징어회 식당</span></div>
+    <div class="card"><span class="ic">✈️</span><div><div class="st-h"><b>항공</b><span class="pill ok">완료</span></div><span class="muted">10/4 08:05 인천 → 09:30 후쿠오카<br>10/7 17:00 후쿠오카 → 18:35 인천 · 에어서울</span></div></div>
+    <div class="card"><span class="ic">🏨</span><div><div class="st-h"><b>10/4 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 라 스루 후쿠오카 · 250,122원</span></div></div>
+    <div class="card"><span class="ic">♨️</span><div><div class="st-h"><b>10/5 료칸</b><span class="pill todo">예약 전</span></div><span class="muted">무소우엔 1박 · 조식+석식 · 예산 150만원 이하</span></div></div>
+    <div class="card"><span class="ic">🏨</span><div><div class="st-h"><b>10/6 숙소</b><span class="pill ok">완료</span></div><span class="muted">호텔 몬토레 후쿠오카 · 273,543원</span></div></div>
+    <div class="card"><span class="ic">🚗</span><div><div class="st-h"><b>렌터카</b><span class="pill ok">완료</span></div><span class="muted">10/5 09:00 → 10/6 20:00 · 텐진키타점 · 경차 · 16,385엔 현장결제</span></div></div>
+    <div class="card"><span class="ic">🍽️</span><div><div class="st-h"><b>식당</b><span class="pill todo">미정</span></div><span class="muted">10/4 저녁 무사시자 예약 여부, 오징어회 식당</span></div></div>
   </div>
 </section>
 
 <section id="plan">
   <h2>전체 일정</h2>
-  <div class="card tablewrap">
-    <table>
-      <tr><th>날짜</th><th>지역</th><th>핵심 동선</th></tr>
-      <tr><td>10/4 일</td><td>텐진</td><td>공항 → 호텔 짐 보관 → 스시 → 지하상가 → Standard Products → 오호리공원 → 저녁</td></tr>
-      <tr><td>10/5 월</td><td>유후인·료칸</td><td>09:00 렌터카 → 휴게소 → 유후인 관광·점심 → 15:00 무소우엔 → 온천·석식</td></tr>
-      <tr><td>10/6 화</td><td>사파리·복귀</td><td>11:00 체크아웃 → 아프리칸 사파리(최우선) → (가마도지옥) → 호텔 → 20:00 렌터카 반납 → 돈키</td></tr>
-      <tr><td>10/7 수</td><td>하카타·귀국</td><td>대욕장 → CARGO PASS 배송 → 캐널시티·하카타역 → 공항 → 17:00 출국</td></tr>
-    </table>
+  <div class="ov">
+    <div class="ov-item">
+      <div class="ov-date"><b>10/4</b><small>일</small></div>
+      <div class="ov-body"><h3>텐진</h3>
+        <ul class="route"><li>공항</li><li>호텔 짐 보관</li><li>스시</li><li>지하상가</li><li>Standard Products</li><li>오호리공원</li><li>저녁</li></ul></div>
+    </div>
+    <div class="ov-item">
+      <div class="ov-date"><b>10/5</b><small>월</small></div>
+      <div class="ov-body"><h3>유후인·료칸</h3>
+        <ul class="route"><li>09:00 렌터카</li><li>휴게소</li><li>유후인 관광·점심</li><li>15:00 무소우엔</li><li>온천·석식</li></ul></div>
+    </div>
+    <div class="ov-item">
+      <div class="ov-date"><b>10/6</b><small>화</small></div>
+      <div class="ov-body"><h3>사파리·복귀</h3>
+        <ul class="route"><li>11:00 체크아웃</li><li>아프리칸 사파리(최우선)</li><li>(가마도지옥)</li><li>호텔</li><li>20:00 렌터카 반납</li><li>돈키</li></ul></div>
+    </div>
+    <div class="ov-item">
+      <div class="ov-date"><b>10/7</b><small>수</small></div>
+      <div class="ov-body"><h3>하카타·귀국</h3>
+        <ul class="route"><li>대욕장</li><li>CARGO PASS 배송</li><li>캐널시티·하카타역</li><li>공항</li><li>17:00 출국</li></ul></div>
+    </div>
   </div>
 
   <div class="tabs" role="tablist">
-    <button role="tab" aria-selected="true" data-day="1">10/4 일</button>
-    <button role="tab" aria-selected="false" data-day="2">10/5 월</button>
-    <button role="tab" aria-selected="false" data-day="3">10/6 화</button>
-    <button role="tab" aria-selected="false" data-day="4">10/7 수</button>
+    <button role="tab" aria-selected="true" data-day="1" aria-label="10월 4일 일요일"><small>일</small><b>10/4</b></button>
+    <button role="tab" aria-selected="false" data-day="2" aria-label="10월 5일 월요일"><small>월</small><b>10/5</b></button>
+    <button role="tab" aria-selected="false" data-day="3" aria-label="10월 6일 화요일"><small>화</small><b>10/6</b></button>
+    <button role="tab" aria-selected="false" data-day="4" aria-label="10월 7일 수요일"><small>수</small><b>10/7</b></button>
   </div>
 
   <div class="card day on" data-day="1">
-    <h3>DAY 1 · 텐진 가볍게</h3>
+    <h3><span class="dn">DAY 1</span>텐진 가볍게</h3>
     <ul class="tl">
       <li><time>04:30</time><div><div class="t">석바위 출발 → 인천공항 T2 예약주차장</div><div class="d">05:20~05:30 도착 · 셔틀로 공항 이동, 출국 수속</div></div></li>
       <li><time>08:05~09:30</time><div><div class="t">인천 → 후쿠오카 (에어서울)</div><div class="d">예약완료</div></div></li>
@@ -157,7 +289,7 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
   </div>
 
   <div class="card day" data-day="2">
-    <h3>DAY 2 · 유후인 + 무소우엔</h3>
+    <h3><span class="dn">DAY 2</span>유후인 + 무소우엔</h3>
     <ul class="tl">
       <li><time>08:20~08:40</time><div><div class="t">체크아웃 준비 (아침식사 별도 없음)</div></div></li>
       <li><time>08:40~09:00</time><div><div class="t">호텔 → 렌터카 텐진키타점 (도보)</div></div></li>
@@ -174,7 +306,7 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
   </div>
 
   <div class="card day" data-day="3">
-    <h3>DAY 3 · 사파리 우선 + 후쿠오카 복귀</h3>
+    <h3><span class="dn">DAY 3</span>사파리 우선 + 후쿠오카 복귀</h3>
     <ul class="tl">
       <li><time>07:00~09:00</time><div><div class="t">료칸 조식 + 아침온천</div></div></li>
       <li><time>09:00~10:40</time><div><div class="t">온천/휴식/짐 정리</div></div></li>
@@ -193,7 +325,7 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
   </div>
 
   <div class="card day" data-day="4">
-    <h3>DAY 4 · 하카타 + 귀국</h3>
+    <h3><span class="dn">DAY 4</span>하카타 + 귀국</h3>
     <ul class="tl">
       <li><time>07:30~09:00</time><div><div class="t">호텔 대욕장 + 준비</div></div></li>
       <li><time>09:00~10:00</time><div><div class="t">체크아웃 · CARGO PASS 접수 (10:00 이전)</div><div class="d">호텔 프런트 · 기내용 1 + 26인치 2 예상 · 접수 마감 사전 확인</div></div></li>
@@ -258,59 +390,47 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
 
 <section id="book">
   <h2>예약 · 비용</h2>
-  <div class="card tablewrap">
-    <table>
-      <tr><th>항목</th><th>내용</th><th>금액</th></tr>
-      <tr><td>10/4 숙소</td><td>호텔 몬토레 라 스루 후쿠오카 (Trip.com)</td><td>250,122원</td></tr>
-      <tr><td>10/6 숙소</td><td>호텔 몬토레 후쿠오카 (Trip.com)</td><td>273,543원</td></tr>
-      <tr><td>숙소 확정 합계</td><td></td><td><b>523,665원</b></td></tr>
-      <tr><td>10/5 료칸</td><td>무소우엔 유아마테이 6+8 (OTA, 조식+석식)</td><td>약 922,908원</td></tr>
-      <tr><td>10/5 료칸 (상위)</td><td>무소우엔 코보우테이 8+8 (OTA, 조식+석식)</td><td>약 1,006,963원</td></tr>
-      <tr><td>공식 홈페이지</td><td>유아마테이 / 코보우테이</td><td>122,850엔 / 132,750엔</td></tr>
-      <tr><td>렌터카</td><td>텐진키타점 경차, 35시간, 현장결제</td><td>16,385엔</td></tr>
-      <tr><td>CARGO PASS</td><td>기내용 550엔 + 26인치 1,100엔×2 (예상)</td><td>약 2,750엔</td></tr>
-    </table>
+  <div class="card">
+    <div class="cost"><div class="cost-top"><b>10/4 숙소</b><span class="amt">250,122원</span></div><div class="cost-sub">호텔 몬토레 라 스루 후쿠오카 (Trip.com)</div></div>
+    <div class="cost"><div class="cost-top"><b>10/6 숙소</b><span class="amt">273,543원</span></div><div class="cost-sub">호텔 몬토레 후쿠오카 (Trip.com)</div></div>
+    <div class="cost sum"><div class="cost-top"><b>숙소 확정 합계</b><span class="amt">523,665원</span></div></div>
+    <div class="cost"><div class="cost-top"><b>10/5 료칸</b><span class="amt">약 922,908원</span></div><div class="cost-sub">무소우엔 유아마테이 6+8 (OTA, 조식+석식)</div></div>
+    <div class="cost"><div class="cost-top"><b>10/5 료칸 (상위)</b><span class="amt">약 1,006,963원</span></div><div class="cost-sub">무소우엔 코보우테이 8+8 (OTA, 조식+석식)</div></div>
+    <div class="cost"><div class="cost-top"><b>공식 홈페이지</b><span class="amt">122,850엔 / 132,750엔</span></div><div class="cost-sub">유아마테이 / 코보우테이</div></div>
+    <div class="cost"><div class="cost-top"><b>렌터카</b><span class="amt">16,385엔</span></div><div class="cost-sub">텐진키타점 경차, 35시간, 현장결제</div></div>
+    <div class="cost"><div class="cost-top"><b>CARGO PASS</b><span class="amt">약 2,750엔</span></div><div class="cost-sub">기내용 550엔 + 26인치 1,100엔×2 (예상)</div></div>
   </div>
   <p class="muted">숙소 합계는 유아마테이 선택 시 약 1,446,573원, 코보우테이 선택 시 약 1,530,628원입니다. 150만원 예산이면 유아마테이가 안전합니다. 항공권 제외, 환율과 최종 결제금액 기준으로 다시 확인하세요.</p>
 
-  <h2 style="margin-top:24px">현지 지출 기록 (엔)</h2>
+  <h2 style="margin-top:28px">현지 지출 기록 (엔)</h2>
   <div class="card fin">
-    <p class="muted">트래블로그 시작 잔액 228,334엔. 결제 단말기에서 통화 선택이 나오면 <b>JPY(엔화)</b>를 고르고 KRW 결제는 피하세요. 현금은 처음 3~5만엔만 ATM에서 출금합니다.</p>
-    <div class="tablewrap">
-      <table>
-        <tr><th>항목</th><th>사용액(엔)</th></tr>
-        <tr><td>식비</td><td><input type="number" inputmode="numeric" data-s="f"></td></tr>
-        <tr><td>교통 (택시, 통행료, 주유, 주차)</td><td><input type="number" inputmode="numeric" data-s="t"></td></tr>
-        <tr><td>렌터카 현장결제</td><td><input type="number" inputmode="numeric" data-s="c" placeholder="16385"></td></tr>
-        <tr><td>입장료 (사파리 등)</td><td><input type="number" inputmode="numeric" data-s="e"></td></tr>
-        <tr><td>쇼핑 (돈키, 하카타역, 공항)</td><td><input type="number" inputmode="numeric" data-s="s"></td></tr>
-        <tr><td>기타</td><td><input type="number" inputmode="numeric" data-s="o"></td></tr>
-      </table>
-    </div>
-    <div class="total">사용 <span id="used">0</span>엔 · 남은 잔액 <span id="left">228,334</span>엔</div>
+    <p class="muted" style="margin-top:0">트래블로그 시작 잔액 228,334엔. 결제 단말기에서 통화 선택이 나오면 <b>JPY(엔화)</b>를 고르고 KRW 결제는 피하세요. 현금은 처음 3~5만엔만 ATM에서 출금합니다.</p>
+    <label class="row"><span>식비</span><input type="number" inputmode="numeric" data-s="f" placeholder="0"></label>
+    <label class="row"><span>교통 (택시, 통행료, 주유, 주차)</span><input type="number" inputmode="numeric" data-s="t" placeholder="0"></label>
+    <label class="row"><span>렌터카 현장결제</span><input type="number" inputmode="numeric" data-s="c" placeholder="16385"></label>
+    <label class="row"><span>입장료 (사파리 등)</span><input type="number" inputmode="numeric" data-s="e" placeholder="0"></label>
+    <label class="row"><span>쇼핑 (돈키, 하카타역, 공항)</span><input type="number" inputmode="numeric" data-s="s" placeholder="0"></label>
+    <label class="row"><span>기타</span><input type="number" inputmode="numeric" data-s="o" placeholder="0"></label>
+    <div class="total"><span>사용 <span id="used">0</span>엔</span><span>남은 잔액 <span id="left">228,334</span>엔</span></div>
   </div>
 </section>
 
 <section id="food">
   <h2>음식 · 쇼핑</h2>
-  <div class="card tablewrap">
-    <table>
-      <tr><th>시점</th><th>후보</th><th>메모</th></tr>
-      <tr><td>10/4 점심</td><td>스시사카바사시스 텐진점</td><td>11시 오픈에 맞춰 방문</td></tr>
-      <tr><td>10/4 저녁</td><td>텐진 스미게키죠 무사시자</td><td>예약 여부 결정 필요</td></tr>
-      <tr><td>10/6 또는 10/7</td><td>오징어회</td><td>식당 미정, 예약 후보 찾기</td></tr>
-      <tr><td>대안</td><td>야키니쿠</td><td>오징어회가 어렵거나 부모님 선호 시</td></tr>
-      <tr><td>10/7 점심</td><td>모츠나베 / 츠케멘</td><td>하카타역권, 현장 선택</td></tr>
-    </table>
+  <div class="card items">
+    <h3>식사</h3>
+    <div class="item"><span class="tag">10/4 점심</span><b>스시사카바사시스 텐진점</b><p>11시 오픈에 맞춰 방문</p></div>
+    <div class="item"><span class="tag">10/4 저녁</span><b>텐진 스미게키죠 무사시자</b><p>예약 여부 결정 필요</p></div>
+    <div class="item"><span class="tag">10/6 또는 10/7</span><b>오징어회</b><p>식당 미정, 예약 후보 찾기</p></div>
+    <div class="item"><span class="tag">대안</span><b>야키니쿠</b><p>오징어회가 어렵거나 부모님 선호 시</p></div>
+    <div class="item"><span class="tag">10/7 점심</span><b>모츠나베 / 츠케멘</b><p>하카타역권, 현장 선택</p></div>
   </div>
-  <div class="card tablewrap">
-    <table>
-      <tr><th>쇼핑 장소</th><th>추천일</th><th>전략</th></tr>
-      <tr><td>텐진 지하상가</td><td>10/4</td><td>첫날 가볍게 구경</td></tr>
-      <tr><td>Standard Products</td><td>10/4</td><td>작은 생활용품 위주, 부피 큰 것은 마지막에</td></tr>
-      <tr><td>돈키호테</td><td>10/6 밤</td><td>렌터카 반납 후 혼자 본쇼핑</td></tr>
-      <tr><td>하카타역 / 공항</td><td>10/7</td><td>기념품, 마지막 추가 구매</td></tr>
-    </table>
+  <div class="card items">
+    <h3>쇼핑</h3>
+    <div class="item"><span class="tag">10/4</span><b>텐진 지하상가</b><p>첫날 가볍게 구경</p></div>
+    <div class="item"><span class="tag">10/4</span><b>Standard Products</b><p>작은 생활용품 위주, 부피 큰 것은 마지막에</p></div>
+    <div class="item"><span class="tag">10/6 밤</span><b>돈키호테</b><p>렌터카 반납 후 혼자 본쇼핑</p></div>
+    <div class="item"><span class="tag">10/7</span><b>하카타역 / 공항</b><p>기념품, 마지막 추가 구매</p></div>
   </div>
 </section>
 
@@ -389,6 +509,11 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
   var diff = Math.round((start - now)/86400000);
   el.textContent = diff > 0 ? 'D-' + diff : (now <= end ? '여행 중' : '여행 종료');
 
+  // Reservation count follows the pills in the status cards
+  var cards = document.querySelectorAll('.status .card');
+  var resv = document.getElementById('resv');
+  if(resv && cards.length) resv.textContent = document.querySelectorAll('.status .pill.ok').length + '/' + cards.length;
+
   // Tabs (open today's day during the trip)
   var tabs = document.querySelectorAll('.tabs button');
   var days = document.querySelectorAll('.day');
@@ -400,6 +525,21 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem;text-align:center
   tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.day)})});
   var today = diff <= 0 && now <= end ? String(1 - diff) : null;
   show(today || S.get('day') || '1');
+
+  // Highlight the tab bar item for the section being read
+  var links = document.querySelectorAll('nav.top a');
+  var byId = {};
+  links.forEach(function(a){byId[a.getAttribute('href').slice(1)] = a});
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting || !byId[e.target.id]) return;
+        links.forEach(function(a){a.classList.remove('on')});
+        byId[e.target.id].classList.add('on');
+      });
+    },{rootMargin:'-35% 0px -60% 0px'});
+    document.querySelectorAll('main section[id]').forEach(function(s){io.observe(s)});
+  }
 
   // Checkboxes
   document.querySelectorAll('.checks input').forEach(function(c){
