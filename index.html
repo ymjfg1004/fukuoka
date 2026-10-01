@@ -102,7 +102,7 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .route li+li::before{content:"→ ";color:var(--accent-text);font-weight:700}
 
 /* day tabs */
-.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0 14px}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 14px}
 .tabs button{display:flex;flex-direction:column;align-items:center;line-height:1.3;padding:9px 0 8px;border-radius:16px;
   border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;cursor:pointer;box-shadow:var(--shadow)}
 .tabs small{font-size:.74rem;font-weight:600;color:var(--muted)}
@@ -233,30 +233,7 @@ main{min-height:60vh}
 </section>
 
 <section id="plan" class="page">
-  <h2>🗓️ 전체 일정</h2>
-  <div class="ov">
-    <div class="ov-item">
-      <div class="ov-date"><b>10/4</b><small>일</small></div>
-      <div class="ov-body"><h3>텐진</h3>
-        <ul class="route"><li>공항</li><li>호텔 짐 보관</li><li>스시</li><li>지하상가</li><li>Standard Products</li><li>오호리공원</li><li>저녁</li></ul></div>
-    </div>
-    <div class="ov-item">
-      <div class="ov-date"><b>10/5</b><small>월</small></div>
-      <div class="ov-body"><h3>유후인·료칸</h3>
-        <ul class="route"><li>09:00 렌터카</li><li>휴게소</li><li>유후인 관광·점심</li><li>15:00 무소우엔</li><li>온천·석식</li></ul></div>
-    </div>
-    <div class="ov-item">
-      <div class="ov-date"><b>10/6</b><small>화</small></div>
-      <div class="ov-body"><h3>사파리·복귀</h3>
-        <ul class="route"><li>11:00 체크아웃</li><li>아프리칸 사파리(최우선)</li><li>(가마도지옥)</li><li>호텔</li><li>20:00 렌터카 반납</li><li>돈키</li></ul></div>
-    </div>
-    <div class="ov-item">
-      <div class="ov-date"><b>10/7</b><small>수</small></div>
-      <div class="ov-body"><h3>하카타·귀국</h3>
-        <ul class="route"><li>대욕장</li><li>CARGO PASS 배송</li><li>캐널시티·하카타역</li><li>공항</li><li>17:00 출국</li></ul></div>
-    </div>
-  </div>
-
+  <h2>🗓️ 일정</h2>
   <div class="tabs" role="tablist">
     <button role="tab" aria-selected="true" data-day="1" aria-label="10월 4일 일요일"><small>일</small><b>10/4</b></button>
     <button role="tab" aria-selected="false" data-day="2" aria-label="10월 5일 월요일"><small>월</small><b>10/5</b></button>
@@ -327,6 +304,30 @@ main{min-height:60vh}
       <li><time>14:00 이후</time><div><div class="t">CARGO PASS 수령 → 체크인/수하물 위탁</div></div></li>
       <li><time>17:00~18:35</time><div><div class="t">후쿠오카 → 인천 (에어서울)</div><div class="d">귀국 후 T2 예약주차장 셔틀, 출국장 5A 정류장</div></div></li>
     </ul>
+  </div>
+
+  <h2 style="margin-top:28px">📋 전체 일정</h2>
+  <div class="ov">
+    <div class="ov-item">
+      <div class="ov-date"><b>10/4</b><small>일</small></div>
+      <div class="ov-body"><h3>텐진</h3>
+        <ul class="route"><li>공항</li><li>호텔 짐 보관</li><li>스시</li><li>지하상가</li><li>Standard Products</li><li>오호리공원</li><li>저녁</li></ul></div>
+    </div>
+    <div class="ov-item">
+      <div class="ov-date"><b>10/5</b><small>월</small></div>
+      <div class="ov-body"><h3>유후인·료칸</h3>
+        <ul class="route"><li>09:00 렌터카</li><li>휴게소</li><li>유후인 관광·점심</li><li>15:00 무소우엔</li><li>온천·석식</li></ul></div>
+    </div>
+    <div class="ov-item">
+      <div class="ov-date"><b>10/6</b><small>화</small></div>
+      <div class="ov-body"><h3>사파리·복귀</h3>
+        <ul class="route"><li>11:00 체크아웃</li><li>아프리칸 사파리(최우선)</li><li>(가마도지옥)</li><li>호텔</li><li>20:00 렌터카 반납</li><li>돈키</li></ul></div>
+    </div>
+    <div class="ov-item">
+      <div class="ov-date"><b>10/7</b><small>수</small></div>
+      <div class="ov-body"><h3>하카타·귀국</h3>
+        <ul class="route"><li>대욕장</li><li>CARGO PASS 배송</li><li>캐널시티·하카타역</li><li>공항</li><li>17:00 출국</li></ul></div>
+    </div>
   </div>
 </section>
 
