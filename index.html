@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-02-j">
+<meta name="app-version" content="2026-10-02-k">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -146,6 +146,12 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .gq-tot:empty{display:none}
 .gq-date{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:700}
 .gprice{display:inline-flex;align-items:center;gap:6px}
+.stale.warn{bottom:auto;top:calc(10px + env(safe-area-inset-top));background:var(--bad);color:#fff;z-index:70}
+.bk-info{margin:12px 0 0;padding:10px 14px;border-radius:12px;background:var(--accent-soft);font-size:.85rem;line-height:1.6;overflow-wrap:anywhere}
+.bk-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.bk-btns .xadd{position:relative;display:block;text-align:center;overflow:hidden;font-size:.92rem}
+.bk-btns .bk-load{background:var(--card);color:var(--text);border:1px solid var(--line)}
+.bk-btns .bk-load input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
 .gprice input,.gform .gprice input{width:92px;padding:5px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:800;text-align:right}
 .gsum{margin:10px 0 0;padding:10px 14px;border-radius:12px;background:var(--accent-soft);font-weight:800;font-size:.9rem}
 .gsum:empty{display:none}
@@ -664,11 +670,21 @@ main{min-height:60vh}
         <div id="blist"></div>
       </div>
     </div>
+  <details class="fold" id="backup">
+    <summary><h2>💾 백업 · 복원</h2></summary>
+    <div class="card">
+      <p class="muted" style="margin:0">쇼핑 목록·사진·지출 기록·체크 표시는 <b>이 폰의 이 브라우저에만</b> 저장돼요. 사파리 비공개 탭, 홈 화면 앱, 다른 주소, 사이트 데이터 삭제를 하면 따로 보이거나 사라질 수 있어요. 가끔 백업 파일을 저장해 두세요. 다른 곳에 남은 목록은 거기서 백업을 저장한 뒤 이 화면에서 불러오면 합쳐져요.</p>
+      <div class="bk-info" id="bk-info"></div>
+      <div class="bk-btns"><button type="button" class="xadd" id="bk-save">백업 파일 저장</button><label class="xadd bk-load">백업 불러오기<input type="file" id="bk-file" accept=".json,application/json"></label></div>
+      <div class="gstatus" id="bk-status" role="status" aria-live="polite"></div>
+    </div>
+  </details>
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-j</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-k</div></div></footer>
 
+<div class="stale warn" id="store-warn" role="alert" hidden><span></span><button type="button">닫기</button></div>
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
   <div class="viewer-bar">
@@ -684,8 +700,15 @@ main{min-height:60vh}
 (function(){
   var S = {
     get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
-    set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+    set:function(k,v){try{localStorage.setItem(k,v);return true}catch(e){S.err = (e && e.name) || 'Error';return false}}
   };
+  var warnEl = document.getElementById('store-warn');
+  function warnStore(msg){ warnEl.firstElementChild.textContent = msg; warnEl.hidden = false; }
+  warnEl.querySelector('button').addEventListener('click', function(){ warnEl.hidden = true });
+  var storageOK = true;                 // can this browser keep anything at all? (private tabs and blocked storage cannot)
+  try{ localStorage.setItem('_t', '1'); storageOK = localStorage.getItem('_t') === '1'; localStorage.removeItem('_t'); }catch(e){ storageOK = false; }
+  if(!storageOK) warnStore('⚠️ 이 브라우저는 저장이 막혀 있어요(비공개 모드일 수 있어요). 새로고침하면 적은 내용이 사라져요.');
+  else if(S.get('first_seen') == null) S.set('first_seen', String(Date.now()));
 
   // We manage scrolling ourselves (tab changes, closing the photo viewer); the browser's own
   // restore on Back would jump to a stale position.
@@ -818,7 +841,7 @@ main{min-height:60vh}
   function parts(md){ return /^(\d+)\/(\d+)$/.exec(md || '') }
   function weekday(md){ var m = parts(md); return m ? WEEK[new Date(2026, m[1] - 1, m[2]).getDay()] : '' }
   function dayKey(md){ var m = parts(md); return m ? Number(m[1]) * 100 + Number(m[2]) : -1 }
-  function save(){ S.set('x_list', JSON.stringify(entries)) }
+  function save(){ if(!S.set('x_list', JSON.stringify(entries))) warnStore('⚠️ 지출 기록을 이 폰에 저장하지 못했어요(' + S.err + '). 아래 쇼핑 탭의 백업을 저장해 두세요.') }
 
   function renderDates(){
     var box = document.getElementById('xdates');
@@ -1281,7 +1304,7 @@ main{min-height:60vh}
     var priceEl = document.getElementById(cfg.p + 'price'), sumEl = document.getElementById(cfg.p + 'sum');
     priceEl.addEventListener('input', function(){ var v = priceEl.value.replace(/[^0-9]/g, ''); if(v !== priceEl.value) priceEl.value = v });
     function changed(){ save(); updateCount(); renderLog() }
-    function save(){ S.set(cfg.key, JSON.stringify(items)) }
+    function save(){ if(!S.set(cfg.key, JSON.stringify(items))) warnStore('⚠️ 목록을 이 폰에 저장하지 못했어요(' + S.err + '). 새로고침하면 방금 적은 게 사라질 수 있어요. 쇼핑 탭 아래 백업을 저장해 두세요.') }
     (function(){                         // one photo per item: older items holding several photos are split up
       var out = [], split = false;
       items.forEach(function(it){
@@ -1327,6 +1350,7 @@ main{min-height:60vh}
           memo: (i.text || '(사진만)') + (q > 1 ? ' ×' + q : ''), date: TRIP.indexOf(i.paidAt) < 0 ? defaultDate : i.paidAt};
       });
     };
+    self.hasPhotos = function(){ return items.some(function(i){ return i.imgs && i.imgs.length }) };
     self.removeImage = function(item, id){
       item.imgs = item.imgs.filter(function(x){ return x !== id });
       pDel(id);
@@ -1499,8 +1523,186 @@ main{min-height:60vh}
   }
   shopBtns.forEach(function(b){ b.addEventListener('click', function(){ showShop(b.dataset.shop) }) });
   showShop(S.get('shop') === 'buy' ? 'buy' : 'gift');
-  pOpen(function(){ giftList.render(); buyList.render() });
+  giftList.render(); buyList.render();
+  pOpen(function(){ if(giftList.hasPhotos() || buyList.hasPhotos()){ giftList.render(); buyList.render(); } });
   renderLog();
+
+  // ===== Backup / restore: everything lives in this browser only, so keep a file copy =====
+  var bkInfo = document.getElementById('bk-info'), bkStatus = document.getElementById('bk-status');
+  var BK_KEYS = /^(g_list|buy_list|x_list|x_cats|memo|shop|day|first_seen|s_[a-z])$|^c_|^gi_/;
+  function bkSay(t, err){ bkStatus.textContent = t || ''; bkStatus.className = 'gstatus' + (err ? ' err' : ''); }
+  function withIdb(cb){ if(pIdb) cb(); else pOpen(cb); }
+  function idbAll(cb){                 // every photo record, or [] when the photo store cannot be read
+    guard(GW.open + 10000, '사진 저장소를 읽지 못했어요', function(fin){
+      withIdb(function(){
+        if(!pIdb){ fin([]); return; }
+        try{
+          var rq = pIdb.transaction('imgs', 'readonly').objectStore('imgs').getAll();
+          rq.onsuccess = function(){ fin(rq.result || []) };
+          rq.onerror = function(){ pErr(rq.error); fin([]) };
+        }catch(e){ pErr(e); fin([]) }
+      });
+    }, function(r){ cb(r || []) });
+  }
+  function idbKeys(cb){                // ids of the photos already stored here
+    guard(GW.open + 4000, '사진 저장소를 읽지 못했어요', function(fin){
+      withIdb(function(){
+        if(!pIdb){ fin({}); return; }
+        try{
+          var rq = pIdb.transaction('imgs', 'readonly').objectStore('imgs').getAllKeys();
+          rq.onsuccess = function(){ var o = {}; (rq.result || []).forEach(function(k){ o[k] = 1 }); fin(o) };
+          rq.onerror = function(){ fin({}) };
+        }catch(e){ fin({}) }
+      });
+    }, function(r){ cb(r || {}) });
+  }
+  function idbCount(cb){
+    guard(GW.open + 2000, '사진 저장소를 읽지 못했어요', function(fin){
+      withIdb(function(){
+        if(!pIdb){ fin(null); return; }
+        try{
+          var rq = pIdb.transaction('imgs', 'readonly').objectStore('imgs').count();
+          rq.onsuccess = function(){ fin(rq.result) };
+          rq.onerror = function(){ fin(null) };
+        }catch(e){ fin(null) }
+      });
+    }, cb);
+  }
+  function bufToB64(buf){
+    var b = new Uint8Array(buf), s = '';
+    for(var i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+    return btoa(s);
+  }
+  function b64ToBuf(str){
+    var s = atob(str), b = new Uint8Array(s.length);
+    for(var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i);
+    return b.buffer;
+  }
+  function anyToB64(x, cb){            // ArrayBuffer, or a Blob from older records
+    if(!x || typeof x === 'string'){ cb(''); return; }
+    if(x instanceof ArrayBuffer){ cb(bufToB64(x)); return; }
+    pRead(x, 'buf', function(buf){ cb(buf ? bufToB64(buf) : '') });
+  }
+  function bkCollect(cb){
+    var data = {app: 'fukuoka', v: 1, savedAt: new Date().toISOString(), ls: {}, imgs: []};
+    try{
+      for(var i = 0; i < localStorage.length; i++){
+        var k = localStorage.key(i);
+        if(BK_KEYS.test(k)) data.ls[k] = localStorage.getItem(k);
+      }
+    }catch(e){}
+    idbAll(function(recs){
+      (function next(i){
+        if(i >= recs.length){ cb(data); return; }
+        var r = recs[i];
+        anyToB64(r.fullBuf || r.full, function(f){
+          anyToB64(r.thumbBuf || r.thumb, function(t){
+            if(f || t) data.imgs.push({id: r.id, full: f, thumb: t, fullType: r.fullType || (r.full && r.full.type) || 'image/jpeg',
+              thumbType: r.thumbType || (r.thumb && r.thumb.type) || 'image/jpeg', w: r.w || 0, h: r.h || 0, shrunk: !!r.shrunk});
+            next(i + 1);
+          });
+        });
+      })(0);
+    });
+  }
+  function bkDeliver(text, name, cb){  // share sheet when the phone offers it, otherwise a download
+    var blob = new Blob([text], {type: 'application/json'}), file = null;
+    function download(){
+      var a = document.createElement('a'), u = URL.createObjectURL(blob);
+      a.href = u; a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(u) }, 30000);
+      cb('download');
+    }
+    try{ file = new File([blob], name, {type: 'application/json'}) }catch(e){}
+    if(file && navigator.share && navigator.canShare && navigator.canShare({files: [file]})){
+      navigator.share({files: [file], title: '후쿠오카 여행 백업'}).then(function(){ cb('shared') }, function(e){
+        if(e && e.name === 'AbortError') cb('cancel'); else download();
+      });
+    }else download();
+  }
+  function bkRefresh(){
+    var first = Number(S.get('first_seen')), d = first ? new Date(first) : null;
+    var lines = ['주소: ' + location.host,
+      '이 브라우저에 처음 저장된 때: ' + (d ? (d.getMonth() + 1) + '/' + d.getDate() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) : '저장이 막혀 있어요'),
+      '저장된 것: 선물 ' + load('g_list', []).length + ' · 구매리스트 ' + load('buy_list', []).length + ' · 지출 ' + entries.length + '건'];
+    bkInfo.textContent = lines.join('\n');
+    bkInfo.style.whiteSpace = 'pre-line';
+    idbCount(function(n){
+      if(n == null) return;
+      bkInfo.textContent = lines.concat('사진 ' + n + '장').join('\n');
+    });
+  }
+  document.getElementById('backup').addEventListener('toggle', function(){ if(this.open) bkRefresh() });
+  document.getElementById('bk-save').addEventListener('click', function(){
+    var btn = this;
+    btn.disabled = true;
+    bkSay('백업 만드는 중…');
+    bkCollect(function(data){
+      var text = JSON.stringify(data), mb = (text.length / 1048576).toFixed(1), d = new Date();
+      var name = 'fukuoka-backup-' + d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + '.json';
+      bkDeliver(text, name, function(how){
+        btn.disabled = false;
+        bkSay(how === 'cancel' ? '취소했어요' : '✓ 백업 파일을 만들었어요 (' + mb + 'MB · 사진 ' + data.imgs.length + '장)' + (how === 'download' ? ' · 파일 앱의 다운로드 폴더를 확인하세요' : ''));
+      });
+    });
+  });
+  function bkRestore(data){
+    var added = {g: 0, b: 0, x: 0, img: 0};
+    function mergeList(key, tag){
+      var mine = load(key, []), have = {}, incoming = [];
+      if(!Array.isArray(mine)) mine = [];
+      mine.forEach(function(i){ if(i && i.id) have[i.id] = 1 });
+      try{ incoming = JSON.parse(data.ls[key] || '[]') }catch(e){}
+      if(!Array.isArray(incoming)) incoming = [];
+      incoming.forEach(function(i){ if(i && i.id && !have[i.id]){ mine.push(i); added[tag]++ } });
+      if(incoming.length) S.set(key, JSON.stringify(mine));
+    }
+    mergeList('g_list', 'g'); mergeList('buy_list', 'b'); mergeList('x_list', 'x');
+    try{
+      var cats = load('x_cats', []);
+      JSON.parse(data.ls.x_cats || '[]').forEach(function(c){ if(cats.indexOf(c) < 0) cats.push(c) });
+      S.set('x_cats', JSON.stringify(cats));
+    }catch(e){}
+    Object.keys(data.ls).forEach(function(k){
+      if(/^(g_list|buy_list|x_list|x_cats)$/.test(k) || !BK_KEYS.test(k)) return;
+      if(S.get(k) == null) S.set(k, data.ls[k]);
+    });
+    var imgs = Array.isArray(data.imgs) ? data.imgs : [];
+    function done(){
+      bkSay('✓ 불러왔어요 — 선물 +' + added.g + ' · 구매 +' + added.b + ' · 지출 +' + added.x + ' · 사진 +' + added.img + ' · 잠시 후 새로고침해요');
+      setTimeout(function(){ location.reload() }, 1200);
+    }
+    idbKeys(function(have){ (function next(i){
+      if(i >= imgs.length){ done(); return; }
+      var r = imgs[i], rec;
+      if(have[r.id]){ next(i + 1); return; }
+      bkSay('사진 ' + (i + 1) + '/' + imgs.length + ' 복원 중…');
+      try{
+        rec = {id: r.id, fullBuf: b64ToBuf(r.full || r.thumb), fullType: r.fullType || 'image/jpeg', thumbBuf: b64ToBuf(r.thumb || r.full),
+          thumbType: r.thumbType || r.fullType || 'image/jpeg', w: r.w || 0, h: r.h || 0, shrunk: !!r.shrunk};
+      }catch(e){ next(i + 1); return; }
+      pIdbPut(rec, function(ok){ if(ok) added.img++; next(i + 1); });
+    })(0); });
+  }
+  document.getElementById('bk-file').addEventListener('change', function(){
+    var inp = this, f = inp.files && inp.files[0];
+    if(!f) return;
+    var fr = new FileReader();
+    fr.onerror = function(){ bkSay('파일을 읽지 못했어요', true); inp.value = '' };
+    fr.onload = function(){
+      var data = null;
+      try{ data = JSON.parse(fr.result) }catch(e){}
+      inp.value = '';
+      if(!data || data.app !== 'fukuoka' || !data.ls){ bkSay('후쿠오카 백업 파일이 아니에요', true); return; }
+      var when = data.savedAt ? new Date(data.savedAt).toLocaleString('ko-KR') : '';
+      if(!window.confirm('백업 파일(' + when + ')을 불러올까요?\n이 폰에 없는 항목과 사진만 추가하고, 이미 있는 것은 그대로 둬요.')) return;
+      bkRestore(data);
+    };
+    fr.readAsText(f);
+  });
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist() }catch(e){}
+
 
   // Memo
   var memo = document.getElementById('memo');
