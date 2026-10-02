@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-02-g">
+<meta name="app-version" content="2026-10-02-h">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -121,16 +121,28 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .gstatus.err{color:var(--bad);font-weight:700}
 .gform input[type="text"]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
 .gpick{position:relative;display:block;padding:12px 14px;border:1px dashed var(--muted);border-radius:14px;color:var(--text);text-align:center;font-weight:700;cursor:pointer}
-.gpick input,.thumb.add input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
-.gift{padding:14px 0;border-top:1px dashed var(--line)}
+.gpick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.gift{--ph:clamp(76px,26vw,104px);display:flex;align-items:flex-start;padding:14px 0;border-top:1px dashed var(--line)}
+.gift-photo{flex:none;width:var(--ph);margin-right:12px;overflow:hidden;transition:width .25s ease,margin .25s ease,opacity .25s ease,visibility 0s}
+.gift.done .gift-photo{width:0;margin-right:0;opacity:0;visibility:hidden;transition:width .25s ease,margin .25s ease,opacity .25s ease,visibility 0s .25s}
+.gift-photo .thumb{width:var(--ph)}
+.gift-main{flex:1 1 auto;min-width:0}
+.gift-acts{display:flex;gap:8px;margin-top:10px}
+.gift .qty{gap:4px}
+.gift .qty button{width:28px;height:28px}
+.gift .qty input{width:38px;padding:4px 0}
+.gift .gprice input{width:84px}
+.gift-acts .g-btn{width:auto;height:28px;padding:0 12px;border-radius:999px;font-size:.8rem;font-weight:700}
 .gift-head{display:flex;align-items:center;gap:8px}
-.gift-check{flex:1 1 auto;display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer}
+.gift-check{flex:1 1 auto;min-width:0;display:flex;align-items:flex-start;gap:10px;font-weight:700;line-height:1.35;cursor:pointer}
 .gift-check input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--fill)}
+.gift-check span{min-width:0;overflow-wrap:anywhere}
 .gift.done .gift-check span{color:var(--muted);text-decoration:line-through}
 .gqty{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700}
-.gift-qty{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:8px 0 0 34px;color:var(--muted);font-size:.85rem;font-weight:700}
+.gift-qty{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:10px 0 0;color:var(--muted);font-size:.85rem;font-weight:700}
+.gift.nophoto .gift-qty{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 16px}
 .gift-qty [hidden]{display:none}
-.gq-g{display:inline-flex;align-items:center;gap:8px}
+.gq-g{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
 .gq-tot{color:var(--text);font-weight:800}
 .gq-tot:empty{display:none}
 .gq-date{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:700}
@@ -145,13 +157,8 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .qty input,.gform .qty input{width:44px;padding:5px 0;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:800;text-align:center}
 .gqty>span:first-child{flex:none;white-space:nowrap}
 .g-btn{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--accent-soft);color:var(--muted);font:inherit;cursor:pointer}
-.gift-fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s ease}
-.gift-inner{overflow:hidden;min-height:0}
-.gift.done .gift-fold{grid-template-rows:0fr}
-.gift-imgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
 .thumb{position:relative;display:block;aspect-ratio:1/1;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--accent-soft);overflow:hidden;cursor:pointer}
 .thumb img{display:block;width:100%;height:100%;object-fit:cover}
-.thumb.add{display:grid;place-items:center;border-style:dashed;color:var(--muted);font-size:1.6rem}
 .viewer{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:#000;color:#fff}
 .viewer[hidden]{display:none}
 .viewer-bar{flex:none;display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left));background:rgba(0,0,0,.9);font-size:.85rem}
@@ -627,11 +634,11 @@ main{min-height:60vh}
   </div>
     <div class="shop-pane on" data-pane="gift">
       <div class="card">
-        <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요. 개당 가격(엔)을 적고 체크하면 가계부(현황·비용 탭)에 지출로 함께 들어가요.</p>
+        <p class="muted" style="margin:0">사진을 여러 장 고르면 한 장마다 항목이 하나씩 만들어져요. 사진을 누르면 1:1 크기로 볼 수 있고, 산 것은 체크하면 사진이 접혀요. 금액(엔)을 적고 체크하면 가계부(현황·비용 탭)에 지출로 들어가요. 큰 사진은 자동으로 줄이고, 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
         <form class="gform" id="gform" autocomplete="off">
           <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="내용">
           <div class="gqty"><span>수량</span><span id="gqty"></span></div>
-          <div class="gqty"><label for="gprice">개당 가격 (선택)</label><span class="gprice"><input type="text" id="gprice" inputmode="numeric" pattern="[0-9]*" maxlength="7" placeholder="0" aria-label="개당 가격 (엔)"><span>엔</span></span></div>
+          <div class="gqty"><label for="gprice">금액 (개당, 선택)</label><span class="gprice"><input type="text" id="gprice" inputmode="numeric" pattern="[0-9]*" maxlength="7" placeholder="0" aria-label="개당 가격 (엔)"><span>엔</span></span></div>
           <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
           <button type="submit" class="xadd">＋ 선물 추가</button>
         </form>
@@ -642,11 +649,11 @@ main{min-height:60vh}
     </div>
     <div class="shop-pane" data-pane="buy">
       <div class="card">
-        <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요. 개당 가격(엔)을 적고 체크하면 가계부(현황·비용 탭)에 지출로 함께 들어가요.</p>
+        <p class="muted" style="margin:0">사진을 여러 장 고르면 한 장마다 항목이 하나씩 만들어져요. 사진을 누르면 1:1 크기로 볼 수 있고, 산 것은 체크하면 사진이 접혀요. 금액(엔)을 적고 체크하면 가계부(현황·비용 탭)에 지출로 들어가요. 큰 사진은 자동으로 줄이고, 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
         <form class="gform" id="bform" autocomplete="off">
           <input type="text" id="btext" maxlength="120" placeholder="살 것 (예: 돈키호테 · 핫아이즈 안약)" aria-label="내용">
           <div class="gqty"><span>수량</span><span id="bqty"></span></div>
-          <div class="gqty"><label for="bprice">개당 가격 (선택)</label><span class="gprice"><input type="text" id="bprice" inputmode="numeric" pattern="[0-9]*" maxlength="7" placeholder="0" aria-label="개당 가격 (엔)"><span>엔</span></span></div>
+          <div class="gqty"><label for="bprice">금액 (개당, 선택)</label><span class="gprice"><input type="text" id="bprice" inputmode="numeric" pattern="[0-9]*" maxlength="7" placeholder="0" aria-label="개당 가격 (엔)"><span>엔</span></span></div>
           <label class="gpick"><input type="file" id="bfile" accept="image/*" multiple><span id="bpick-label">📷 사진 올리기</span></label>
           <button type="submit" class="xadd">＋ 구매리스트 추가</button>
         </form>
@@ -658,7 +665,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-g</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-h</div></div></footer>
 
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
@@ -1273,6 +1280,23 @@ main{min-height:60vh}
     priceEl.addEventListener('input', function(){ var v = priceEl.value.replace(/[^0-9]/g, ''); if(v !== priceEl.value) priceEl.value = v });
     function changed(){ save(); updateCount(); renderLog() }
     function save(){ S.set(cfg.key, JSON.stringify(items)) }
+    (function(){                         // one photo per item: older items holding several photos are split up
+      var out = [], split = false;
+      items.forEach(function(it){
+        var imgs = (it && it.imgs) || [];
+        if(imgs.length <= 1){ out.push(it); return; }
+        split = true;
+        imgs.forEach(function(id, n){
+          var c = {};
+          Object.keys(it).forEach(function(k){ c[k] = it[k] });
+          c.id = n ? it.id + '_' + n : it.id;
+          c.imgs = [id];
+          if(n) c.price = 0;             // the amount stays with the first one so nothing is counted twice
+          out.push(c);
+        });
+      });
+      if(split){ items = out; save(); }
+    })();
     function setStatus(text, isErr){
       statusEl.textContent = text || '';
       statusEl.className = 'gstatus' + (isErr ? ' err' : '');
@@ -1311,7 +1335,19 @@ main{min-height:60vh}
       box.textContent = '';
       items.forEach(function(it){
         it.imgs = it.imgs || [];
-        var row = mk('div', it.done ? 'gift done' : 'gift');
+        var row = mk('div', (it.done ? 'gift done' : 'gift') + (it.imgs.length ? '' : ' nophoto'));
+        if(it.imgs.length){                  // one photo is shown, on the left
+          var wrap = mk('div', 'gift-photo'), pb = mk('button', 'thumb'), pim = document.createElement('img');
+          pb.type = 'button';
+          pb.setAttribute('aria-label', '사진 크게 보기');
+          pim.alt = '';
+          pb.appendChild(pim);
+          pThumbURL(it.imgs[0], function(u){ if(u) pim.src = u });
+          pb.addEventListener('click', function(){ openViewer(self, it, it.imgs[0]) });
+          wrap.appendChild(pb);
+          row.appendChild(wrap);
+        }
+        var main = mk('div', 'gift-main');
         var head = mk('div', 'gift-head'), label = mk('label', 'gift-check'), tick = document.createElement('input');
         tick.type = 'checkbox';
         tick.checked = !!it.done;
@@ -1325,7 +1361,7 @@ main{min-height:60vh}
         });
         label.appendChild(tick);
         label.appendChild(mk('span', '', it.text || '(사진만)'));
-        var edit = mk('button', 'g-btn', '✎'), del = mk('button', 'g-btn', '✕');
+        var edit = mk('button', 'g-btn', '✎ 수정'), del = mk('button', 'g-btn', '✕ 삭제');
         edit.type = 'button'; edit.setAttribute('aria-label', '수정');
         del.type = 'button'; del.setAttribute('aria-label', '삭제');
         edit.addEventListener('click', function(){
@@ -1343,15 +1379,16 @@ main{min-height:60vh}
           self.render();
         });
         head.appendChild(label);
-        head.appendChild(edit);
-        head.appendChild(del);
-        row.appendChild(head);
+        main.appendChild(head);
+        var acts = mk('div', 'gift-acts');
+        acts.appendChild(edit);
+        acts.appendChild(del);
         it.qty = clampQty(it.qty);
         it.price = parsePrice(it.price);
         var qrow = mk('div', 'gift-qty'), gq = mk('span', 'gq-g'), gp = mk('span', 'gq-g gprice'), gd = mk('span', 'gq-g');
         var pin = digitsInput(), tot = mk('span', 'gq-tot'), sel = document.createElement('select');
         function refresh(){
-          tot.textContent = it.price > 0 && it.qty > 1 ? '= ' + fmt(it.price * it.qty) + '엔' : '';
+          tot.textContent = it.price > 0 && it.qty > 1 ? '개당 · 합계 ' + fmt(it.price * it.qty) + '엔' : '';
           gd.hidden = !(it.done && it.price > 0);
         }
         gq.appendChild(mk('span', '', '수량'));
@@ -1363,10 +1400,9 @@ main{min-height:60vh}
           refresh();
           changed();
         });
-        gp.appendChild(mk('span', '', '개당'));
+        gp.appendChild(mk('span', '', '금액'));
         gp.appendChild(pin);
         gp.appendChild(mk('span', '', '엔'));
-        gp.appendChild(tot);
         sel.className = 'gq-date';
         sel.setAttribute('aria-label', '가계부에 넣을 날짜');
         TRIP.forEach(function(d){ var o = document.createElement('option'); o.value = d; o.textContent = d + ' ' + weekday(d); sel.appendChild(o) });
@@ -1377,42 +1413,13 @@ main{min-height:60vh}
         gd.appendChild(sel);
         qrow.appendChild(gq);
         qrow.appendChild(gp);
+        qrow.appendChild(tot);
         qrow.appendChild(gd);
-        row.appendChild(qrow);
+        main.appendChild(qrow);
+        main.appendChild(acts);
         refresh();
 
-        var fold = mk('div', 'gift-fold'), inner = mk('div', 'gift-inner'), imgs = mk('div', 'gift-imgs');
-        it.imgs.forEach(function(id){
-          var b = mk('button', 'thumb'), im = document.createElement('img');
-          b.type = 'button';
-          b.setAttribute('aria-label', '사진 크게 보기');
-          im.alt = '';
-          b.appendChild(im);
-          pThumbURL(id, function(u){ if(u) im.src = u });
-          b.addEventListener('click', function(){ openViewer(self, it, id) });
-          imgs.appendChild(b);
-        });
-        var add = mk('label', 'thumb add'), fi = document.createElement('input');
-        fi.type = 'file'; fi.accept = 'image/*'; fi.multiple = true;
-        fi.setAttribute('aria-label', '사진 추가');
-        fi.addEventListener('change', function(){
-          if(!fi.files.length) return;
-          var chosen = Array.prototype.slice.call(fi.files);
-          setStatus('선택됨: ' + describe(chosen));
-          pAddImages(chosen, function(ids, failed){
-            it.imgs = it.imgs.concat(ids);
-            save();
-            self.render();
-            if(failed){ setStatus('⚠️ ' + failText(failed).replace(/\n/g, ' '), true); window.alert(failText(failed)); }
-            else setStatus('✓ 사진 ' + ids.length + '장 저장 완료');
-          }, function(i, n, stage){ setStatus('사진 ' + i + '/' + n + ' ' + stage + ' 중…') });
-        });
-        add.appendChild(mk('span', '', '＋'));
-        add.appendChild(fi);
-        imgs.appendChild(add);
-        inner.appendChild(imgs);
-        fold.appendChild(inner);
-        row.appendChild(fold);
+        row.appendChild(main);
         box.appendChild(row);
       });
       if(!items.length) box.appendChild(mk('p', 'x-empty', cfg.empty));
@@ -1421,7 +1428,7 @@ main{min-height:60vh}
 
     fileEl.addEventListener('change', function(){
       pending = Array.prototype.slice.call(fileEl.files);
-      pickEl.textContent = pending.length ? '📷 사진 ' + pending.length + '장 선택됨' : '📷 사진 올리기';
+      pickEl.textContent = pending.length ? '📷 사진 ' + pending.length + '장 선택됨' + (pending.length > 1 ? ' · ' + pending.length + '개로 추가' : '') : '📷 사진 올리기';
       setStatus(pending.length ? '선택됨: ' + describe(pending) : '');
     });
     document.getElementById(cfg.p + 'form').addEventListener('submit', function(ev){
@@ -1434,7 +1441,10 @@ main{min-height:60vh}
       function finish(ids, failed){
         btn.disabled = false;
         btn.textContent = label;
-        items.unshift({id: cfg.p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, qty: qty, price: price, done: false, imgs: ids});
+        var made = (ids.length ? ids : (text ? [null] : [])).map(function(id, n){      // one item per photo
+          return {id: cfg.p + Date.now().toString(36) + n + Math.random().toString(36).slice(2, 5), text: text, qty: qty, price: price, done: false, imgs: id ? [id] : []};
+        });
+        items = made.concat(items);
         changed();
         textEl.value = '';
         fileEl.value = '';
@@ -1444,7 +1454,7 @@ main{min-height:60vh}
         pickEl.textContent = '📷 사진 올리기';
         self.render();
         if(failed){ setStatus('⚠️ ' + failText(failed).replace(/\n/g, ' '), true); window.alert(failText(failed)); }
-        else setStatus(ids.length ? '✓ 사진 ' + ids.length + '장 저장 완료' : '');
+        else setStatus(ids.length > 1 ? '✓ 사진 ' + ids.length + '장 → ' + made.length + '개 항목으로 추가했어요' : (ids.length ? '✓ 사진 1장 저장 완료' : ''));
       }
       try{
         pAddImages(pending, finish, function(i, n, stage){ setStatus('사진 ' + i + '/' + n + ' ' + stage + ' 중…') });
