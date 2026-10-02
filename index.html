@@ -118,6 +118,32 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .buy.done .buy-fold{grid-template-rows:0fr}
 .buy-inner img{display:block;width:100%;height:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}
 
+/* gift checklist: written and photographed on the phone */
+.gform{display:grid;gap:12px;margin-top:14px;padding-bottom:6px}
+.gform input[type="text"]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
+.gpick{position:relative;display:block;padding:12px 14px;border:1px dashed var(--muted);border-radius:14px;color:var(--text);text-align:center;font-weight:700;cursor:pointer}
+.gpick input,.thumb.add input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.gift{padding:14px 0;border-top:1px dashed var(--line)}
+.gift-head{display:flex;align-items:center;gap:8px}
+.gift-check{flex:1 1 auto;display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer}
+.gift-check input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--fill)}
+.gift.done .gift-check span{color:var(--muted);text-decoration:line-through}
+.g-btn{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--accent-soft);color:var(--muted);font:inherit;cursor:pointer}
+.gift-fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s ease}
+.gift-inner{overflow:hidden;min-height:0}
+.gift.done .gift-fold{grid-template-rows:0fr}
+.gift-imgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.thumb{position:relative;display:block;aspect-ratio:1/1;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--accent-soft);overflow:hidden;cursor:pointer}
+.thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.thumb.add{display:grid;place-items:center;border-style:dashed;color:var(--muted);font-size:1.6rem}
+.viewer{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:#000;color:#fff}
+.viewer[hidden]{display:none}
+.viewer-bar{flex:none;display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left));background:rgba(0,0,0,.9);font-size:.85rem}
+.viewer-bar span{flex:1 1 auto;color:#ccc}
+.viewer-bar button{flex:none;border:1px solid #555;background:#222;color:#fff;border-radius:999px;padding:6px 12px;font:inherit;cursor:pointer}
+.viewer-scroll{flex:1 1 auto;overflow:auto;-webkit-overflow-scrolling:touch;background:#111}
+.viewer-scroll img{display:block;margin:0 auto;height:auto}
+
 /* addresses and map codes */
 .loc{margin-top:8px;padding:10px 12px;border-radius:12px;background:var(--accent-soft);color:var(--text);font-size:.84rem;line-height:1.55;word-break:normal;overflow-wrap:anywhere}
 .loc+.loc{margin-top:6px}
@@ -202,7 +228,7 @@ nav.top a.on{background:var(--fill);color:var(--on-fill)}
 main{min-height:60vh}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{nav.top,.topbar{display:none}.page,.day{display:block!important}body{background:#fff;padding:0}.card{box-shadow:none}.ov-h,#overview{display:none}}
+@media print{nav.top,.topbar,.viewer{display:none!important}.page,.day{display:block!important}body{background:#fff;padding:0}.card{box-shadow:none}.ov-h,#overview{display:none}}
 </style>
 <noscript><style>.page{display:block!important}</style></noscript>
 </head>
@@ -566,6 +592,16 @@ main{min-height:60vh}
     <label><input type="checkbox" data-k="t11"><span>CARGO PASS 호텔 접수마감 · 요금 재확인</span></label>
     <label><input type="checkbox" data-k="t12"><span>날씨 확인 후 옷 · 우산 최종 조정 (전날)</span></label>
   </div>
+  <h2 style="margin-top:28px">🎁 선물 체크리스트 <span class="buy-count" id="gift-count"></span></h2>
+  <div class="card gifts">
+    <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 원본 크기(1:1)로 볼 수 있어요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
+    <form class="gform" id="gform" autocomplete="off">
+      <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="선물 내용">
+      <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
+      <button type="submit" class="xadd">＋ 선물 추가</button>
+    </form>
+    <div id="glist"></div>
+  </div>
   <div class="card">
     <h3>메모</h3>
     <textarea id="memo" placeholder="예약번호, 렌터카 연락처, 보험 증권번호 등" aria-label="메모"></textarea>
@@ -577,12 +613,26 @@ main{min-height:60vh}
 
 <footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다</div></footer>
 
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
+  <div class="viewer-bar">
+    <span id="vinfo"></span>
+    <button type="button" id="vfit">화면에 맞추기</button>
+    <button type="button" id="vdel">삭제</button>
+    <button type="button" id="vclose">닫기</button>
+  </div>
+  <div class="viewer-scroll" id="vscroll"><img id="vimg" alt=""></div>
+</div>
+
 <script>
 (function(){
   var S = {
     get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
     set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
   };
+
+  // We manage scrolling ourselves (tab changes, closing the photo viewer); the browser's own
+  // restore on Back would jump to a stale position.
+  try{ history.scrollRestoration = 'manual' }catch(e){}
 
   // D-day
   var el = document.getElementById('dday');
@@ -631,6 +681,8 @@ main{min-height:60vh}
     ov.appendChild(card);
   });
 
+  var viewerOpen = false;   // the photo viewer is on top of the page
+
   // Bottom tabs switch pages: only one section is shown at a time
   var pages = document.querySelectorAll('main .page');
   var links = document.querySelectorAll('nav.top a');
@@ -652,7 +704,10 @@ main{min-height:60vh}
       openPage(a.hash.slice(1), true);
     });
   });
-  window.addEventListener('popstate',function(){openPage(location.hash.slice(1), true)});
+  window.addEventListener('popstate',function(){
+    if(viewerOpen){ closeViewer(); return; }
+    openPage(location.hash.slice(1), true);
+  });
   openPage(location.hash.slice(1), false);
 
   // Checkboxes
@@ -845,6 +900,228 @@ main{min-height:60vh}
   });
   if(!buyItems.length) buyBox.appendChild(mk('p', 'x-empty', '아직 담은 게 없어요.'));
   countBuy();
+
+  // Gift checklist: text is written on the phone, photos stay on the phone (IndexedDB) at full size
+  var gList = load('g_list', []);
+  var gIdb = null, gUrls = {}, gPending = [];
+  var gBox = document.getElementById('glist'), gCount = document.getElementById('gift-count');
+  var gText = document.getElementById('gtext'), gFile = document.getElementById('gfile'), gPick = document.getElementById('gpick-label');
+  var vEl = document.getElementById('viewer'), vImg = document.getElementById('vimg'), vInfo = document.getElementById('vinfo');
+  var vFitBtn = document.getElementById('vfit'), vScroll = document.getElementById('vscroll');
+  var vCtx = null, vFit = false, vUrl = null;
+
+  function gOpen(done){
+    try{
+      var req = indexedDB.open('fukuoka-gifts', 1);
+      req.onupgradeneeded = function(){ req.result.createObjectStore('imgs', {keyPath: 'id'}) };
+      req.onsuccess = function(){ gIdb = req.result; done() };
+      req.onerror = function(){ done() };
+    }catch(e){ done() }
+  }
+  function gPut(rec, ok){
+    if(!gIdb){ ok(false); return; }
+    try{
+      var tx = gIdb.transaction('imgs', 'readwrite');
+      tx.objectStore('imgs').put(rec);
+      tx.oncomplete = function(){ ok(true) };
+      tx.onerror = tx.onabort = function(){ ok(false) };
+    }catch(e){ ok(false) }
+  }
+  function gGet(id, cb){
+    if(!gIdb){ cb(null); return; }
+    try{
+      var r = gIdb.transaction('imgs').objectStore('imgs').get(id);
+      r.onsuccess = function(){ cb(r.result || null) };
+      r.onerror = function(){ cb(null) };
+    }catch(e){ cb(null) }
+  }
+  function gDel(id){
+    if(gUrls[id]){ URL.revokeObjectURL(gUrls[id]); delete gUrls[id]; }
+    if(!gIdb) return;
+    try{ gIdb.transaction('imgs', 'readwrite').objectStore('imgs').delete(id) }catch(e){}
+  }
+  function gSave(){ S.set('g_list', JSON.stringify(gList)) }
+  function gThumbURL(id, cb){
+    if(gUrls[id]){ cb(gUrls[id]); return; }
+    gGet(id, function(rec){
+      if(!rec){ cb(null); return; }
+      gUrls[id] = URL.createObjectURL(rec.thumb);
+      cb(gUrls[id]);
+    });
+  }
+  // small preview for the list; the original file is stored untouched for the 1:1 view
+  function gThumb(file, cb){
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function(){
+      var w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, 480 / Math.max(w, h));
+      var c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(w * k));
+      c.height = Math.max(1, Math.round(h * k));
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      c.toBlob(function(b){ cb({w: w, h: h, thumb: b || file}) }, 'image/jpeg', 0.8);
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); cb(null) };
+    img.src = url;
+  }
+  function gAddImages(files, cb){
+    var queue = Array.prototype.slice.call(files), ids = [], failed = 0;
+    (function next(){
+      var f = queue.shift();
+      if(!f){ cb(ids, failed); return; }
+      gThumb(f, function(t){
+        var id = 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        gPut({id: id, full: f, thumb: t ? t.thumb : f, w: t ? t.w : 0, h: t ? t.h : 0}, function(ok){
+          if(ok) ids.push(id); else failed++;
+          next();
+        });
+      });
+    })();
+  }
+  function gUpdateCount(){
+    var left = gList.filter(function(i){ return !i.done }).length;
+    gCount.textContent = !gList.length ? '' : (left ? left + '개 남음' : '모두 완료 🎉');
+  }
+
+  function sizeViewer(){
+    if(!vImg.naturalWidth) return;
+    var dpr = window.devicePixelRatio || 1;       // 1:1 = one image pixel per screen pixel
+    vImg.style.width = (vImg.naturalWidth / dpr) + 'px';
+    vImg.style.maxWidth = vFit ? '100%' : 'none';
+    vFitBtn.textContent = vFit ? '1:1로 보기' : '화면에 맞추기';
+    vInfo.textContent = (vFit ? '화면 맞춤' : '1:1') + ' · ' + vImg.naturalWidth + '×' + vImg.naturalHeight;
+  }
+  function openViewer(item, id){
+    gGet(id, function(rec){
+      if(!rec) return;
+      vCtx = {item: item, id: id};
+      vFit = false;
+      if(vUrl) URL.revokeObjectURL(vUrl);
+      vUrl = URL.createObjectURL(rec.full);
+      vImg.onload = function(){ sizeViewer(); vScroll.scrollTo(0, 0) };
+      vImg.src = vUrl;
+      vEl.hidden = false;
+      viewerOpen = true;
+      document.documentElement.style.overflow = 'hidden';
+      try{ history.pushState({viewer: 1}, '', location.href) }catch(e){}
+    });
+  }
+  function closeViewer(){
+    if(!viewerOpen) return;
+    viewerOpen = false;
+    vEl.hidden = true;
+    vImg.removeAttribute('src');
+    if(vUrl){ URL.revokeObjectURL(vUrl); vUrl = null; }
+    document.documentElement.style.overflow = '';
+    vCtx = null;
+  }
+  function requestClose(){
+    if(!viewerOpen) return;
+    if(history.state && history.state.viewer) history.back(); else closeViewer();
+  }
+  vFitBtn.addEventListener('click', function(){ vFit = !vFit; sizeViewer() });
+  document.getElementById('vclose').addEventListener('click', requestClose);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') requestClose() });
+  document.getElementById('vdel').addEventListener('click', function(){
+    if(!vCtx || !window.confirm('이 사진을 삭제할까요?')) return;
+    var item = vCtx.item, id = vCtx.id;
+    item.imgs = item.imgs.filter(function(x){ return x !== id });
+    gDel(id);
+    gSave();
+    requestClose();
+    renderGifts();
+  });
+
+  function renderGifts(){
+    gBox.textContent = '';
+    gList.forEach(function(it){
+      var row = mk('div', it.done ? 'gift done' : 'gift');
+      var head = mk('div', 'gift-head'), label = mk('label', 'gift-check'), box = document.createElement('input');
+      box.type = 'checkbox';
+      box.checked = !!it.done;
+      box.addEventListener('change', function(){
+        it.done = box.checked;
+        gSave();
+        row.classList.toggle('done', it.done);
+        gUpdateCount();
+      });
+      label.appendChild(box);
+      label.appendChild(mk('span', '', it.text || '(사진만)'));
+      var edit = mk('button', 'g-btn', '✎'), del = mk('button', 'g-btn', '✕');
+      edit.type = 'button'; edit.setAttribute('aria-label', '수정');
+      del.type = 'button'; del.setAttribute('aria-label', '삭제');
+      edit.addEventListener('click', function(){
+        var t = window.prompt('내용 수정', it.text || '');
+        if(t === null) return;
+        it.text = t.trim().slice(0, 120);
+        gSave();
+        renderGifts();
+      });
+      del.addEventListener('click', function(){
+        if(!window.confirm('이 선물을 삭제할까요?')) return;
+        it.imgs.forEach(function(id){ gDel(id) });
+        gList = gList.filter(function(x){ return x.id !== it.id });
+        gSave();
+        renderGifts();
+      });
+      head.appendChild(label);
+      head.appendChild(edit);
+      head.appendChild(del);
+      row.appendChild(head);
+
+      var fold = mk('div', 'gift-fold'), inner = mk('div', 'gift-inner'), imgs = mk('div', 'gift-imgs');
+      it.imgs.forEach(function(id){
+        var b = mk('button', 'thumb'), im = document.createElement('img');
+        b.type = 'button';
+        b.setAttribute('aria-label', '사진 크게 보기');
+        im.alt = '';
+        b.appendChild(im);
+        gThumbURL(id, function(u){ if(u) im.src = u });
+        b.addEventListener('click', function(){ openViewer(it, id) });
+        imgs.appendChild(b);
+      });
+      var add = mk('label', 'thumb add'), fi = document.createElement('input');
+      fi.type = 'file'; fi.accept = 'image/*'; fi.multiple = true;
+      fi.setAttribute('aria-label', '사진 추가');
+      fi.addEventListener('change', function(){
+        if(!fi.files.length) return;
+        gAddImages(fi.files, function(ids){ it.imgs = it.imgs.concat(ids); gSave(); renderGifts() });
+      });
+      add.appendChild(mk('span', '', '＋'));
+      add.appendChild(fi);
+      imgs.appendChild(add);
+      inner.appendChild(imgs);
+      fold.appendChild(inner);
+      row.appendChild(fold);
+      gBox.appendChild(row);
+    });
+    if(!gList.length) gBox.appendChild(mk('p', 'x-empty', '아직 없어요. 위에 적고 추가하세요.'));
+    gUpdateCount();
+  }
+
+  gFile.addEventListener('change', function(){
+    gPending = Array.prototype.slice.call(gFile.files);
+    gPick.textContent = gPending.length ? '📷 사진 ' + gPending.length + '장 선택됨' : '📷 사진 올리기';
+  });
+  document.getElementById('gform').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var text = gText.value.trim();
+    if(!text && !gPending.length){ gText.focus(); return; }
+    var btn = ev.target.querySelector('.xadd');
+    btn.disabled = true;
+    gAddImages(gPending, function(ids, failed){
+      gList.unshift({id: 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, done: false, imgs: ids});
+      gSave();
+      gText.value = '';
+      gFile.value = '';
+      gPending = [];
+      gPick.textContent = '📷 사진 올리기';
+      btn.disabled = false;
+      renderGifts();
+      if(failed) window.alert('사진 ' + failed + '장은 저장하지 못했어요.');
+    });
+  });
+  gOpen(renderGifts);
 
   // Memo
   var memo = document.getElementById('memo');
