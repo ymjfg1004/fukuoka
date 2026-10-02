@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-02-h">
+<meta name="app-version" content="2026-10-02-i">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -140,7 +140,6 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .gift.done .gift-check span{color:var(--muted);text-decoration:line-through}
 .gqty{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700}
 .gift-qty{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:10px 0 0;color:var(--muted);font-size:.85rem;font-weight:700}
-.gift.nophoto .gift-qty{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 16px}
 .gift-qty [hidden]{display:none}
 .gq-g{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
 .gq-tot{color:var(--text);font-weight:800}
@@ -159,6 +158,9 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .g-btn{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--accent-soft);color:var(--muted);font:inherit;cursor:pointer}
 .thumb{position:relative;display:block;aspect-ratio:1/1;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--accent-soft);overflow:hidden;cursor:pointer}
 .thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.thumb.add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-style:dashed;border-color:var(--muted);background:var(--card);color:var(--muted);font-size:.78rem;font-weight:700;text-align:center}
+.thumb.add .add-ic{font-size:1.5rem;line-height:1}
+.thumb.add input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
 .viewer{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:#000;color:#fff}
 .viewer[hidden]{display:none}
 .viewer-bar{flex:none;display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left));background:rgba(0,0,0,.9);font-size:.85rem}
@@ -665,7 +667,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-h</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-i</div></div></footer>
 
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
@@ -1335,7 +1337,7 @@ main{min-height:60vh}
       box.textContent = '';
       items.forEach(function(it){
         it.imgs = it.imgs || [];
-        var row = mk('div', (it.done ? 'gift done' : 'gift') + (it.imgs.length ? '' : ' nophoto'));
+        var row = mk('div', it.done ? 'gift done' : 'gift');
         if(it.imgs.length){                  // one photo is shown, on the left
           var wrap = mk('div', 'gift-photo'), pb = mk('button', 'thumb'), pim = document.createElement('img');
           pb.type = 'button';
@@ -1345,6 +1347,28 @@ main{min-height:60vh}
           pThumbURL(it.imgs[0], function(u){ if(u) pim.src = u });
           pb.addEventListener('click', function(){ openViewer(self, it, it.imgs[0]) });
           wrap.appendChild(pb);
+          row.appendChild(wrap);
+        }else{                               // no photo yet: an upload tile on the left, to add one later
+          var wrap = mk('div', 'gift-photo'), tile = mk('label', 'thumb add'), fi = document.createElement('input'), tl = mk('span', 'add-t', '사진 추가');
+          fi.type = 'file'; fi.accept = 'image/*';
+          fi.setAttribute('aria-label', '사진 추가');
+          tile.appendChild(mk('span', 'add-ic', '📷'));
+          tile.appendChild(tl);
+          tile.appendChild(fi);
+          fi.addEventListener('change', function(){
+            if(!fi.files.length) return;
+            var chosen = Array.prototype.slice.call(fi.files, 0, 1);
+            fi.disabled = true;
+            tl.textContent = '저장 중…';
+            function after(ids, failed){
+              if(ids.length){ it.imgs = [ids[0]]; save(); }
+              self.render();
+              if(failed){ setStatus('⚠️ ' + failText(failed).replace(/\n/g, ' '), true); window.alert(failText(failed)); }
+            }
+            try{ pAddImages(chosen, after, function(i, n, stage){ tl.textContent = stage + ' 중…' }) }
+            catch(e){ pErr(e); after([], 1) }
+          });
+          wrap.appendChild(tile);
           row.appendChild(wrap);
         }
         var main = mk('div', 'gift-main');
