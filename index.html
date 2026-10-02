@@ -465,7 +465,17 @@ main{min-height:60vh}
 
 
 <section id="pack" class="page">
-  <h2>🧳 준비물</h2>
+  <h2>🎁 선물 체크리스트 <span class="buy-count" id="gift-count"></span></h2>
+  <div class="card gifts">
+    <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
+    <form class="gform" id="gform" autocomplete="off">
+      <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="선물 내용">
+      <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
+      <button type="submit" class="xadd">＋ 선물 추가</button>
+    </form>
+    <div id="glist"></div>
+  </div>
+  <details class="fold"><summary><h2>🧳 준비물 <span class="buy-count fold-count"></span></h2></summary>
   <div class="card checks">
     <h3>📄 서류 · 예약</h3>
     <label><input type="checkbox" data-k="p1"><span>여권 3명 (유효기간 확인)</span></label>
@@ -576,8 +586,9 @@ main{min-height:60vh}
     <label><input type="checkbox" data-k="q74"><span>오프라인 지도 · 앱 업데이트 확인</span></label>
     <label><input type="checkbox" data-k="q75"><span>일기예보 최종 확인 (전날 밤)</span></label>
   </div>
+  </details>
 
-  <h2 style="margin-top:28px">✅ 출발 전 할 일</h2>
+  <details class="fold"><summary><h2>✅ 출발 전 할 일 <span class="buy-count fold-count"></span></h2></summary>
   <div class="card checks">
     <label><input type="checkbox" data-k="t1"><span><b>[최우선]</b> 무소우엔 객실 최종 선택 및 예약</span></label>
     <label><input type="checkbox" data-k="t2"><span>경차 짐 문제 해결 (택배 / 압축 / 차종 변경)</span></label>
@@ -592,16 +603,7 @@ main{min-height:60vh}
     <label><input type="checkbox" data-k="t11"><span>CARGO PASS 호텔 접수마감 · 요금 재확인</span></label>
     <label><input type="checkbox" data-k="t12"><span>날씨 확인 후 옷 · 우산 최종 조정 (전날)</span></label>
   </div>
-  <h2 style="margin-top:28px">🎁 선물 체크리스트 <span class="buy-count" id="gift-count"></span></h2>
-  <div class="card gifts">
-    <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
-    <form class="gform" id="gform" autocomplete="off">
-      <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="선물 내용">
-      <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
-      <button type="submit" class="xadd">＋ 선물 추가</button>
-    </form>
-    <div id="glist"></div>
-  </div>
+  </details>
   <div class="card">
     <h3>메모</h3>
     <textarea id="memo" placeholder="예약번호, 렌터카 연락처, 보험 증권번호 등" aria-label="메모"></textarea>
@@ -714,6 +716,20 @@ main{min-height:60vh}
   document.querySelectorAll('.checks input').forEach(function(c){
     c.checked = S.get('c_'+c.dataset.k)==='1';
     c.addEventListener('change',function(){S.set('c_'+c.dataset.k, c.checked?'1':'0')});
+  });
+
+  // Folded checklists show how many items are ticked
+  document.querySelectorAll('details.fold').forEach(function(d){
+    var badge = d.querySelector('.fold-count');
+    if(!badge) return;
+    var boxes = d.querySelectorAll('.checks input');
+    function update(){
+      var done = 0;
+      boxes.forEach(function(b){ if(b.checked) done++ });
+      badge.textContent = done + '/' + boxes.length;
+    }
+    boxes.forEach(function(b){ b.addEventListener('change', update) });
+    update();
   });
 
   // Spending log: one entry per payment, grouped by day with a daily total
