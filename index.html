@@ -7,6 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
+<meta name="app-version" content="2026-10-02-d">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -210,6 +211,12 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .x-del{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--accent-soft);color:var(--muted);font:inherit;cursor:pointer}
 .x-empty{margin:14px 0 0;color:var(--muted);font-size:.9rem;text-align:center}
 textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
+.stale{position:fixed;left:12px;right:12px;bottom:calc(94px + env(safe-area-inset-bottom));z-index:30;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;background:var(--fill);color:var(--on-fill);font-size:.88rem;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.stale[hidden]{display:none}
+.stale span{flex:1;min-width:0}
+.stale button{flex:none;border:0;border-radius:10px;padding:7px 12px;font:inherit;font-weight:700;background:#fff;color:#111}
+.ver{margin-top:6px;font-size:.72rem;opacity:.7}
+@media print{.stale{display:none!important}}
 footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
 
 /* bottom tab bar: each tab opens its own page */
@@ -627,8 +634,9 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다</div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-d</div></div></footer>
 
+<div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
   <div class="viewer-bar">
     <span id="vinfo"></span>
@@ -1331,6 +1339,27 @@ main{min-height:60vh}
   var memo = document.getElementById('memo');
   memo.value = S.get('memo') || '';
   memo.addEventListener('input',function(){S.set('memo', memo.value)});
+})();
+
+// 새 버전 알림: 열어 둔 탭이 옛 화면이면 알려 준다
+(function(){
+  var cur = (document.querySelector('meta[name="app-version"]') || {}).content;
+  var bar = document.getElementById('stale'), go = document.getElementById('stale-go');
+  if(!cur || !bar || !window.fetch) return;
+  var busy = false, last = 0;
+  function check(){
+    var now = Date.now();
+    if(busy || now - last < 15000) return;
+    busy = true; last = now;
+    fetch(location.pathname + '?v=' + now, {cache: 'no-store'}).then(function(r){ return r.text() }).then(function(t){
+      var m = /<meta name="app-version" content="([^"]+)"/.exec(t);
+      if(m && m[1] !== cur) bar.hidden = false;
+    }).catch(function(){}).then(function(){ busy = false });
+  }
+  go.addEventListener('click', function(){ location.reload() });
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') check() });
+  window.addEventListener('pageshow', function(e){ if(e.persisted) check() });
+  setTimeout(check, 1500);
 })();
 </script>
 </body>
