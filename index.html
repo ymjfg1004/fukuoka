@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-02-o">
+<meta name="app-version" content="2026-10-02-p">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -146,6 +146,10 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .gq-date{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:700}
 .gprice{display:inline-flex;align-items:center;gap:6px}
 .stale.warn{bottom:auto;top:calc(10px + env(safe-area-inset-top));background:var(--bad);color:#fff;z-index:70}
+.bk-top{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+.bk-top .xadd{flex:none;padding:10px 18px;font-size:.92rem}
+.bk-last{min-width:0;color:var(--muted);font-size:.8rem;line-height:1.45;overflow-wrap:anywhere}
+.bk-last.warn{color:var(--bad);font-weight:700}
 .bk-info{margin:12px 0 0;padding:10px 14px;border-radius:12px;background:var(--accent-soft);font-size:.85rem;line-height:1.6;overflow-wrap:anywhere}
 .bk-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
 .bk-btns .xadd{position:relative;display:block;text-align:center;overflow:hidden;font-size:.92rem}
@@ -635,6 +639,8 @@ main{min-height:60vh}
 
 <section id="shop" class="page">
   <h2>🛍️ 쇼핑</h2>
+  <div class="bk-top"><button type="button" class="xadd" id="bk-save-top">💾 저장</button><span class="bk-last" id="bk-last"></span></div>
+  <div class="gstatus" id="bk-top-status" role="status" aria-live="polite"></div>
   <div class="seg" role="tablist">
     <button type="button" role="tab" aria-selected="true" data-shop="gift">🎁 선물 <span class="buy-count" id="gift-count"></span></button>
     <button type="button" role="tab" aria-selected="false" data-shop="buy">🛒 구매리스트 <span class="buy-count" id="buy-count"></span></button>
@@ -681,7 +687,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-o</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-p</div></div></footer>
 
 <div class="stale warn" id="store-warn" role="alert" hidden><span></span><button type="button">닫기</button></div>
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
@@ -704,6 +710,8 @@ main{min-height:60vh}
   var warnEl = document.getElementById('store-warn');
   function warnStore(msg){ warnEl.firstElementChild.textContent = msg; warnEl.hidden = false; }
   warnEl.querySelector('button').addEventListener('click', function(){ warnEl.hidden = true });
+  var onDirty = null;                   // set by the backup block: refreshes the "last saved" label
+  function markDirty(){ S.set('bk_dirty', '1'); if(onDirty) onDirty(); }
   var storageOK = true;                 // can this browser keep anything at all? (private tabs and blocked storage cannot)
   try{ localStorage.setItem('_t', '1'); storageOK = localStorage.getItem('_t') === '1'; localStorage.removeItem('_t'); }catch(e){ storageOK = false; }
   if(!storageOK) warnStore('⚠️ 이 브라우저는 저장이 막혀 있어요(비공개 모드일 수 있어요). 새로고침하면 적은 내용이 사라져요.');
@@ -840,7 +848,7 @@ main{min-height:60vh}
   function parts(md){ return /^(\d+)\/(\d+)$/.exec(md || '') }
   function weekday(md){ var m = parts(md); return m ? WEEK[new Date(2026, m[1] - 1, m[2]).getDay()] : '' }
   function dayKey(md){ var m = parts(md); return m ? Number(m[1]) * 100 + Number(m[2]) : -1 }
-  function save(){ if(!S.set('x_list', JSON.stringify(entries))) warnStore('⚠️ 지출 기록을 이 폰에 저장하지 못했어요(' + S.err + '). 아래 쇼핑 탭의 백업을 저장해 두세요.') }
+  function save(){ var ok = S.set('x_list', JSON.stringify(entries)); markDirty(); if(!ok) warnStore('⚠️ 지출 기록을 이 폰에 저장하지 못했어요(' + S.err + '). 아래 쇼핑 탭의 백업을 저장해 두세요.') }
 
   function renderDates(){
     var box = document.getElementById('xdates');
@@ -1303,7 +1311,7 @@ main{min-height:60vh}
     var priceEl = document.getElementById(cfg.p + 'price'), sumEl = document.getElementById(cfg.p + 'sum');
     priceEl.addEventListener('input', function(){ var v = priceEl.value.replace(/[^0-9]/g, ''); if(v !== priceEl.value) priceEl.value = v });
     function changed(){ save(); updateCount(); renderLog() }
-    function save(){ if(!S.set(cfg.key, JSON.stringify(items))) warnStore('⚠️ 목록을 이 폰에 저장하지 못했어요(' + S.err + '). 새로고침하면 방금 적은 게 사라질 수 있어요. 쇼핑 탭 아래 백업을 저장해 두세요.') }
+    function save(){ var ok = S.set(cfg.key, JSON.stringify(items)); markDirty(); if(!ok) warnStore('⚠️ 목록을 이 폰에 저장하지 못했어요(' + S.err + '). 새로고침하면 방금 적은 게 사라질 수 있어요. 쇼핑 탭 아래 백업을 저장해 두세요.') }
     (function(){                         // one photo per item: older items holding several photos are split up
       var out = [], split = false;
       items.forEach(function(it){
@@ -1529,7 +1537,22 @@ main{min-height:60vh}
   // ===== Backup / restore: everything lives in this browser only, so keep a file copy =====
   var bkInfo = document.getElementById('bk-info'), bkStatus = document.getElementById('bk-status');
   var BK_KEYS = /^(g_list|buy_list|x_list|x_cats|memo|shop|day|first_seen|s_[a-z])$|^c_|^gi_/;
-  function bkSay(t, err){ bkStatus.textContent = t || ''; bkStatus.className = 'gstatus' + (err ? ' err' : ''); }
+  var bkTopStatus = document.getElementById('bk-top-status'), bkTop = document.getElementById('bk-save-top'), bkLast = document.getElementById('bk-last');
+  function bkSay(t, err){
+    bkStatus.textContent = t || ''; bkStatus.className = 'gstatus' + (err ? ' err' : '');
+    bkTopStatus.textContent = t || ''; bkTopStatus.className = 'gstatus' + (err ? ' err' : '');
+  }
+  function bkStamp(iso){ var d = new Date(iso); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
+  function bkLabel(){                  // what the line next to the save button says
+    var last = S.get('last_backup'), dirty = S.get('bk_dirty') === '1';
+    var hasData = load('g_list', []).length + load('buy_list', []).length + entries.length > 0, warn = false, t;
+    if(!hasData && !last) t = '저장할 내용이 아직 없어요';
+    else if(!last){ t = '아직 저장한 적 없어요'; warn = true; }
+    else{ t = '마지막 저장: ' + bkStamp(last); if(dirty){ t += ' · 이후 바뀐 내용 있음'; warn = true; } }
+    bkLast.textContent = t;
+    bkLast.className = 'bk-last' + (warn ? ' warn' : '');
+  }
+  onDirty = bkLabel;
   function withIdb(cb){ if(pIdb) cb(); else pOpen(cb); }
   function idbAll(cb){                 // every photo record, or [] when the photo store cannot be read
     guard(GW.open + 10000, '사진 저장소를 읽지 못했어요', function(fin){
@@ -1633,19 +1656,24 @@ main{min-height:60vh}
     });
   }
   document.getElementById('backup').addEventListener('toggle', function(){ if(this.open) bkRefresh() });
-  document.getElementById('bk-save').addEventListener('click', function(){
-    var btn = this;
-    btn.disabled = true;
+  function runBackup(){
+    var btns = [document.getElementById('bk-save'), bkTop];
+    btns.forEach(function(b){ b.disabled = true });
     bkSay('백업 만드는 중…');
     bkCollect(function(data){
       var text = JSON.stringify(data), mb = (text.length / 1048576).toFixed(1), d = new Date();
       var name = 'fukuoka-backup-' + d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + '.json';
       bkDeliver(text, name, function(how){
-        btn.disabled = false;
+        btns.forEach(function(b){ b.disabled = false });
+        if(how !== 'cancel'){ S.set('last_backup', new Date().toISOString()); S.set('bk_dirty', '0'); }
+        bkLabel();
         bkSay(how === 'cancel' ? '취소했어요' : '✓ 백업 파일을 만들었어요 (' + mb + 'MB · 사진 ' + data.imgs.length + '장)' + (how === 'download' ? ' · 파일 앱의 다운로드 폴더를 확인하세요' : ''));
       });
     });
-  });
+  }
+  document.getElementById('bk-save').addEventListener('click', runBackup);
+  bkTop.addEventListener('click', runBackup);
+  bkLabel();
   function bkRestore(data){
     var added = {g: 0, b: 0, x: 0, img: 0};
     function mergeList(key, tag){
