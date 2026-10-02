@@ -594,7 +594,7 @@ main{min-height:60vh}
   </div>
   <h2 style="margin-top:28px">🎁 선물 체크리스트 <span class="buy-count" id="gift-count"></span></h2>
   <div class="card gifts">
-    <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 원본 크기(1:1)로 볼 수 있어요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
+    <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
     <form class="gform" id="gform" autocomplete="off">
       <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="선물 내용">
       <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
@@ -908,7 +908,7 @@ main{min-height:60vh}
   var gText = document.getElementById('gtext'), gFile = document.getElementById('gfile'), gPick = document.getElementById('gpick-label');
   var vEl = document.getElementById('viewer'), vImg = document.getElementById('vimg'), vInfo = document.getElementById('vinfo');
   var vFitBtn = document.getElementById('vfit'), vScroll = document.getElementById('vscroll');
-  var vCtx = null, vFit = false, vUrl = null;
+  var vCtx = null, vFit = false, vUrl = null, vShrunk = false;
 
   function gOpen(done){
     try{
@@ -949,19 +949,40 @@ main{min-height:60vh}
       cb(gUrls[id]);
     });
   }
-  // small preview for the list; the original file is stored untouched for the 1:1 view
-  function gThumb(file, cb){
+  // Photos: small ones are kept exactly as uploaded; big ones (over ~1.5 MB or very many pixels)
+  // are shrunk automatically. A small preview for the list is always made.
+  var G_LIMIT = 1.5 * 1024 * 1024, G_MAXSIDE = 2560;
+  function gPrepare(file, cb){
     var url = URL.createObjectURL(file), img = new Image();
-    img.onload = function(){
-      var w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, 480 / Math.max(w, h));
-      var c = document.createElement('canvas');
-      c.width = Math.max(1, Math.round(w * k));
-      c.height = Math.max(1, Math.round(h * k));
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      URL.revokeObjectURL(url);
-      c.toBlob(function(b){ cb({w: w, h: h, thumb: b || file}) }, 'image/jpeg', 0.8);
-    };
     img.onerror = function(){ URL.revokeObjectURL(url); cb(null) };
+    img.onload = function(){
+      var w = img.naturalWidth, h = img.naturalHeight, side = Math.max(w, h);
+      function draw(k, q, done){
+        var c = document.createElement('canvas'), x;
+        c.width = Math.max(1, Math.round(w * k));
+        c.height = Math.max(1, Math.round(h * k));
+        x = c.getContext('2d');
+        x.fillStyle = '#fff';
+        x.fillRect(0, 0, c.width, c.height);
+        x.drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function(b){ done(b, c.width, c.height) }, 'image/jpeg', q);
+      }
+      draw(Math.min(1, 480 / side), 0.8, function(thumb){
+        if(file.size <= G_LIMIT && side <= G_MAXSIDE){
+          URL.revokeObjectURL(url);
+          cb({full: file, thumb: thumb || file, w: w, h: h, shrunk: false});
+          return;
+        }
+        var k = Math.min(1, G_MAXSIDE / side);
+        (function attempt(){
+          draw(k, 0.85, function(b, bw, bh){
+            if(b && b.size > G_LIMIT && Math.max(bw, bh) > 1280){ k *= 0.8; attempt(); return; }
+            URL.revokeObjectURL(url);
+            cb({full: b || file, thumb: thumb || file, w: b ? bw : w, h: b ? bh : h, shrunk: !!b});
+          });
+        })();
+      });
+    };
     img.src = url;
   }
   function gAddImages(files, cb){
@@ -969,9 +990,10 @@ main{min-height:60vh}
     (function next(){
       var f = queue.shift();
       if(!f){ cb(ids, failed); return; }
-      gThumb(f, function(t){
+      gPrepare(f, function(t){
         var id = 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-        gPut({id: id, full: f, thumb: t ? t.thumb : f, w: t ? t.w : 0, h: t ? t.h : 0}, function(ok){
+        var rec = t ? {id: id, full: t.full, thumb: t.thumb, w: t.w, h: t.h, shrunk: t.shrunk} : {id: id, full: f, thumb: f, w: 0, h: 0, shrunk: false};
+        gPut(rec, function(ok){
           if(ok) ids.push(id); else failed++;
           next();
         });
@@ -989,13 +1011,14 @@ main{min-height:60vh}
     vImg.style.width = (vImg.naturalWidth / dpr) + 'px';
     vImg.style.maxWidth = vFit ? '100%' : 'none';
     vFitBtn.textContent = vFit ? '1:1로 보기' : '화면에 맞추기';
-    vInfo.textContent = (vFit ? '화면 맞춤' : '1:1') + ' · ' + vImg.naturalWidth + '×' + vImg.naturalHeight;
+    vInfo.textContent = (vFit ? '화면 맞춤' : '1:1') + ' · ' + vImg.naturalWidth + '×' + vImg.naturalHeight + (vShrunk ? ' · 용량 줄임' : '');
   }
   function openViewer(item, id){
     gGet(id, function(rec){
       if(!rec) return;
       vCtx = {item: item, id: id};
       vFit = false;
+      vShrunk = !!rec.shrunk;
       if(vUrl) URL.revokeObjectURL(vUrl);
       vUrl = URL.createObjectURL(rec.full);
       vImg.onload = function(){ sizeViewer(); vScroll.scrollTo(0, 0) };
