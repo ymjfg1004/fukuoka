@@ -104,19 +104,14 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .tl li.opt::before{border-color:var(--muted)}
 .tl li.opt .t::before{content:"선택 · ";color:var(--ok)}
 
-/* shopping list: tick = bought, the picture folds away */
+/* shopping tab: two lists side by side */
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 14px}
+.seg button{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:12px 8px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-weight:800;cursor:pointer;box-shadow:var(--shadow)}
+.seg button[aria-selected="true"]{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.shop-pane{display:none}
+.shop-pane.on{display:block}
 .buy-count{margin-left:6px;padding:1px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font-size:.76rem;font-weight:700;vertical-align:middle}
 .buy-count:empty{display:none}
-.buy{padding:14px 0;border-bottom:1px dashed var(--line)}
-.buy:last-child{border-bottom:0;padding-bottom:0}
-.buy-head{display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer}
-.buy-head input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--fill)}
-.buy.done .buy-head span{color:var(--muted);text-decoration:line-through}
-.buy-note{margin:2px 0 0 34px;color:var(--muted);font-size:.84rem}
-.buy-fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s ease}
-.buy-inner{overflow:hidden;min-height:0}
-.buy.done .buy-fold{grid-template-rows:0fr}
-.buy-inner img{display:block;width:100%;height:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}
 
 /* gift checklist: written and photographed on the phone */
 .gform{display:grid;gap:12px;margin-top:14px;padding-bottom:6px}
@@ -216,11 +211,11 @@ footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
 
 /* bottom tab bar: each tab opens its own page */
 nav.top{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 10px calc(10px + env(safe-area-inset-bottom))}
-nav.top .bar{max-width:560px;margin:0 auto;padding:6px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;
+nav.top .bar{max-width:560px;margin:0 auto;padding:6px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;
   background:var(--nav-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   border:1px solid var(--line);border-radius:24px;box-shadow:0 8px 28px rgba(0,0,0,.14)}
 nav.top a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 0 6px;border-radius:17px;
-  color:var(--muted);text-decoration:none;font-size:.74rem;font-weight:700;white-space:nowrap}
+  color:var(--muted);text-decoration:none;font-size:.68rem;font-weight:700;white-space:nowrap}
 nav.top a .em{font-size:1.4rem;line-height:1.3}
 nav.top a.on{background:var(--fill);color:var(--on-fill)}
 .page{display:none}
@@ -261,6 +256,7 @@ main{min-height:60vh}
     <a href="#status"><span class="em">🎫</span>현황·비용</a>
     <a href="#check"><span class="em">⚠️</span>점검</a>
     <a href="#pack"><span class="em">✅</span>준비·할 일</a>
+    <a href="#shop"><span class="em">🛍️</span>쇼핑</a>
   </div>
 </nav>
 
@@ -357,12 +353,6 @@ main{min-height:60vh}
     <div class="item"><span class="tag">10/4</span><b>Standard Products</b><p>작은 생활용품 위주, 부피 큰 것은 마지막에</p></div>
     <div class="item"><span class="tag">10/6 밤</span><b>돈키호테</b><p>렌터카 반납 후 혼자 본쇼핑</p></div>
     <div class="item"><span class="tag">10/7</span><b>하카타역 / 공항</b><p>기념품, 마지막 추가 구매</p></div>
-  </div>
-  <div class="card buylist" id="buylist">
-    <h3>🛒 살 것 <span class="buy-count" id="buy-count"></span></h3>
-    <p class="muted" style="margin:0 0 4px">산 것은 체크하세요. 체크하면 이미지가 접혀요.</p>
-    <div id="buy-list"></div>
-    <script type="application/json" id="buy-data">[]</script>
   </div>
 
   <h2 class="ov-h" style="margin-top:28px">📋 전체 일정</h2>
@@ -465,16 +455,6 @@ main{min-height:60vh}
 
 
 <section id="pack" class="page">
-  <h2>🎁 선물 체크리스트 <span class="buy-count" id="gift-count"></span></h2>
-  <div class="card gifts">
-    <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
-    <form class="gform" id="gform" autocomplete="off">
-      <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="선물 내용">
-      <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
-      <button type="submit" class="xadd">＋ 선물 추가</button>
-    </form>
-    <div id="glist"></div>
-  </div>
   <details class="fold"><summary><h2>🧳 준비물 <span class="buy-count fold-count"></span></h2></summary>
   <div class="card checks">
     <h3>📄 서류 · 예약</h3>
@@ -611,6 +591,35 @@ main{min-height:60vh}
   </div>
 </section>
 
+<section id="shop" class="page">
+  <h2>🛍️ 쇼핑</h2>
+  <div class="seg" role="tablist">
+    <button type="button" role="tab" aria-selected="true" data-shop="gift">🎁 선물 <span class="buy-count" id="gift-count"></span></button>
+    <button type="button" role="tab" aria-selected="false" data-shop="buy">🛒 구매리스트 <span class="buy-count" id="buy-count"></span></button>
+  </div>
+    <div class="shop-pane on" data-pane="gift">
+      <div class="card">
+        <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
+        <form class="gform" id="gform" autocomplete="off">
+          <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="내용">
+          <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
+          <button type="submit" class="xadd">＋ 선물 추가</button>
+        </form>
+        <div id="glist"></div>
+      </div>
+    </div>
+    <div class="shop-pane" data-pane="buy">
+      <div class="card">
+        <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
+        <form class="gform" id="bform" autocomplete="off">
+          <input type="text" id="btext" maxlength="120" placeholder="살 것 (예: 돈키호테 · 핫아이즈 안약)" aria-label="내용">
+          <label class="gpick"><input type="file" id="bfile" accept="image/*" multiple><span id="bpick-label">📷 사진 올리기</span></label>
+          <button type="submit" class="xadd">＋ 구매리스트 추가</button>
+        </form>
+        <div id="blist"></div>
+      </div>
+    </div>
+</section>
 </main>
 
 <footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다</div></footer>
@@ -879,96 +888,152 @@ main{min-height:60vh}
     folds.forEach(function(d, i){ d.open = !!wasOpen[i] });
   });
 
-  // Shopping list: screenshots of things to buy; ticking one folds its picture
-  var buyBox = document.getElementById('buy-list'), buyCount = document.getElementById('buy-count');
-  var buyItems = [];
-  try{ buyItems = JSON.parse(document.getElementById('buy-data').textContent) || [] }catch(e){ buyItems = [] }
-  function isBought(it){ return S.get('b_' + it.id) === '1' }
-  function countBuy(){
-    var left = buyItems.filter(function(it){ return !isBought(it) }).length;
-    buyCount.textContent = !buyItems.length ? '' : (left ? left + '개 남음' : '모두 구매 완료 🎉');
-  }
-  buyItems.forEach(function(it){
-    var done = isBought(it);
-    var row = mk('div', done ? 'buy done' : 'buy');
-    var label = mk('label', 'buy-head'), box = document.createElement('input');
-    box.type = 'checkbox';
-    box.checked = done;
-    box.addEventListener('change', function(){
-      S.set('b_' + it.id, box.checked ? '1' : '0');
-      row.classList.toggle('done', box.checked);
-      countBuy();
-    });
-    label.appendChild(box);
-    label.appendChild(mk('span', '', it.title || '살 것'));
-    row.appendChild(label);
-    if(it.note) row.appendChild(mk('div', 'buy-note', it.note));
-    var fold = mk('div', 'buy-fold'), inner = mk('div', 'buy-inner'), img = document.createElement('img');
-    img.src = it.img;
-    img.alt = it.title || '살 것';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    if(it.w && it.h){ img.width = it.w; img.height = it.h }
-    inner.appendChild(img);
-    fold.appendChild(inner);
-    row.appendChild(fold);
-    buyBox.appendChild(row);
-  });
-  if(!buyItems.length) buyBox.appendChild(mk('p', 'x-empty', '아직 담은 게 없어요.'));
-  countBuy();
-
-  // Gift checklist: text is written on the phone, photos stay on the phone (IndexedDB) at full size
-  var gList = load('g_list', []);
-  var gIdb = null, gUrls = {}, gPending = [];
-  var gBox = document.getElementById('glist'), gCount = document.getElementById('gift-count');
-  var gText = document.getElementById('gtext'), gFile = document.getElementById('gfile'), gPick = document.getElementById('gpick-label');
-  var vEl = document.getElementById('viewer'), vImg = document.getElementById('vimg'), vInfo = document.getElementById('vinfo');
-  var vFitBtn = document.getElementById('vfit'), vScroll = document.getElementById('vscroll');
-  var vCtx = null, vFit = false, vUrl = null, vShrunk = false;
-
-  function gOpen(done){
+  // ===== Shopping tab: a gift checklist and a purchase list, both written on the phone =====
+  // Photos stay on the phone. IndexedDB comes first (a photo is stored as plain bytes, which is the most
+  // reliable way on iPhone); if that is not possible a smaller copy goes into localStorage instead.
+  var pIdb = null, pErrText = '', pUrls = {};
+  function pErr(e){ pErrText = e ? ((e.name || 'Error') + (e.message ? ': ' + e.message : '')) : '' }
+  function pOpen(done){
+    var finished = false;
+    function end(){ if(!finished){ finished = true; done() } }
     try{
+      if(pIdb){ try{ pIdb.close() }catch(e){} pIdb = null; }
       var req = indexedDB.open('fukuoka-gifts', 1);
-      req.onupgradeneeded = function(){ req.result.createObjectStore('imgs', {keyPath: 'id'}) };
-      req.onsuccess = function(){ gIdb = req.result; done() };
-      req.onerror = function(){ done() };
-    }catch(e){ done() }
+      req.onupgradeneeded = function(){
+        if(!req.result.objectStoreNames.contains('imgs')) req.result.createObjectStore('imgs', {keyPath: 'id'});
+      };
+      req.onsuccess = function(){
+        pIdb = req.result;
+        pIdb.onversionchange = function(){ try{ pIdb.close() }catch(e){} pIdb = null; };
+        end();
+      };
+      req.onerror = function(){ pErr(req.error); end() };
+      req.onblocked = end;
+    }catch(e){ pErr(e); end() }
   }
-  function gPut(rec, ok){
-    if(!gIdb){ ok(false); return; }
-    try{
-      var tx = gIdb.transaction('imgs', 'readwrite');
-      tx.objectStore('imgs').put(rec);
-      tx.oncomplete = function(){ ok(true) };
-      tx.onerror = tx.onabort = function(){ ok(false) };
-    }catch(e){ ok(false) }
+  function pRead(blob, mode, cb){
+    var fr = new FileReader();
+    fr.onload = function(){ cb(fr.result) };
+    fr.onerror = function(){ pErr(fr.error); cb(null) };
+    if(mode === 'buf') fr.readAsArrayBuffer(blob); else fr.readAsDataURL(blob);
   }
-  function gGet(id, cb){
-    if(!gIdb){ cb(null); return; }
-    try{
-      var r = gIdb.transaction('imgs').objectStore('imgs').get(id);
-      r.onsuccess = function(){ cb(r.result || null) };
-      r.onerror = function(){ cb(null) };
-    }catch(e){ cb(null) }
+  function pIdbPut(rec, cb){
+    function attempt(retry){
+      if(!pIdb){
+        if(retry){ pOpen(function(){ attempt(false) }); return; }
+        cb(false);
+        return;
+      }
+      var settled = false;
+      function fail(e){
+        if(settled) return;
+        settled = true;
+        pErr(e);
+        if(retry) pOpen(function(){ attempt(false) }); else cb(false);
+      }
+      try{
+        var tx = pIdb.transaction('imgs', 'readwrite');
+        tx.oncomplete = function(){ if(!settled){ settled = true; cb(true) } };
+        tx.onerror = function(){ fail(tx.error) };
+        tx.onabort = function(){ fail(tx.error) };
+        tx.objectStore('imgs').put(rec);
+      }catch(e){ fail(e) }
+    }
+    attempt(true);
   }
-  function gDel(id){
-    if(gUrls[id]){ URL.revokeObjectURL(gUrls[id]); delete gUrls[id]; }
-    if(!gIdb) return;
-    try{ gIdb.transaction('imgs', 'readwrite').objectStore('imgs').delete(id) }catch(e){}
+  // a small JPEG for the localStorage fallback
+  function pShrink(blob, maxSide, cb){
+    var url = URL.createObjectURL(blob), img = new Image();
+    img.onerror = function(){ URL.revokeObjectURL(url); cb(null) };
+    img.onload = function(){
+      var k = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+      (function go(){
+        var c = document.createElement('canvas'), x;
+        c.width = Math.max(1, Math.round(img.naturalWidth * k));
+        c.height = Math.max(1, Math.round(img.naturalHeight * k));
+        x = c.getContext('2d');
+        x.fillStyle = '#fff';
+        x.fillRect(0, 0, c.width, c.height);
+        x.drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function(b){
+          if(b && b.size > 300 * 1024 && k > 0.3){ k *= 0.8; go(); return; }
+          URL.revokeObjectURL(url);
+          cb(b);
+        }, 'image/jpeg', 0.7);
+      })();
+    };
+    img.src = url;
   }
-  function gSave(){ S.set('g_list', JSON.stringify(gList)) }
-  function gThumbURL(id, cb){
-    if(gUrls[id]){ cb(gUrls[id]); return; }
-    gGet(id, function(rec){
-      if(!rec){ cb(null); return; }
-      gUrls[id] = URL.createObjectURL(rec.thumb);
-      cb(gUrls[id]);
+  function pLsSave(id, t, cb){
+    pShrink(t.full, 1280, function(small){
+      if(!small){ cb(false); return; }
+      pRead(small, 'url', function(fullURL){
+        pRead(t.thumb, 'url', function(thumbURL){
+          if(!fullURL || !thumbURL){ cb(false); return; }
+          try{
+            localStorage.setItem('gi_' + id, JSON.stringify({full: fullURL, thumb: thumbURL, shrunk: true}));
+            cb(true);
+          }catch(e){ pErr(e); cb(false) }
+        });
+      });
     });
   }
-  // Photos: small ones are kept exactly as uploaded; big ones (over ~1.5 MB or very many pixels)
-  // are shrunk automatically. A small preview for the list is always made.
+  function pSave(t, cb){            // t = {full: Blob, thumb: Blob, w, h, shrunk}; cb(id or null)
+    var id = 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    function viaLs(){ pLsSave(id, t, function(ok){ cb(ok ? id : null) }) }
+    pRead(t.full, 'buf', function(fb){
+      pRead(t.thumb, 'buf', function(tb){
+        if(!fb || !tb){ viaLs(); return; }
+        pIdbPut({id: id, fullBuf: fb, fullType: t.full.type || 'image/jpeg', thumbBuf: tb, thumbType: t.thumb.type || 'image/jpeg',
+          w: t.w, h: t.h, shrunk: !!t.shrunk}, function(ok){ if(ok) cb(id); else viaLs() });
+      });
+    });
+  }
+  function pGet(id, cb){            // cb({full, thumb, shrunk}) where full/thumb are Blobs or data URLs
+    function fromLs(){
+      try{
+        var v = JSON.parse(localStorage.getItem('gi_' + id));
+        cb(v ? {full: v.full, thumb: v.thumb, shrunk: true} : null);
+      }catch(e){ cb(null) }
+    }
+    if(!pIdb){ fromLs(); return; }
+    try{
+      var r = pIdb.transaction('imgs').objectStore('imgs').get(id);
+      r.onsuccess = function(){
+        var v = r.result;
+        if(!v){ fromLs(); return; }
+        cb({
+          full: v.fullBuf ? new Blob([v.fullBuf], {type: v.fullType}) : v.full,
+          thumb: v.thumbBuf ? new Blob([v.thumbBuf], {type: v.thumbType}) : v.thumb,
+          shrunk: !!v.shrunk
+        });
+      };
+      r.onerror = function(){ fromLs() };
+    }catch(e){ fromLs() }
+  }
+  function pDel(id){
+    if(pUrls[id]){ if(pUrls[id].blob) URL.revokeObjectURL(pUrls[id].url); delete pUrls[id]; }
+    try{ localStorage.removeItem('gi_' + id) }catch(e){}
+    (function del(retry){
+      if(!pIdb){ if(retry) pOpen(function(){ del(false) }); return; }
+      try{ pIdb.transaction('imgs', 'readwrite').objectStore('imgs').delete(id) }
+      catch(e){ if(retry) pOpen(function(){ del(false) }) }
+    })(true);
+  }
+  function pURL(x){ return typeof x === 'string' ? {url: x, blob: false} : {url: URL.createObjectURL(x), blob: true} }
+  function pThumbURL(id, cb){
+    if(pUrls[id]){ cb(pUrls[id].url); return; }
+    pGet(id, function(rec){
+      if(!rec){ cb(null); return; }
+      pUrls[id] = pURL(rec.thumb);
+      cb(pUrls[id].url);
+    });
+  }
+
+  // Small photos are kept exactly as uploaded; big ones (over ~1.5 MB or very many pixels) are shrunk
+  // automatically. A small preview for the list is always made.
   var G_LIMIT = 1.5 * 1024 * 1024, G_MAXSIDE = 2560;
-  function gPrepare(file, cb){
+  function pPrepare(file, cb){
     var url = URL.createObjectURL(file), img = new Image();
     img.onerror = function(){ URL.revokeObjectURL(url); cb(null) };
     img.onload = function(){
@@ -1001,26 +1066,26 @@ main{min-height:60vh}
     };
     img.src = url;
   }
-  function gAddImages(files, cb){
+  function pAddImages(files, cb){   // cb(ids, failedCount)
     var queue = Array.prototype.slice.call(files), ids = [], failed = 0;
+    pErrText = '';
+    try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist() }catch(e){}
     (function next(){
       var f = queue.shift();
       if(!f){ cb(ids, failed); return; }
-      gPrepare(f, function(t){
-        var id = 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-        var rec = t ? {id: id, full: t.full, thumb: t.thumb, w: t.w, h: t.h, shrunk: t.shrunk} : {id: id, full: f, thumb: f, w: 0, h: 0, shrunk: false};
-        gPut(rec, function(ok){
-          if(ok) ids.push(id); else failed++;
+      pPrepare(f, function(t){
+        pSave(t || {full: f, thumb: f, w: 0, h: 0, shrunk: false}, function(id){
+          if(id) ids.push(id); else failed++;
           next();
         });
       });
     })();
   }
-  function gUpdateCount(){
-    var left = gList.filter(function(i){ return !i.done }).length;
-    gCount.textContent = !gList.length ? '' : (left ? left + '개 남음' : '모두 완료 🎉');
-  }
 
+  // Full-screen photo viewer, shown at 1:1
+  var vEl = document.getElementById('viewer'), vImg = document.getElementById('vimg'), vInfo = document.getElementById('vinfo');
+  var vFitBtn = document.getElementById('vfit'), vScroll = document.getElementById('vscroll');
+  var vCtx = null, vFit = false, vUrl = null, vUrlBlob = false, vShrunk = false;
   function sizeViewer(){
     if(!vImg.naturalWidth) return;
     var dpr = window.devicePixelRatio || 1;       // 1:1 = one image pixel per screen pixel
@@ -1029,14 +1094,20 @@ main{min-height:60vh}
     vFitBtn.textContent = vFit ? '1:1로 보기' : '화면에 맞추기';
     vInfo.textContent = (vFit ? '화면 맞춤' : '1:1') + ' · ' + vImg.naturalWidth + '×' + vImg.naturalHeight + (vShrunk ? ' · 용량 줄임' : '');
   }
-  function openViewer(item, id){
-    gGet(id, function(rec){
+  function dropViewerUrl(){
+    if(vUrl && vUrlBlob) URL.revokeObjectURL(vUrl);
+    vUrl = null;
+  }
+  function openViewer(owner, item, id){
+    pGet(id, function(rec){
       if(!rec) return;
-      vCtx = {item: item, id: id};
+      vCtx = {owner: owner, item: item, id: id};
       vFit = false;
       vShrunk = !!rec.shrunk;
-      if(vUrl) URL.revokeObjectURL(vUrl);
-      vUrl = URL.createObjectURL(rec.full);
+      dropViewerUrl();
+      var u = pURL(rec.full);
+      vUrl = u.url;
+      vUrlBlob = u.blob;
       vImg.onload = function(){ sizeViewer(); vScroll.scrollTo(0, 0) };
       vImg.src = vUrl;
       vEl.hidden = false;
@@ -1050,7 +1121,7 @@ main{min-height:60vh}
     viewerOpen = false;
     vEl.hidden = true;
     vImg.removeAttribute('src');
-    if(vUrl){ URL.revokeObjectURL(vUrl); vUrl = null; }
+    dropViewerUrl();
     document.documentElement.style.overflow = '';
     vCtx = null;
   }
@@ -1063,104 +1134,139 @@ main{min-height:60vh}
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') requestClose() });
   document.getElementById('vdel').addEventListener('click', function(){
     if(!vCtx || !window.confirm('이 사진을 삭제할까요?')) return;
-    var item = vCtx.item, id = vCtx.id;
-    item.imgs = item.imgs.filter(function(x){ return x !== id });
-    gDel(id);
-    gSave();
+    var ctx = vCtx;
     requestClose();
-    renderGifts();
+    ctx.owner.removeImage(ctx.item, ctx.id);
   });
 
-  function renderGifts(){
-    gBox.textContent = '';
-    gList.forEach(function(it){
-      var row = mk('div', it.done ? 'gift done' : 'gift');
-      var head = mk('div', 'gift-head'), label = mk('label', 'gift-check'), box = document.createElement('input');
-      box.type = 'checkbox';
-      box.checked = !!it.done;
-      box.addEventListener('change', function(){
-        it.done = box.checked;
-        gSave();
-        row.classList.toggle('done', it.done);
-        gUpdateCount();
-      });
-      label.appendChild(box);
-      label.appendChild(mk('span', '', it.text || '(사진만)'));
-      var edit = mk('button', 'g-btn', '✎'), del = mk('button', 'g-btn', '✕');
-      edit.type = 'button'; edit.setAttribute('aria-label', '수정');
-      del.type = 'button'; del.setAttribute('aria-label', '삭제');
-      edit.addEventListener('click', function(){
-        var t = window.prompt('내용 수정', it.text || '');
-        if(t === null) return;
-        it.text = t.trim().slice(0, 120);
-        gSave();
-        renderGifts();
-      });
-      del.addEventListener('click', function(){
-        if(!window.confirm('이 선물을 삭제할까요?')) return;
-        it.imgs.forEach(function(id){ gDel(id) });
-        gList = gList.filter(function(x){ return x.id !== it.id });
-        gSave();
-        renderGifts();
-      });
-      head.appendChild(label);
-      head.appendChild(edit);
-      head.appendChild(del);
-      row.appendChild(head);
+  // One checklist (text + photos + tick = bought); used for both 선물 and 구매리스트
+  function makeList(cfg){
+    var items = load(cfg.key, []);
+    var box = document.getElementById(cfg.p + 'list'), countEl = document.getElementById(cfg.count);
+    var textEl = document.getElementById(cfg.p + 'text'), fileEl = document.getElementById(cfg.p + 'file');
+    var pickEl = document.getElementById(cfg.p + 'pick-label');
+    var pending = [], self = {};
+    function save(){ S.set(cfg.key, JSON.stringify(items)) }
+    function updateCount(){
+      var left = items.filter(function(i){ return !i.done }).length;
+      countEl.textContent = !items.length ? '' : (left ? left + '개 남음' : '모두 완료 🎉');
+    }
+    self.removeImage = function(item, id){
+      item.imgs = item.imgs.filter(function(x){ return x !== id });
+      pDel(id);
+      save();
+      self.render();
+    };
+    self.render = function(){
+      box.textContent = '';
+      items.forEach(function(it){
+        it.imgs = it.imgs || [];
+        var row = mk('div', it.done ? 'gift done' : 'gift');
+        var head = mk('div', 'gift-head'), label = mk('label', 'gift-check'), tick = document.createElement('input');
+        tick.type = 'checkbox';
+        tick.checked = !!it.done;
+        tick.addEventListener('change', function(){
+          it.done = tick.checked;
+          save();
+          row.classList.toggle('done', it.done);
+          updateCount();
+        });
+        label.appendChild(tick);
+        label.appendChild(mk('span', '', it.text || '(사진만)'));
+        var edit = mk('button', 'g-btn', '✎'), del = mk('button', 'g-btn', '✕');
+        edit.type = 'button'; edit.setAttribute('aria-label', '수정');
+        del.type = 'button'; del.setAttribute('aria-label', '삭제');
+        edit.addEventListener('click', function(){
+          var t = window.prompt('내용 수정', it.text || '');
+          if(t === null) return;
+          it.text = t.trim().slice(0, 120);
+          save();
+          self.render();
+        });
+        del.addEventListener('click', function(){
+          if(!window.confirm(cfg.del)) return;
+          it.imgs.forEach(function(id){ pDel(id) });
+          items = items.filter(function(x){ return x.id !== it.id });
+          save();
+          self.render();
+        });
+        head.appendChild(label);
+        head.appendChild(edit);
+        head.appendChild(del);
+        row.appendChild(head);
 
-      var fold = mk('div', 'gift-fold'), inner = mk('div', 'gift-inner'), imgs = mk('div', 'gift-imgs');
-      it.imgs.forEach(function(id){
-        var b = mk('button', 'thumb'), im = document.createElement('img');
-        b.type = 'button';
-        b.setAttribute('aria-label', '사진 크게 보기');
-        im.alt = '';
-        b.appendChild(im);
-        gThumbURL(id, function(u){ if(u) im.src = u });
-        b.addEventListener('click', function(){ openViewer(it, id) });
-        imgs.appendChild(b);
+        var fold = mk('div', 'gift-fold'), inner = mk('div', 'gift-inner'), imgs = mk('div', 'gift-imgs');
+        it.imgs.forEach(function(id){
+          var b = mk('button', 'thumb'), im = document.createElement('img');
+          b.type = 'button';
+          b.setAttribute('aria-label', '사진 크게 보기');
+          im.alt = '';
+          b.appendChild(im);
+          pThumbURL(id, function(u){ if(u) im.src = u });
+          b.addEventListener('click', function(){ openViewer(self, it, id) });
+          imgs.appendChild(b);
+        });
+        var add = mk('label', 'thumb add'), fi = document.createElement('input');
+        fi.type = 'file'; fi.accept = 'image/*'; fi.multiple = true;
+        fi.setAttribute('aria-label', '사진 추가');
+        fi.addEventListener('change', function(){
+          if(!fi.files.length) return;
+          pAddImages(fi.files, function(ids, failed){
+            it.imgs = it.imgs.concat(ids);
+            save();
+            self.render();
+            if(failed) window.alert('사진 ' + failed + '장은 저장하지 못했어요.' + (pErrText ? '\n(' + pErrText + ')' : ''));
+          });
+        });
+        add.appendChild(mk('span', '', '＋'));
+        add.appendChild(fi);
+        imgs.appendChild(add);
+        inner.appendChild(imgs);
+        fold.appendChild(inner);
+        row.appendChild(fold);
+        box.appendChild(row);
       });
-      var add = mk('label', 'thumb add'), fi = document.createElement('input');
-      fi.type = 'file'; fi.accept = 'image/*'; fi.multiple = true;
-      fi.setAttribute('aria-label', '사진 추가');
-      fi.addEventListener('change', function(){
-        if(!fi.files.length) return;
-        gAddImages(fi.files, function(ids){ it.imgs = it.imgs.concat(ids); gSave(); renderGifts() });
-      });
-      add.appendChild(mk('span', '', '＋'));
-      add.appendChild(fi);
-      imgs.appendChild(add);
-      inner.appendChild(imgs);
-      fold.appendChild(inner);
-      row.appendChild(fold);
-      gBox.appendChild(row);
+      if(!items.length) box.appendChild(mk('p', 'x-empty', cfg.empty));
+      updateCount();
+    };
+
+    fileEl.addEventListener('change', function(){
+      pending = Array.prototype.slice.call(fileEl.files);
+      pickEl.textContent = pending.length ? '📷 사진 ' + pending.length + '장 선택됨' : '📷 사진 올리기';
     });
-    if(!gList.length) gBox.appendChild(mk('p', 'x-empty', '아직 없어요. 위에 적고 추가하세요.'));
-    gUpdateCount();
+    document.getElementById(cfg.p + 'form').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var text = textEl.value.trim();
+      if(!text && !pending.length){ textEl.focus(); return; }
+      var btn = ev.target.querySelector('.xadd');
+      btn.disabled = true;
+      pAddImages(pending, function(ids, failed){
+        items.unshift({id: cfg.p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, done: false, imgs: ids});
+        save();
+        textEl.value = '';
+        fileEl.value = '';
+        pending = [];
+        pickEl.textContent = '📷 사진 올리기';
+        btn.disabled = false;
+        self.render();
+        if(failed) window.alert('사진 ' + failed + '장은 저장하지 못했어요.' + (pErrText ? '\n(' + pErrText + ')' : ''));
+      });
+    });
+    return self;
   }
+  var giftList = makeList({p: 'g', key: 'g_list', count: 'gift-count', empty: '아직 없어요. 위에 적고 추가하세요.', del: '이 선물을 삭제할까요?'});
+  var buyList = makeList({p: 'b', key: 'buy_list', count: 'buy-count', empty: '아직 없어요. 위에 적고 추가하세요.', del: '이 항목을 삭제할까요?'});
 
-  gFile.addEventListener('change', function(){
-    gPending = Array.prototype.slice.call(gFile.files);
-    gPick.textContent = gPending.length ? '📷 사진 ' + gPending.length + '장 선택됨' : '📷 사진 올리기';
-  });
-  document.getElementById('gform').addEventListener('submit', function(ev){
-    ev.preventDefault();
-    var text = gText.value.trim();
-    if(!text && !gPending.length){ gText.focus(); return; }
-    var btn = ev.target.querySelector('.xadd');
-    btn.disabled = true;
-    gAddImages(gPending, function(ids, failed){
-      gList.unshift({id: 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, done: false, imgs: ids});
-      gSave();
-      gText.value = '';
-      gFile.value = '';
-      gPending = [];
-      gPick.textContent = '📷 사진 올리기';
-      btn.disabled = false;
-      renderGifts();
-      if(failed) window.alert('사진 ' + failed + '장은 저장하지 못했어요.');
-    });
-  });
-  gOpen(renderGifts);
+  // 선물 / 구매리스트 switch inside the shopping tab
+  var shopBtns = document.querySelectorAll('.seg button'), shopPanes = document.querySelectorAll('.shop-pane');
+  function showShop(k){
+    shopBtns.forEach(function(b){ b.setAttribute('aria-selected', String(b.dataset.shop === k)) });
+    shopPanes.forEach(function(p){ p.classList.toggle('on', p.dataset.pane === k) });
+    S.set('shop', k);
+  }
+  shopBtns.forEach(function(b){ b.addEventListener('click', function(){ showShop(b.dataset.shop) }) });
+  showShop(S.get('shop') === 'buy' ? 'buy' : 'gift');
+  pOpen(function(){ giftList.render(); buyList.render() });
 
   // Memo
   var memo = document.getElementById('memo');
