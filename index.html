@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-02-e">
+<meta name="app-version" content="2026-10-02-f">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -127,6 +127,14 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .gift-check{flex:1 1 auto;display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer}
 .gift-check input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--fill)}
 .gift.done .gift-check span{color:var(--muted);text-decoration:line-through}
+.gqty{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700}
+.gift-qty{display:flex;align-items:center;gap:10px;margin:8px 0 0 34px;color:var(--muted);font-size:.85rem;font-weight:700}
+.gift.done .gift-qty{opacity:.6}
+.qty{display:inline-flex;align-items:center;gap:6px}
+.qty button{flex:none;width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--text);font:inherit;font-weight:800;line-height:1;cursor:pointer}
+.qty button:disabled{opacity:.35;cursor:default}
+.qty input,.gform .qty input{width:44px;padding:5px 0;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:800;text-align:center}
+.gqty>span:first-child{flex:none;white-space:nowrap}
 .g-btn{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--accent-soft);color:var(--muted);font:inherit;cursor:pointer}
 .gift-fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s ease}
 .gift-inner{overflow:hidden;min-height:0}
@@ -613,6 +621,7 @@ main{min-height:60vh}
         <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
         <form class="gform" id="gform" autocomplete="off">
           <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="내용">
+          <div class="gqty"><span>수량</span><span id="gqty"></span></div>
           <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
           <button type="submit" class="xadd">＋ 선물 추가</button>
         </form>
@@ -625,6 +634,7 @@ main{min-height:60vh}
         <p class="muted" style="margin:0">직접 적고 사진을 올리세요. 산 것은 체크하면 사진이 접혀요. 사진을 누르면 1:1 크기로 볼 수 있어요. 용량이 큰 사진은 자동으로 줄여서 저장해요. 내용과 사진은 이 폰의 브라우저에만 저장돼요.</p>
         <form class="gform" id="bform" autocomplete="off">
           <input type="text" id="btext" maxlength="120" placeholder="살 것 (예: 돈키호테 · 핫아이즈 안약)" aria-label="내용">
+          <div class="gqty"><span>수량</span><span id="bqty"></span></div>
           <label class="gpick"><input type="file" id="bfile" accept="image/*" multiple><span id="bpick-label">📷 사진 올리기</span></label>
           <button type="submit" class="xadd">＋ 구매리스트 추가</button>
         </form>
@@ -635,7 +645,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-e</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-f</div></div></footer>
 
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
@@ -1186,12 +1196,41 @@ main{min-height:60vh}
   });
 
   // One checklist (text + photos + tick = bought); used for both 선물 and 구매리스트
+  function clampQty(v){
+    v = parseInt(v, 10);
+    return isNaN(v) ? 1 : Math.max(1, Math.min(99, v));
+  }
+  function makeQty(start, onChange){
+    var el = mk('span', 'qty'), minus = mk('button', '', '−'), plus = mk('button', '', '＋'), inp = document.createElement('input'), val = 1, api = {el: el};
+    minus.type = 'button'; plus.type = 'button';
+    minus.setAttribute('aria-label', '수량 줄이기'); plus.setAttribute('aria-label', '수량 늘리기');
+    inp.type = 'text'; inp.maxLength = 2;
+    inp.setAttribute('inputmode', 'numeric'); inp.setAttribute('pattern', '[0-9]*'); inp.setAttribute('aria-label', '수량');
+    function set(n, quiet){
+      val = clampQty(n);
+      inp.value = val;
+      minus.disabled = val <= 1;
+      plus.disabled = val >= 99;
+      if(!quiet && onChange) onChange(val);
+    }
+    minus.addEventListener('click', function(){ set(clampQty(inp.value) - 1) });
+    plus.addEventListener('click', function(){ set(clampQty(inp.value) + 1) });
+    inp.addEventListener('change', function(){ set(inp.value) });
+    inp.addEventListener('focus', function(){ try{ inp.select() }catch(e){} });
+    api.get = function(){ return clampQty(inp.value) };
+    api.set = function(n){ set(n, true) };
+    set(start, true);
+    el.appendChild(minus); el.appendChild(inp); el.appendChild(plus);
+    return api;
+  }
   function makeList(cfg){
     var items = load(cfg.key, []);
     var box = document.getElementById(cfg.p + 'list'), countEl = document.getElementById(cfg.count);
     var textEl = document.getElementById(cfg.p + 'text'), fileEl = document.getElementById(cfg.p + 'file');
     var pickEl = document.getElementById(cfg.p + 'pick-label'), statusEl = document.getElementById(cfg.p + 'status');
     var pending = [], self = {};
+    var formQty = makeQty(1);
+    document.getElementById(cfg.p + 'qty').appendChild(formQty.el);
     function save(){ S.set(cfg.key, JSON.stringify(items)) }
     function setStatus(text, isErr){
       statusEl.textContent = text || '';
@@ -1206,8 +1245,9 @@ main{min-height:60vh}
         (files.length > 1 ? ' 외 ' + (files.length - 1) + '장' : '');
     }
     function updateCount(){
-      var left = items.filter(function(i){ return !i.done }).length;
-      countEl.textContent = !items.length ? '' : (left ? left + '개 남음' : '모두 완료 🎉');
+      var left = items.filter(function(i){ return !i.done });
+      var pieces = left.reduce(function(sum, i){ return sum + clampQty(i.qty) }, 0);
+      countEl.textContent = !items.length ? '' : (!left.length ? '모두 완료 🎉' : (pieces === left.length ? left.length + '개 남음' : left.length + '건 · ' + pieces + '개 남음'));
     }
     self.removeImage = function(item, id){
       item.imgs = item.imgs.filter(function(x){ return x !== id });
@@ -1252,6 +1292,11 @@ main{min-height:60vh}
         head.appendChild(edit);
         head.appendChild(del);
         row.appendChild(head);
+        it.qty = clampQty(it.qty);
+        var qrow = mk('div', 'gift-qty');
+        qrow.appendChild(mk('span', '', '수량'));
+        qrow.appendChild(makeQty(it.qty, function(n){ it.qty = n; save(); updateCount() }).el);
+        row.appendChild(qrow);
 
         var fold = mk('div', 'gift-fold'), inner = mk('div', 'gift-inner'), imgs = mk('div', 'gift-imgs');
         it.imgs.forEach(function(id){
@@ -1300,16 +1345,17 @@ main{min-height:60vh}
       ev.preventDefault();
       var text = textEl.value.trim();
       if(!text && !pending.length){ textEl.focus(); return; }
-      var btn = ev.target.querySelector('.xadd'), label = btn.textContent, wanted = pending.length;
+      var btn = ev.target.querySelector('.xadd'), label = btn.textContent, wanted = pending.length, qty = formQty.get();
       btn.disabled = true;
       btn.textContent = '저장 중…';
       function finish(ids, failed){
         btn.disabled = false;
         btn.textContent = label;
-        items.unshift({id: cfg.p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, done: false, imgs: ids});
+        items.unshift({id: cfg.p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, qty: qty, done: false, imgs: ids});
         save();
         textEl.value = '';
         fileEl.value = '';
+        formQty.set(1);
         pending = [];
         pickEl.textContent = '📷 사진 올리기';
         self.render();
