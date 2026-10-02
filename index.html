@@ -115,6 +115,9 @@ h3{font-size:1.05rem;margin:0 0 8px}
 
 /* gift checklist: written and photographed on the phone */
 .gform{display:grid;gap:12px;margin-top:14px;padding-bottom:6px}
+.gstatus{margin:6px 0 8px;font-size:.85rem;color:var(--muted);overflow-wrap:anywhere}
+.gstatus:empty{display:none}
+.gstatus.err{color:var(--bad);font-weight:700}
 .gform input[type="text"]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);font:inherit}
 .gpick{position:relative;display:block;padding:12px 14px;border:1px dashed var(--muted);border-radius:14px;color:var(--text);text-align:center;font-weight:700;cursor:pointer}
 .gpick input,.thumb.add input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
@@ -605,6 +608,7 @@ main{min-height:60vh}
           <label class="gpick"><input type="file" id="gfile" accept="image/*" multiple><span id="gpick-label">📷 사진 올리기</span></label>
           <button type="submit" class="xadd">＋ 선물 추가</button>
         </form>
+        <div class="gstatus" id="gstatus" role="status" aria-live="polite"></div>
         <div id="glist"></div>
       </div>
     </div>
@@ -616,6 +620,7 @@ main{min-height:60vh}
           <label class="gpick"><input type="file" id="bfile" accept="image/*" multiple><span id="bpick-label">📷 사진 올리기</span></label>
           <button type="submit" class="xadd">＋ 구매리스트 추가</button>
         </form>
+        <div class="gstatus" id="bstatus" role="status" aria-live="polite"></div>
         <div id="blist"></div>
       </div>
     </div>
@@ -892,11 +897,33 @@ main{min-height:60vh}
   // Photos stay on the phone. IndexedDB comes first (a photo is stored as plain bytes, which is the most
   // reliable way on iPhone); if that is not possible a smaller copy goes into localStorage instead.
   var pIdb = null, pErrText = '', pUrls = {};
+  var GW = window.__gw || {open: 4000, put: 10000, prep: 15000};   // how long to wait for a step before giving up (ms)
   function pErr(e){ pErrText = e ? ((e.name || 'Error') + (e.message ? ': ' + e.message : '')) : '' }
-  function pOpen(done){
-    var finished = false;
-    function end(){ if(!finished){ finished = true; done() } }
+  function pEnv(){
+    var ls = '가능';
+    try{ localStorage.setItem('_t', '1'); localStorage.removeItem('_t') }catch(e){ ls = '불가' }
+    return '[IDB ' + (pIdb ? '열림' : '안 열림') + ' · 글자저장 ' + ls + ']';
+  }
+  // Runs work(finish). done(result) fires exactly once: with the result, or with null if nothing happens in `ms`.
+  function guard(ms, msg, work, done){
+    var fired = false, timer = setTimeout(function(){
+      if(fired) return;
+      fired = true;
+      pErr({name: 'Timeout', message: msg});
+      done(null);
+    }, ms);
     try{
+      work(function(r){ if(fired) return; fired = true; clearTimeout(timer); done(r) });
+    }catch(e){
+      if(fired) return;
+      fired = true;
+      clearTimeout(timer);
+      pErr(e);
+      done(null);
+    }
+  }
+  function pOpen(done){
+    guard(GW.open, 'IndexedDB가 응답하지 않아요', function(fin){
       if(pIdb){ try{ pIdb.close() }catch(e){} pIdb = null; }
       var req = indexedDB.open('fukuoka-gifts', 1);
       req.onupgradeneeded = function(){
@@ -905,17 +932,19 @@ main{min-height:60vh}
       req.onsuccess = function(){
         pIdb = req.result;
         pIdb.onversionchange = function(){ try{ pIdb.close() }catch(e){} pIdb = null; };
-        end();
+        fin(true);
       };
-      req.onerror = function(){ pErr(req.error); end() };
-      req.onblocked = end;
-    }catch(e){ pErr(e); end() }
+      req.onerror = function(){ pErr(req.error); fin(false) };
+      req.onblocked = function(){ fin(false) };
+    }, function(){ done() });
   }
   function pRead(blob, mode, cb){
     var fr = new FileReader();
     fr.onload = function(){ cb(fr.result) };
     fr.onerror = function(){ pErr(fr.error); cb(null) };
-    if(mode === 'buf') fr.readAsArrayBuffer(blob); else fr.readAsDataURL(blob);
+    try{
+      if(mode === 'buf') fr.readAsArrayBuffer(blob); else fr.readAsDataURL(blob);
+    }catch(e){ pErr(e); cb(null) }
   }
   function pIdbPut(rec, cb){
     function attempt(retry){
@@ -924,16 +953,17 @@ main{min-height:60vh}
         cb(false);
         return;
       }
-      var settled = false;
+      var settled = false, timer = setTimeout(function(){ fail({name: 'Timeout', message: '저장이 끝나지 않아요'}) }, GW.put);
       function fail(e){
         if(settled) return;
         settled = true;
+        clearTimeout(timer);
         pErr(e);
         if(retry) pOpen(function(){ attempt(false) }); else cb(false);
       }
       try{
         var tx = pIdb.transaction('imgs', 'readwrite');
-        tx.oncomplete = function(){ if(!settled){ settled = true; cb(true) } };
+        tx.oncomplete = function(){ if(!settled){ settled = true; clearTimeout(timer); cb(true) } };
         tx.onerror = function(){ fail(tx.error) };
         tx.onabort = function(){ fail(tx.error) };
         tx.objectStore('imgs').put(rec);
@@ -965,18 +995,20 @@ main{min-height:60vh}
     img.src = url;
   }
   function pLsSave(id, t, cb){
-    pShrink(t.full, 1280, function(small){
-      if(!small){ cb(false); return; }
-      pRead(small, 'url', function(fullURL){
-        pRead(t.thumb, 'url', function(thumbURL){
-          if(!fullURL || !thumbURL){ cb(false); return; }
-          try{
-            localStorage.setItem('gi_' + id, JSON.stringify({full: fullURL, thumb: thumbURL, shrunk: true}));
-            cb(true);
-          }catch(e){ pErr(e); cb(false) }
+    guard(GW.prep, '축소 사본 만들기가 끝나지 않아요', function(fin){
+      pShrink(t.full, 1280, function(small){
+        if(!small){ fin(false); return; }
+        pRead(small, 'url', function(fullURL){
+          pRead(t.thumb, 'url', function(thumbURL){
+            if(!fullURL || !thumbURL){ fin(false); return; }
+            try{
+              localStorage.setItem('gi_' + id, JSON.stringify({full: fullURL, thumb: thumbURL, shrunk: true}));
+              fin(true);
+            }catch(e){ pErr(e); fin(false) }
+          });
         });
       });
-    });
+    }, function(ok){ cb(!!ok) });
   }
   function pSave(t, cb){            // t = {full: Blob, thumb: Blob, w, h, shrunk}; cb(id or null)
     var id = 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -997,19 +1029,18 @@ main{min-height:60vh}
       }catch(e){ cb(null) }
     }
     if(!pIdb){ fromLs(); return; }
-    try{
+    guard(GW.open, '사진을 읽지 못해요', function(fin){
       var r = pIdb.transaction('imgs').objectStore('imgs').get(id);
       r.onsuccess = function(){
         var v = r.result;
-        if(!v){ fromLs(); return; }
-        cb({
+        fin(v ? {
           full: v.fullBuf ? new Blob([v.fullBuf], {type: v.fullType}) : v.full,
           thumb: v.thumbBuf ? new Blob([v.thumbBuf], {type: v.thumbType}) : v.thumb,
           shrunk: !!v.shrunk
-        });
+        } : false);
       };
-      r.onerror = function(){ fromLs() };
-    }catch(e){ fromLs() }
+      r.onerror = function(){ fin(false) };
+    }, function(rec){ if(rec) cb(rec); else fromLs() });
   }
   function pDel(id){
     if(pUrls[id]){ if(pUrls[id].blob) URL.revokeObjectURL(pUrls[id].url); delete pUrls[id]; }
@@ -1066,15 +1097,21 @@ main{min-height:60vh}
     };
     img.src = url;
   }
-  function pAddImages(files, cb){   // cb(ids, failedCount)
-    var queue = Array.prototype.slice.call(files), ids = [], failed = 0;
+  // Every photo goes through: prepare (shrink + preview) → save. Each step has a time limit, and if
+  // preparing fails the original file is saved as it is. progress(i, total, stage) is for the status line.
+  function pAddImages(files, cb, progress){   // cb(ids, failedCount)
+    var queue = Array.prototype.slice.call(files), total = queue.length, n = 0, ids = [], failed = 0;
     pErrText = '';
     try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist() }catch(e){}
     (function next(){
       var f = queue.shift();
       if(!f){ cb(ids, failed); return; }
-      pPrepare(f, function(t){
-        pSave(t || {full: f, thumb: f, w: 0, h: 0, shrunk: false}, function(id){
+      n++;
+      if(progress) progress(n, total, '처리');
+      guard(GW.prep, '사진 처리가 끝나지 않아요', function(fin){ pPrepare(f, fin) }, function(t){
+        if(progress) progress(n, total, '저장');
+        var rec = t || {full: f, thumb: f, w: 0, h: 0, shrunk: false};
+        guard(GW.put * 2 + GW.open, '저장이 끝나지 않아요', function(fin){ pSave(rec, fin) }, function(id){
           if(id) ids.push(id); else failed++;
           next();
         });
@@ -1144,9 +1181,21 @@ main{min-height:60vh}
     var items = load(cfg.key, []);
     var box = document.getElementById(cfg.p + 'list'), countEl = document.getElementById(cfg.count);
     var textEl = document.getElementById(cfg.p + 'text'), fileEl = document.getElementById(cfg.p + 'file');
-    var pickEl = document.getElementById(cfg.p + 'pick-label');
+    var pickEl = document.getElementById(cfg.p + 'pick-label'), statusEl = document.getElementById(cfg.p + 'status');
     var pending = [], self = {};
     function save(){ S.set(cfg.key, JSON.stringify(items)) }
+    function setStatus(text, isErr){
+      statusEl.textContent = text || '';
+      statusEl.className = 'gstatus' + (isErr ? ' err' : '');
+    }
+    function failText(failed){
+      return '사진 ' + failed + '장은 저장하지 못했어요.' + (pErrText ? '\n(' + pErrText + ')' : '') + '\n' + pEnv();
+    }
+    function describe(files){
+      var f = files[0], mb = (f.size / 1048576).toFixed(1);
+      return (f.name || '사진') + ' · ' + mb + 'MB' + (f.type && !/jpeg|png/.test(f.type) ? ' · ' + f.type : '') +
+        (files.length > 1 ? ' 외 ' + (files.length - 1) + '장' : '');
+    }
     function updateCount(){
       var left = items.filter(function(i){ return !i.done }).length;
       countEl.textContent = !items.length ? '' : (left ? left + '개 남음' : '모두 완료 🎉');
@@ -1211,12 +1260,15 @@ main{min-height:60vh}
         fi.setAttribute('aria-label', '사진 추가');
         fi.addEventListener('change', function(){
           if(!fi.files.length) return;
-          pAddImages(fi.files, function(ids, failed){
+          var chosen = Array.prototype.slice.call(fi.files);
+          setStatus('선택됨: ' + describe(chosen));
+          pAddImages(chosen, function(ids, failed){
             it.imgs = it.imgs.concat(ids);
             save();
             self.render();
-            if(failed) window.alert('사진 ' + failed + '장은 저장하지 못했어요.' + (pErrText ? '\n(' + pErrText + ')' : ''));
-          });
+            if(failed){ setStatus('⚠️ ' + failText(failed).replace(/\n/g, ' '), true); window.alert(failText(failed)); }
+            else setStatus('✓ 사진 ' + ids.length + '장 저장 완료');
+          }, function(i, n, stage){ setStatus('사진 ' + i + '/' + n + ' ' + stage + ' 중…') });
         });
         add.appendChild(mk('span', '', '＋'));
         add.appendChild(fi);
@@ -1233,24 +1285,31 @@ main{min-height:60vh}
     fileEl.addEventListener('change', function(){
       pending = Array.prototype.slice.call(fileEl.files);
       pickEl.textContent = pending.length ? '📷 사진 ' + pending.length + '장 선택됨' : '📷 사진 올리기';
+      setStatus(pending.length ? '선택됨: ' + describe(pending) : '');
     });
     document.getElementById(cfg.p + 'form').addEventListener('submit', function(ev){
       ev.preventDefault();
       var text = textEl.value.trim();
       if(!text && !pending.length){ textEl.focus(); return; }
-      var btn = ev.target.querySelector('.xadd');
+      var btn = ev.target.querySelector('.xadd'), label = btn.textContent, wanted = pending.length;
       btn.disabled = true;
-      pAddImages(pending, function(ids, failed){
+      btn.textContent = '저장 중…';
+      function finish(ids, failed){
+        btn.disabled = false;
+        btn.textContent = label;
         items.unshift({id: cfg.p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: text, done: false, imgs: ids});
         save();
         textEl.value = '';
         fileEl.value = '';
         pending = [];
         pickEl.textContent = '📷 사진 올리기';
-        btn.disabled = false;
         self.render();
-        if(failed) window.alert('사진 ' + failed + '장은 저장하지 못했어요.' + (pErrText ? '\n(' + pErrText + ')' : ''));
-      });
+        if(failed){ setStatus('⚠️ ' + failText(failed).replace(/\n/g, ' '), true); window.alert(failText(failed)); }
+        else setStatus(ids.length ? '✓ 사진 ' + ids.length + '장 저장 완료' : '');
+      }
+      try{
+        pAddImages(pending, finish, function(i, n, stage){ setStatus('사진 ' + i + '/' + n + ' ' + stage + ' 중…') });
+      }catch(e){ pErr(e); finish([], wanted) }
     });
     return self;
   }
