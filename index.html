@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 현황, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-02-p">
+<meta name="app-version" content="2026-10-02-q">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -70,15 +70,6 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .ic{flex:none;width:46px;height:46px;border-radius:15px;background:var(--accent-soft);display:grid;place-items:center;font-size:1.45rem}
 .st-h{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-bottom:2px}
 .st-h b{font-size:1rem}
-
-/* overview: every day as a timeline */
-.ov{display:grid;gap:14px}
-.ov .card{margin:0}
-.ov-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.ov-date{flex:none;width:58px;background:var(--accent-soft);border-radius:14px;text-align:center;padding:8px 0;line-height:1.25}
-.ov-date b{display:block;font-size:1.05rem;font-weight:800}
-.ov-date small{font-size:.74rem;font-weight:600;color:var(--muted)}
-.ov-head h3{display:flex;flex-direction:column;margin:0;font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
 
 /* day tabs */
 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 14px}
@@ -252,6 +243,37 @@ textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);bo
 .stale button{flex:none;border:0;border-radius:10px;padding:7px 12px;font:inherit;font-weight:700;background:#fff;color:#111}
 .ver{margin-top:6px;font-size:.72rem;opacity:.7}
 @media print{.stale{display:none!important}}
+.plan-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.plan-bar button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 14px;font:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.plan-bar #plan-edit.on{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.plan-hint{flex-basis:100%;margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
+.plan-hint:empty{display:none}
+.tl.editing .li-row{display:flex;align-items:flex-start;gap:8px}
+.li-main{min-width:0}
+.tl.editing .li-main{flex:1 1 auto}
+.li-ctl{flex:none;display:flex;flex-direction:column;gap:6px}
+.li-grip,.li-pen{width:38px;height:38px;padding:0;border:0;border-radius:12px;background:var(--accent-soft);color:var(--text);font:inherit;font-size:1.1rem;cursor:pointer}
+.li-grip{touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.li-ins{display:block;width:100%;margin-top:10px;padding:5px;border:1px dashed var(--line);border-radius:10px;background:none;color:var(--muted);font:inherit;font-size:.8rem;cursor:pointer}
+.li-ins[hidden]{display:none}
+.li-ins.top{margin:0 0 12px}
+.tl li.dragging{z-index:5;background:var(--card);border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.2);transition:none!important}
+.tl.drag{-webkit-user-select:none;user-select:none}
+.tl li.formrow::before,.tl li.formrow::after{display:none}
+.tl li.formrow{padding-left:0}
+.pf{display:grid;gap:10px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.pf-f{display:grid;gap:4px;color:var(--muted);font-size:.78rem;font-weight:700}
+.pf input[type="text"],.pf textarea,.pf select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font:inherit;font-size:16px;font-weight:400}
+.pf textarea{resize:vertical}
+.pf-chk{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.pf-chk input{width:20px;height:20px;margin:0;accent-color:var(--fill)}
+.pf-loc{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.84rem}
+.pf-mini{flex:none;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.pf-btns{display:flex;gap:8px}
+.pf-btns button{flex:1 1 0;border:1px solid var(--line);border-radius:12px;padding:11px;background:var(--card);color:var(--text);font:inherit;font-weight:800;cursor:pointer}
+.pf-btns .pf-save{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
+.pf-btns .pf-del{color:var(--bad)}
+@media print{.plan-bar,.li-ctl,.li-ins{display:none!important}}
 footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
 
 /* bottom tab bar: each tab opens its own page */
@@ -268,7 +290,7 @@ nav.top a.on{background:var(--fill);color:var(--on-fill)}
 main{min-height:60vh}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{nav.top,.topbar,.viewer{display:none!important}.page,.day{display:block!important}body{background:#fff;padding:0}.card{box-shadow:none}.ov-h,#overview{display:none}}
+@media print{nav.top,.topbar,.viewer{display:none!important}.page,.day{display:block!important}body{background:#fff;padding:0}.card{box-shadow:none}}
 </style>
 <noscript><style>.page{display:block!important}</style></noscript>
 </head>
@@ -314,6 +336,13 @@ main{min-height:60vh}
     <button role="tab" aria-selected="false" data-day="2" aria-label="10월 5일 월요일"><small>월</small><b>10/5</b></button>
     <button role="tab" aria-selected="false" data-day="3" aria-label="10월 6일 화요일"><small>화</small><b>10/6</b></button>
     <button role="tab" aria-selected="false" data-day="4" aria-label="10월 7일 수요일"><small>수</small><b>10/7</b></button>
+  </div>
+
+  <div class="plan-bar" id="plan-bar">
+    <button type="button" id="plan-edit">✏️ 일정 편집</button>
+    <button type="button" id="plan-reset" hidden>↩ 이 날 처음으로</button>
+    <p class="plan-hint" id="plan-hint" hidden>≡ 를 끌어서 순서를 바꾸고, ✎ 로 고치거나 지우고, ＋ 로 새 일정을 넣어요. 바꾼 내용은 이 폰에만 저장돼요(쇼핑 탭의 저장 버튼으로 백업).</p>
+    <p class="plan-hint" id="plan-status" role="status" aria-live="polite"></p>
   </div>
 
   <div class="card day on" data-day="1">
@@ -400,8 +429,6 @@ main{min-height:60vh}
     <div class="item"><span class="tag">10/7</span><b>하카타역 / 공항</b><p>기념품, 마지막 추가 구매</p></div>
   </div>
 
-  <h2 class="ov-h" style="margin-top:28px">📋 전체 일정</h2>
-  <div class="ov" id="overview"></div>
 </section>
 
 <section id="status" class="page">
@@ -687,7 +714,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-p</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-02-q</div></div></footer>
 
 <div class="stale warn" id="store-warn" role="alert" hidden><span></span><button type="button">닫기</button></div>
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
@@ -752,21 +779,322 @@ main{min-height:60vh}
     return e;
   }
 
-  // Full overview: every day's timeline in one scroll, built from the day cards above
-  var ov = document.getElementById('overview');
-  days.forEach(function(d, i){
-    var h = d.querySelector('h3'), tab = tabs[i];
-    var card = mk('div', 'card'), head = mk('div', 'ov-head'), date = mk('div', 'ov-date'), title = mk('h3');
-    date.appendChild(mk('b', '', tab.querySelector('b').textContent));
-    date.appendChild(mk('small', '', tab.querySelector('small').textContent));
-    title.appendChild(mk('span', 'dn', h.querySelector('.dn').textContent));
-    title.appendChild(document.createTextNode(h.lastChild.textContent));
-    head.appendChild(date);
-    head.appendChild(title);
-    card.appendChild(head);
-    Array.prototype.forEach.call(d.children, function(c){ if(c !== h) card.appendChild(c.cloneNode(true)); });
-    ov.appendChild(card);
+  // ===== Editable schedule: add / edit / delete / drag to reorder. Changes stay in this browser. =====
+  var PLAN_DAYS = [['1', '10/4', '일'], ['2', '10/5', '월'], ['3', '10/6', '화'], ['4', '10/7', '수']];
+  var planDefaults = {}, planEdits = {}, planEditing = false, planOpen = null;   // planOpen = {day, idx} (edit) or {day, at} (new item)
+  var planBtn = document.getElementById('plan-edit'), planReset = document.getElementById('plan-reset');
+  var planHint = document.getElementById('plan-hint'), planStatus = document.getElementById('plan-status');
+
+  function cleanHtml(html){            // address blocks only use a few tags; anything else is dropped
+    var tpl = document.createElement('template'), out = document.createDocumentFragment();
+    tpl.innerHTML = String(html || '');
+    (function walk(src, dst){
+      Array.prototype.forEach.call(src.childNodes, function(n){
+        if(n.nodeType === 3){ dst.appendChild(document.createTextNode(n.nodeValue)); return; }
+        if(n.nodeType !== 1) return;
+        var tag = n.tagName.toLowerCase();
+        if(tag === 'b' || tag === 'span' || tag === 'code' || tag === 'br'){
+          var e = document.createElement(tag);
+          walk(n, e);
+          dst.appendChild(e);
+        }else if(tag === 'a'){
+          var href = n.getAttribute('href') || '', a = document.createElement('a');
+          if(/^https:\/\//i.test(href)){ a.href = href; a.target = '_blank'; a.rel = 'noopener'; }
+          walk(n, a);
+          dst.appendChild(a);
+        }else if(!/^(script|style|template|iframe|object|embed|noscript|svg|math)$/.test(tag)) walk(n, dst);
+      });
+    })(tpl.content, out);
+    return out;
+  }
+  function placeHtml(name){
+    var safe = name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return '<b>' + safe + '</b><a href="https://www.google.com/maps/search/?api=1&amp;query=' + encodeURIComponent(name) + '" target="_blank" rel="noopener">구글지도로 열기</a>';
+  }
+  function planParse(li){              // one default timeline row → plain data
+    var t = li.querySelector('time'), title = li.querySelector('.t'), d = li.querySelector('.d');
+    return {time: t ? t.textContent : '', t: title ? title.textContent : '', d: d ? d.textContent : '',
+      locs: Array.prototype.map.call(li.querySelectorAll('.loc'), function(e){ return e.innerHTML }), opt: li.classList.contains('opt')};
+  }
+  function planNorm(it){               // whatever came from storage: make it a well-formed item
+    if(!it || typeof it !== 'object') return null;
+    return {time: String(it.time == null ? '' : it.time).slice(0, 30), t: String(it.t == null ? '' : it.t).slice(0, 200),
+      d: String(it.d == null ? '' : it.d).slice(0, 400),
+      locs: Array.isArray(it.locs) ? it.locs.filter(function(h){ return typeof h === 'string' }).slice(0, 6) : [], opt: !!it.opt};
+  }
+  try{
+    var storedPlan = JSON.parse(S.get('plan_edit') || '{}');
+    if(storedPlan && typeof storedPlan === 'object' && !Array.isArray(storedPlan)){
+      Object.keys(storedPlan).forEach(function(k){
+        if(Array.isArray(storedPlan[k])) planEdits[k] = storedPlan[k].map(planNorm).filter(Boolean);
+      });
+    }
+  }catch(e){}
+  PLAN_DAYS.forEach(function(d){
+    var ul = document.querySelector('.day[data-day="' + d[0] + '"] ul.tl');
+    planDefaults[d[0]] = ul ? Array.prototype.map.call(ul.children, planParse) : [];
   });
+
+  function planItems(n){ return Array.isArray(planEdits[n]) ? planEdits[n] : planDefaults[n]; }
+  function planWritable(n){
+    if(!Array.isArray(planEdits[n])) planEdits[n] = JSON.parse(JSON.stringify(planDefaults[n]));
+    return planEdits[n];
+  }
+  function planSave(){
+    var ok = S.set('plan_edit', JSON.stringify(planEdits));
+    markDirty();
+    if(!ok) warnStore('⚠️ 일정 변경을 이 폰에 저장하지 못했어요(' + S.err + '). 쇼핑 탭의 저장 버튼으로 백업해 두세요.');
+  }
+  function planSay(t){ planStatus.textContent = t || ''; }
+  function planCard(n){ return document.querySelector('.day[data-day="' + n + '"]'); }
+
+  function planForm(n, idx){           // idx = position of the item being edited, or null for a new one
+    var items = planItems(n), cur = idx == null ? {time: '', t: '', d: '', locs: [], opt: false} : items[idx];
+    var f = mk('form', 'pf'), isNew = idx == null, dropLocs = false;
+    function field(label, el){
+      var l = mk('label', 'pf-f');
+      l.appendChild(mk('span', '', label));
+      l.appendChild(el);
+      f.appendChild(l);
+      return el;
+    }
+    function input(type, max, ph, val){
+      var e = document.createElement('input');
+      e.type = type; e.maxLength = max; e.placeholder = ph; e.value = val;
+      return e;
+    }
+    var time = field('시간', input('text', 30, '예: 14:20~15:00', cur.time));
+    var title = field('내용', input('text', 120, '무엇을 하나요', cur.t));
+    var memo = document.createElement('textarea');
+    memo.rows = 2; memo.maxLength = 300; memo.placeholder = '메모 (선택)'; memo.value = cur.d;
+    field('메모', memo);
+    var place = null;
+    if(cur.locs.length){
+      var lrow = mk('div', 'pf-loc');
+      var lnote = mk('span', '', '📍 주소 ' + cur.locs.length + '곳이 붙어 있어요');
+      var lclear = mk('button', 'pf-mini', '주소 지우기');
+      lclear.type = 'button';
+      lclear.addEventListener('click', function(){ dropLocs = !dropLocs; lnote.textContent = dropLocs ? '📍 저장하면 주소가 지워져요' : '📍 주소 ' + cur.locs.length + '곳이 붙어 있어요'; lclear.textContent = dropLocs ? '되돌리기' : '주소 지우기'; });
+      lrow.appendChild(lnote);
+      lrow.appendChild(lclear);
+      f.appendChild(lrow);
+    }else{
+      place = field('장소', input('text', 80, '장소 이름 (선택) · 구글지도 링크가 붙어요', ''));
+    }
+    var day = document.createElement('select');
+    PLAN_DAYS.forEach(function(d){
+      var o = document.createElement('option');
+      o.value = d[0]; o.textContent = d[1] + ' ' + d[2];
+      day.appendChild(o);
+    });
+    day.value = n;
+    field('날짜', day);
+    var chk = document.createElement('input'), chkL = mk('label', 'pf-chk');
+    chk.type = 'checkbox'; chk.checked = !!cur.opt;
+    chkL.appendChild(chk);
+    chkL.appendChild(mk('span', '', '선택 항목 (갈 수도, 안 갈 수도 있어요)'));
+    f.appendChild(chkL);
+    var btns = mk('div', 'pf-btns'), save = mk('button', 'pf-save', '저장'), cancel = mk('button', 'pf-cancel', '취소');
+    save.type = 'submit'; cancel.type = 'button';
+    btns.appendChild(save);
+    btns.appendChild(cancel);
+    if(!isNew){
+      var del = mk('button', 'pf-del', '삭제');
+      del.type = 'button';
+      del.addEventListener('click', function(){
+        if(!window.confirm('이 일정을 삭제할까요?')) return;
+        planWritable(n).splice(idx, 1);
+        planOpen = null;
+        planSave();
+        planRender(n);
+        planSay('삭제했어요');
+      });
+      btns.appendChild(del);
+    }
+    f.appendChild(btns);
+    cancel.addEventListener('click', function(){ planOpen = null; planRender(n); });
+    f.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var tm = time.value.trim(), tt = title.value.trim();
+      if(!tm && !tt){ title.focus(); return; }
+      var out = {time: tm, t: tt, d: memo.value.trim(), locs: dropLocs ? [] : cur.locs.slice(), opt: chk.checked};
+      if(place && place.value.trim()) out.locs = [placeHtml(place.value.trim())];
+      var to = day.value, at = planOpen && planOpen.at != null ? planOpen.at : null;
+      if(isNew){
+        var dst = planWritable(to);
+        if(to === n && at != null) dst.splice(at, 0, out); else dst.push(out);
+      }else if(to === n){
+        planWritable(n)[idx] = out;
+      }else{
+        planWritable(n).splice(idx, 1);
+        planWritable(to).push(out);
+      }
+      planOpen = null;
+      planSave();
+      planRender(n);
+      if(to !== n){ planRender(to); planSay('저장했어요 · ' + PLAN_DAYS[Number(to) - 1][1] + ' 맨 아래로 옮겼어요'); }
+      else planSay('저장했어요');
+    });
+    return f;
+  }
+
+  function planMove(n, from, to, refocus){
+    var arr = planWritable(n);
+    if(to < 0 || to >= arr.length || to === from){ planRender(n); return; }
+    arr.splice(to, 0, arr.splice(from, 1)[0]);
+    planSave();
+    planRender(n);
+    if(refocus){
+      var g = planCard(n).querySelectorAll('ul.tl > li')[to];
+      g = g && g.querySelector('.li-grip');
+      if(g) g.focus();
+    }
+  }
+
+  function planDragStart(e, n, i, ul){
+    if(e.button != null && e.button !== 0) return;
+    e.preventDefault();
+    var grip = e.currentTarget, id = e.pointerId, lis = Array.prototype.slice.call(ul.children), li = lis[i];
+    var rects = lis.map(function(o){ var r = o.getBoundingClientRect(); return {top: r.top + window.pageYOffset, h: r.height}; });
+    var startY = e.pageY, lastY = e.clientY, target = i, raf = 0;
+    var rootEl = document.documentElement, prevSB = rootEl.style.scrollBehavior;
+    rootEl.style.scrollBehavior = 'auto';      // the page's smooth scrolling would lag behind the finger
+    try{ grip.setPointerCapture(id) }catch(x){}
+    li.classList.add('dragging');
+    ul.classList.add('drag');
+    lis.forEach(function(o, j){ if(j !== i) o.style.transition = 'transform .15s ease'; });
+    function apply(){
+      var dy = lastY + window.pageYOffset - startY;
+      li.style.transform = 'translateY(' + dy + 'px)';
+      var center = rects[i].top + dy + rects[i].h / 2, ni = 0;
+      for(var j = 0; j < lis.length; j++) if(j !== i && rects[j].top + rects[j].h / 2 < center) ni++;
+      target = ni;
+      lis.forEach(function(o, j){
+        if(j === i) return;
+        var sh = 0;
+        if(i < ni && j > i && j <= ni) sh = -rects[i].h;
+        else if(i > ni && j >= ni && j < i) sh = rects[i].h;
+        o.style.transform = sh ? 'translateY(' + sh + 'px)' : '';
+      });
+    }
+    function tick(){                   // scroll the page while the finger is near the top or bottom edge
+      var vh = window.innerHeight, sp = 0;
+      if(lastY < 90) sp = -Math.ceil((90 - lastY) / 5);
+      else if(lastY > vh - 120) sp = Math.ceil((lastY - (vh - 120)) / 5);
+      if(sp){ window.scrollBy(0, sp); apply(); }
+      raf = requestAnimationFrame(tick);
+    }
+    function move(ev){ if(ev.pointerId === id){ lastY = ev.clientY; apply(); } }
+    function end(ev){
+      if(ev.pointerId !== id) return;
+      cancelAnimationFrame(raf);
+      rootEl.style.scrollBehavior = prevSB;
+      grip.removeEventListener('pointermove', move);
+      grip.removeEventListener('pointerup', end);
+      grip.removeEventListener('pointercancel', end);
+      try{ grip.releasePointerCapture(id) }catch(x){}
+      if(ev.type !== 'pointercancel' && target !== i) planMove(n, i, target, false);
+      else planRender(n);
+    }
+    grip.addEventListener('pointermove', move);
+    grip.addEventListener('pointerup', end);
+    grip.addEventListener('pointercancel', end);
+    apply();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function planRender(n){
+    var card = planCard(n), ul = card.querySelector('ul.tl'), top = card.querySelector('.li-ins.top');
+    var items = planItems(n), open = planOpen && planOpen.day === n ? planOpen : null;
+    if(!top){
+      top = mk('button', 'li-ins top', '＋ 맨 위에 추가');
+      top.type = 'button';
+      top.addEventListener('click', function(){ planOpen = {day: n, at: 0}; planRender(n); });
+      ul.parentNode.insertBefore(top, ul);
+    }
+    top.hidden = !planEditing || !!open;
+    ul.textContent = '';
+    ul.classList.toggle('editing', planEditing);
+    function newRow(at){
+      var li = mk('li', 'formrow');
+      li.appendChild(planForm(n, null));
+      ul.appendChild(li);
+      var first = li.querySelector('input');
+      if(first) first.focus();
+    }
+    items.forEach(function(it, i){
+      if(open && open.idx == null && open.at === i) newRow(i);
+      var li = mk('li', it.opt ? 'opt' : '');
+      if(open && open.idx === i){
+        li.className += ' formrow';
+        li.appendChild(planForm(n, i));
+        ul.appendChild(li);
+        return;
+      }
+      var row = mk('div', 'li-row'), main = mk('div', 'li-main'), body = mk('div', 'li-body');
+      if(it.time) main.appendChild(mk('time', '', it.time));
+      body.appendChild(mk('div', 't', it.t));
+      if(it.d) body.appendChild(mk('div', 'd', it.d));
+      it.locs.forEach(function(h){
+        var l = mk('div', 'loc');
+        l.appendChild(cleanHtml(h));
+        body.appendChild(l);
+      });
+      main.appendChild(body);
+      row.appendChild(main);
+      if(planEditing){
+        var ctl = mk('div', 'li-ctl'), pen = mk('button', 'li-pen', '✎');
+        pen.type = 'button'; pen.setAttribute('aria-label', '고치기');
+        pen.addEventListener('click', function(){ planOpen = {day: n, idx: i}; planRender(n); });
+        if(!open){
+          var grip = mk('button', 'li-grip', '≡');
+          grip.type = 'button'; grip.setAttribute('aria-label', '끌어서 순서 바꾸기');
+          grip.addEventListener('pointerdown', function(e){ planDragStart(e, n, i, ul); });
+          grip.addEventListener('keydown', function(e){
+            if(e.key === 'ArrowUp' || e.key === 'ArrowDown'){ e.preventDefault(); planMove(n, i, i + (e.key === 'ArrowUp' ? -1 : 1), true); }
+          });
+          ctl.appendChild(grip);
+        }
+        ctl.appendChild(pen);
+        row.appendChild(ctl);
+        li.className += ' edit';
+      }
+      li.appendChild(row);
+      if(planEditing && !open){
+        var ins = mk('button', 'li-ins', '＋ 아래에 추가');
+        ins.type = 'button';
+        ins.addEventListener('click', function(){ planOpen = {day: n, at: i + 1}; planRender(n); });
+        li.appendChild(ins);
+      }
+      ul.appendChild(li);
+    });
+    if(open && open.idx == null && open.at >= items.length) newRow(items.length);
+  }
+
+  function planRefresh(){
+    planBtn.textContent = planEditing ? '✔ 편집 끝내기' : '✏️ 일정 편집';
+    planBtn.classList.toggle('on', planEditing);
+    planReset.hidden = !planEditing;
+    planHint.hidden = !planEditing;
+    PLAN_DAYS.forEach(function(d){ planRender(d[0]); });
+  }
+  planBtn.addEventListener('click', function(){
+    planEditing = !planEditing;
+    planOpen = null;
+    planSay('');
+    planRefresh();
+  });
+  planReset.addEventListener('click', function(){
+    var cur = document.querySelector('.day.on'), n = cur ? cur.dataset.day : '1';
+    if(!Array.isArray(planEdits[n])){ planSay('이 날은 이미 처음 상태예요'); return; }
+    if(!window.confirm('이 날 일정을 처음 상태로 되돌릴까요?\n고친 내용이 모두 사라져요.')) return;
+    delete planEdits[n];
+    planOpen = null;
+    planSave();
+    planRender(n);
+    planSay('처음 상태로 되돌렸어요');
+  });
+  planRefresh();
 
   var viewerOpen = false;   // the photo viewer is on top of the page
 
@@ -1536,7 +1864,7 @@ main{min-height:60vh}
 
   // ===== Backup / restore: everything lives in this browser only, so keep a file copy =====
   var bkInfo = document.getElementById('bk-info'), bkStatus = document.getElementById('bk-status');
-  var BK_KEYS = /^(g_list|buy_list|x_list|x_cats|memo|shop|day|first_seen|s_[a-z])$|^c_|^gi_/;
+  var BK_KEYS = /^(g_list|buy_list|x_list|x_cats|plan_edit|memo|shop|day|first_seen|s_[a-z])$|^c_|^gi_/;
   var bkTopStatus = document.getElementById('bk-top-status'), bkTop = document.getElementById('bk-save-top'), bkLast = document.getElementById('bk-last');
   function bkSay(t, err){
     bkStatus.textContent = t || ''; bkStatus.className = 'gstatus' + (err ? ' err' : '');
@@ -1545,7 +1873,7 @@ main{min-height:60vh}
   function bkStamp(iso){ var d = new Date(iso); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
   function bkLabel(){                  // what the line next to the save button says
     var last = S.get('last_backup'), dirty = S.get('bk_dirty') === '1';
-    var hasData = load('g_list', []).length + load('buy_list', []).length + entries.length > 0, warn = false, t;
+    var hasData = load('g_list', []).length + load('buy_list', []).length + entries.length + (Object.keys(planEdits).length) > 0, warn = false, t;
     if(!hasData && !last) t = '저장할 내용이 아직 없어요';
     else if(!last){ t = '아직 저장한 적 없어요'; warn = true; }
     else{ t = '마지막 저장: ' + bkStamp(last); if(dirty){ t += ' · 이후 바뀐 내용 있음'; warn = true; } }
@@ -1692,12 +2020,17 @@ main{min-height:60vh}
       S.set('x_cats', JSON.stringify(cats));
     }catch(e){}
     Object.keys(data.ls).forEach(function(k){
-      if(/^(g_list|buy_list|x_list|x_cats)$/.test(k) || !BK_KEYS.test(k)) return;
+      if(/^(g_list|buy_list|x_list|x_cats|plan_edit)$/.test(k) || !BK_KEYS.test(k)) return;
       if(S.get(k) == null) S.set(k, data.ls[k]);
     });
+    try{                               // schedule edits: take the days this phone has not changed
+      var pin = JSON.parse(data.ls.plan_edit || '{}'), pmine = JSON.parse(S.get('plan_edit') || '{}');
+      Object.keys(pin).forEach(function(k){ if(!(k in pmine) && Array.isArray(pin[k])){ pmine[k] = pin[k]; added.p = (added.p || 0) + 1; } });
+      if(added.p) S.set('plan_edit', JSON.stringify(pmine));
+    }catch(e){}
     var imgs = Array.isArray(data.imgs) ? data.imgs : [];
     function done(){
-      bkSay('✓ 불러왔어요 — 선물 +' + added.g + ' · 구매 +' + added.b + ' · 지출 +' + added.x + ' · 사진 +' + added.img + ' · 잠시 후 새로고침해요');
+      bkSay('✓ 불러왔어요 — 선물 +' + added.g + ' · 구매 +' + added.b + ' · 지출 +' + added.x + ' · 사진 +' + added.img + (added.p ? ' · 일정 +' + added.p + '일' : '') + ' · 잠시 후 새로고침해요');
       setTimeout(function(){ location.reload() }, 1200);
     }
     idbKeys(function(have){ (function next(i){
