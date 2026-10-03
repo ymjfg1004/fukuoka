@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 정보, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-03-c">
+<meta name="app-version" content="2026-10-03-d">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -277,8 +277,8 @@ textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);bo
 .pf-btns .pf-save{background:var(--fill);border-color:var(--fill);color:var(--on-fill)}
 .pf-btns .pf-del{color:var(--bad)}
 @media print{.plan-bar,.li-ctl,.li-ins{display:none!important}}
-.rsv-seg{grid-template-columns:repeat(3,minmax(0,1fr))}
-.rsv-seg button{flex-direction:column;flex-wrap:nowrap;gap:1px;padding:10px 4px 8px;font-size:.88rem}
+.rsv-seg{grid-template-columns:repeat(4,minmax(0,1fr))}
+.rsv-seg button{flex-direction:column;flex-wrap:nowrap;gap:1px;padding:10px 2px 8px;font-size:.8rem}
 .rsv-seg .em{font-size:1.3rem;line-height:1.2}
 .rsv-n{font-size:.7rem;font-weight:700;color:var(--muted)}
 .rsv-n:empty{display:none}
@@ -317,6 +317,18 @@ textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);bo
 .rsv-doc-acts input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
 .rsv-doc-note{margin-top:6px;color:var(--muted);font-size:.78rem;line-height:1.5}
 @media print{.rsv-doc{display:none}}
+.promo-h{margin:18px 0 8px;color:var(--accent-text);font-size:.8rem;font-weight:800;letter-spacing:.08em}
+.promo{margin-bottom:10px}
+.promo-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.promo-code{display:inline;min-width:0;font:inherit;font-size:1.05rem;font-weight:800;letter-spacing:.02em;overflow-wrap:anywhere;-webkit-user-select:all;user-select:all}
+.promo-copy{flex:none;border:0;border-radius:999px;padding:9px 18px;background:var(--fill);color:var(--on-fill);font:inherit;font-size:.88rem;font-weight:800;cursor:pointer}
+.promo-copy.done{background:var(--ok-soft);color:var(--ok)}
+.promo-b{margin:10px 0 0;font-weight:700;line-height:1.5}
+.promo-b .pill{margin-left:4px;vertical-align:middle}
+.promo-c{margin:2px 0 0;color:var(--muted);font-size:.85rem}
+.promo-uses{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:10px;padding:0;border:0}
+.promo-uses-l{color:var(--muted);font-size:.8rem;font-weight:700}
+.promo-uses label{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;font-size:.85rem}
 footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
 
 /* bottom tab bar: each tab opens its own page */
@@ -393,7 +405,7 @@ main{min-height:60vh}
     <ul class="tl">
       <li><time>04:30</time><div><div class="t">석바위 출발 → 인천공항 T2 예약주차장</div><div class="d">05:20~05:30 도착 · 셔틀로 공항 이동, 출국 수속</div></div></li>
       <li><time>08:05~09:30</time><div><div class="t">인천 → 후쿠오카 (에어서울 RS723)</div><div class="d">좌석 19D · 19E · 19F · 예약완료</div></div></li>
-      <li><time>09:30~10:30</time><div><div class="t">공항 → 호텔 (택시)</div><div class="d">호텔 몬토레 라 스루 후쿠오카에 짐 보관</div></div></li>
+      <li><time>09:30~10:30</time><div><div class="t">공항 → 호텔 (택시)</div><div class="d">호텔 몬토레 라 스루 후쿠오카에 짐 보관 · 우버를 쓰면 공항 코드 JPU1SW26AIR (10/4까지, 예약 탭 → 우버)</div></div></li>
       <li><time>10:30~12:15</time><div><div class="t">점심: 스시사카바사시스 텐진점</div><div class="d">11시 오픈에 맞춰 도보 이동 · 오픈런</div></div></li>
       <li><time>12:20~13:20</time><div><div class="t">텐진 지하상가 + Standard Products</div><div class="d">부피 작은 쇼핑 위주. 그릇·대형 수납용품은 마지막에</div></div></li>
       <li><time>13:20~15:00</time><div><div class="t">오호리공원</div><div class="d">지하철(공항선) 이동 · 호숫가 40~60분 + 휴식/카페</div></div></li>
@@ -482,6 +494,7 @@ main{min-height:60vh}
     <button type="button" role="tab" aria-selected="false" data-rsv="stay"><span class="em">🏨</span><span>숙소</span><small class="rsv-n"></small></button>
     <button type="button" role="tab" aria-selected="false" data-rsv="food"><span class="em">🍽️</span><span>음식점</span><small class="rsv-n"></small></button>
     <button type="button" role="tab" aria-selected="false" data-rsv="vjw"><span class="em">🛂</span><span>비짓재팬</span><small class="rsv-n"></small></button>
+    <button type="button" role="tab" aria-selected="false" data-rsv="uber"><span class="em">🚕</span><span>우버</span><small class="rsv-n"></small></button>
     <button type="button" role="tab" aria-selected="false" data-rsv="cost"><span class="em">💴</span><span>비용·지출</span><small class="rsv-n"></small></button>
   </div>
   <div class="rsv-pane on" data-rsv-pane="air">
@@ -512,6 +525,22 @@ main{min-height:60vh}
   <div class="rsv-pane" data-rsv-pane="vjw">
 <div class="card rsv"><div class="rsv-h"><b>Visit Japan Web <small>입국심사 · 세관 신고</small></b><span class="pill todo" id="vjw-pill">등록 0/3</span></div><dl class="rsv-d"><div><dt>무엇</dt><dd>입국심사와 세관 신고를 미리 등록하고 QR코드를 받아 두는 공식 서비스예요. 공항에서 QR만 보여 주면 돼요.</dd></div><div><dt>누가</dt><dd>여행자 3명 모두 (한 계정에서 가족을 같이 등록할 수 있어요)</dd></div><div><dt>준비물</dt><dd>여권 · 이메일 · 도착 항공편(10/4 에어서울 인천 → 후쿠오카) · 일본 첫 숙소</dd></div><div><dt>첫 숙소</dt><dd>호텔 몬토레 라 스루 후쿠오카 · 福岡県福岡市中央区大名2-8-27 · <code>092-726-7111</code></dd></div></dl><div class="rsv-chk checks"><b>등록하고 QR 캡처까지 끝낸 사람</b><label><input type="checkbox" data-k="v1"><span>본인</span></label><label><input type="checkbox" data-k="v2"><span>아버지</span></label><label><input type="checkbox" data-k="v3"><span>어머니</span></label></div><p class="rsv-note"><a href="https://vjw-lp.digital.go.jp/" target="_blank" rel="noopener">Visit Japan Web 공식 사이트 열기</a> · 준비·할 일 탭의 "Visit Japan Web 등록"과 같은 일이에요. QR(입국심사, 세관)은 화면을 캡처해 폰에 저장해 두세요.</p></div>
 <p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>등록을 끝냈는지 · 이미 받은 QR이 있는지 · 막힌 단계가 있으면 어디인지</p>
+  </div>
+  <div class="rsv-pane" data-rsv-pane="uber">
+<p class="rsv-note" style="margin:0 0 4px">코드를 누르면 선택되고, <b>복사</b> 버튼을 누르면 클립보드에 담겨요. 우버 앱의 프로모션 코드 입력칸(지갑 → 프로모션 코드 추가)에 붙여 넣으세요. 보내 주신 표에서 옮겨 적은 것이라, 신규/기존 회원 조건과 기한은 앱에서 한 번 더 확인하세요. 기한은 모두 올해 기준이에요.</p>
+<h3 class="promo-h">공항에서 바로 · 여행 첫날까지</h3>
+<div class="card promo"><div class="promo-top"><code class="promo-code">JPU1SW26AIR</code><button type="button" class="promo-copy" data-code="JPU1SW26AIR">복사</button></div><p class="promo-b">공항에서 승차 또는 하차 시 30% 할인 <span class="pill todo">~10/4</span></p><p class="promo-c">최대 3,000엔 할인 · 10/4까지 2회</p><div class="checks promo-uses"><span class="promo-uses-l">쓴 횟수</span><label><input type="checkbox" data-k="u_jpu1sw26air_1"><span>1회</span></label><label><input type="checkbox" data-k="u_jpu1sw26air_2"><span>2회</span></label></div></div>
+<h3 class="promo-h">신규 회원 첫 이용</h3>
+<div class="card promo"><div class="promo-top"><code class="promo-code">SP99OFF</code><button type="button" class="promo-copy" data-code="SP99OFF">복사</button></div><p class="promo-b">신규 회원 첫 이용 시 99% 할인 <span class="pill mid">~10/24</span></p><p class="promo-c">최대 3,000엔 할인 · 10/24까지 3회</p><div class="checks promo-uses"><span class="promo-uses-l">쓴 횟수</span><label><input type="checkbox" data-k="u_sp99off_1"><span>1회</span></label><label><input type="checkbox" data-k="u_sp99off_2"><span>2회</span></label><label><input type="checkbox" data-k="u_sp99off_3"><span>3회</span></label></div></div>
+<div class="card promo"><div class="promo-top"><code class="promo-code">TSUKIMIRFT</code><button type="button" class="promo-copy" data-code="TSUKIMIRFT">복사</button></div><p class="promo-b">신규 회원 첫 이용 시 최대 50% 할인 <span class="pill mid">~10/18</span></p><p class="promo-c">10/18까지 1회</p><div class="checks promo-uses"><span class="promo-uses-l">쓴 횟수</span><label><input type="checkbox" data-k="u_tsukimirft_1"><span>1회</span></label></div></div>
+<div class="card promo"><div class="promo-top"><code class="promo-code">RAKU2608</code><button type="button" class="promo-copy" data-code="RAKU2608">복사</button></div><p class="promo-b">신규 회원 첫 이용 시 2,500엔 할인 </p><p class="promo-c">2회까지 적용</p><div class="checks promo-uses"><span class="promo-uses-l">쓴 횟수</span><label><input type="checkbox" data-k="u_raku2608_1"><span>1회</span></label><label><input type="checkbox" data-k="u_raku2608_2"><span>2회</span></label></div></div>
+<h3 class="promo-h">모든 회원</h3>
+<div class="card promo"><div class="promo-top"><code class="promo-code">LOTTEUBERJP</code><button type="button" class="promo-copy" data-code="LOTTEUBERJP">복사</button></div><p class="promo-b">모든 회원 최대 30% 할인 </p><p class="promo-c">최대 2회 · 1회당 750엔 할인</p><div class="checks promo-uses"><span class="promo-uses-l">쓴 횟수</span><label><input type="checkbox" data-k="u_lotteuberjp_1"><span>1회</span></label><label><input type="checkbox" data-k="u_lotteuberjp_2"><span>2회</span></label></div></div>
+<h3 class="promo-h">기존 회원</h3>
+<div class="card promo"><div class="promo-top"><code class="promo-code">TSUKIMIERI</code><button type="button" class="promo-copy" data-code="TSUKIMIERI">복사</button></div><p class="promo-b">기존 회원 최대 25% 할인 <span class="pill mid">~10/18</span></p><p class="promo-c">10/18까지 2회</p><div class="checks promo-uses"><span class="promo-uses-l">쓴 횟수</span><label><input type="checkbox" data-k="u_tsukimieri_1"><span>1회</span></label><label><input type="checkbox" data-k="u_tsukimieri_2"><span>2회</span></label></div></div>
+<div class="card promo"><div class="promo-top"><code class="promo-code">UBREDE_YOBERU</code><button type="button" class="promo-copy" data-code="UBREDE_YOBERU">복사</button></div><p class="promo-b">기존 회원 50% 할인 </p><p class="promo-c">최대 1,000엔 할인</p></div>
+<h3 class="promo-h">우버 프리미엄</h3>
+<div class="card promo"><div class="promo-top"><code class="promo-code">PREMJP26</code><button type="button" class="promo-copy" data-code="PREMJP26">복사</button></div><p class="promo-b">우버 프리미엄 탑승 시 20% 할인 <span class="pill mid">~10/31</span></p><p class="promo-c">10/31까지 최대 1,000엔 할인</p></div>
   </div>
   <div class="rsv-pane" data-rsv-pane="cost">
   <h2>💴 예약 · 비용</h2>
@@ -789,7 +818,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-03-c</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-03-d</div></div></footer>
 
 <div class="saved-flash" id="saved-flash" role="status" aria-live="polite" hidden>✓ 저장됨</div>
 <div class="stale warn" id="store-warn" role="alert" hidden><span></span><button type="button">닫기</button></div>
@@ -2217,7 +2246,7 @@ main{min-height:60vh}
   }
   rsvBtns.forEach(function(b){ b.addEventListener('click', function(){ showRsv(b.dataset.rsv) }) });
   document.querySelectorAll('.rsv-chk input').forEach(function(i){ i.addEventListener('change', rsvCounts) });
-  showRsv(['air', 'car', 'stay', 'food', 'vjw', 'cost'].indexOf(S.get('rsv')) >= 0 ? S.get('rsv') : 'air');
+  showRsv(['air', 'car', 'stay', 'food', 'vjw', 'uber', 'cost'].indexOf(S.get('rsv')) >= 0 ? S.get('rsv') : 'air');
   rsvCounts();
 
   // ===== 예약 서류(바우처·확인서): 파일은 이 폰에만 저장해요. PIN 같은 개인정보가 있어서 공개 사이트에는 올리지 않아요 =====
@@ -2290,6 +2319,35 @@ main{min-height:60vh}
     });
   }
   docsAll();
+
+  // ===== 우버 프로모션 코드: 복사 =====
+  function copyText(t, done){
+    function legacy(){                 // older iOS / non-secure pages
+      var ta = document.createElement('textarea'), ok = false;
+      ta.value = t; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try{ ta.setSelectionRange(0, t.length) }catch(e){}
+      try{ ok = document.execCommand('copy') }catch(e){}
+      document.body.removeChild(ta);
+      done(ok);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+      navigator.clipboard.writeText(t).then(function(){ done(true) }, legacy);
+    }else legacy();
+  }
+  document.querySelectorAll('.promo-copy').forEach(function(b){
+    var timer = 0;
+    b.addEventListener('click', function(){
+      copyText(b.dataset.code, function(ok){
+        clearTimeout(timer);
+        b.textContent = ok ? '복사됨 ✓' : '코드를 길게 눌러 복사';
+        b.classList.toggle('done', ok);
+        timer = setTimeout(function(){ b.textContent = '복사'; b.classList.remove('done'); }, 1800);
+      });
+    });
+  });
 
   // Memo
   var memo = document.getElementById('memo');
