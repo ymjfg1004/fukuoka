@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 정보, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-03-b">
+<meta name="app-version" content="2026-10-03-c">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -305,6 +305,18 @@ textarea{width:100%;min-height:96px;padding:12px;border:1px solid var(--line);bo
 .rsv-chk>b{display:block;margin-bottom:2px;font-size:.84rem}
 .rsv-chk label{align-items:center}
 @media print{.rsv-pane{display:block!important}.rsv-seg{display:none}}
+.rsv-doc{margin-top:14px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px}
+.rsv-doc.has{border-style:solid;background:var(--accent-soft)}
+.rsv-up{position:relative;display:block;padding:6px;text-align:center;font-weight:800;cursor:pointer}
+.rsv-up input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.rsv-open{display:block;padding:12px;border-radius:12px;background:var(--fill);color:var(--on-fill);text-align:center;font-weight:800;text-decoration:none}
+.rsv-open.wait{opacity:.5;pointer-events:none}
+.rsv-doc-name{margin-top:6px;color:var(--muted);font-size:.78rem;overflow-wrap:anywhere}
+.rsv-doc-acts{display:flex;gap:8px;margin-top:8px}
+.rsv-doc-acts .pf-mini{position:relative;overflow:hidden}
+.rsv-doc-acts input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.rsv-doc-note{margin-top:6px;color:var(--muted);font-size:.78rem;line-height:1.5}
+@media print{.rsv-doc{display:none}}
 footer{padding:32px 0 8px;color:var(--muted);font-size:.85rem;text-align:center}
 
 /* bottom tab bar: each tab opens its own page */
@@ -380,7 +392,7 @@ main{min-height:60vh}
     <h3><span class="dn">DAY 1</span>텐진 가볍게</h3>
     <ul class="tl">
       <li><time>04:30</time><div><div class="t">석바위 출발 → 인천공항 T2 예약주차장</div><div class="d">05:20~05:30 도착 · 셔틀로 공항 이동, 출국 수속</div></div></li>
-      <li><time>08:05~09:30</time><div><div class="t">인천 → 후쿠오카 (에어서울)</div><div class="d">예약완료</div></div></li>
+      <li><time>08:05~09:30</time><div><div class="t">인천 → 후쿠오카 (에어서울 RS723)</div><div class="d">좌석 19D · 19E · 19F · 예약완료</div></div></li>
       <li><time>09:30~10:30</time><div><div class="t">공항 → 호텔 (택시)</div><div class="d">호텔 몬토레 라 스루 후쿠오카에 짐 보관</div></div></li>
       <li><time>10:30~12:15</time><div><div class="t">점심: 스시사카바사시스 텐진점</div><div class="d">11시 오픈에 맞춰 도보 이동 · 오픈런</div></div></li>
       <li><time>12:20~13:20</time><div><div class="t">텐진 지하상가 + Standard Products</div><div class="d">부피 작은 쇼핑 위주. 그릇·대형 수납용품은 마지막에</div></div></li>
@@ -396,7 +408,7 @@ main{min-height:60vh}
     <ul class="tl">
       <li><time>08:20~08:40</time><div><div class="t">체크아웃 준비 (아침식사 별도 없음)</div><div class="loc"><b>ホテルモントレ ラ・スール福岡</b><span>📍 福岡県福岡市中央区大名2-8-27</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 092-726-7111</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%20%E3%83%A9%E3%83%BB%E3%82%B9%E3%83%BC%E3%83%AB%E7%A6%8F%E5%B2%A1%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A7%E5%90%8D2-8-27" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>08:40~09:00</time><div><div class="t">호텔 → 렌터카 텐진키타점 (도보)</div><div class="loc"><b>バジェット・レンタカー 天神北店</b><span>📍 福岡県福岡市中央区舞鶴1-2-3</span><span>🧭 맵코드 <code>13 317 496*08</code></span><span>📞 092-752-0543</span><span>🕗 영업 08:00~20:00</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%90%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%BB%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E5%A4%A9%E7%A5%9E%E5%8C%97%E5%BA%97%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%88%9E%E9%B6%B41-2-3" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
-      <li><time>09:00</time><div><div class="t">렌터카 수령 (경차) · 16,385엔 현장결제</div><div class="d">결제수단, 보험, 통행료(ETC) 방식 확인</div></div></li>
+      <li><time>09:00</time><div><div class="t">렌터카 수령 (경차) · 16,385엔 현장결제</div><div class="d">확인번호 00010895563 · 국제운전허가증 원본 필수 · 늦어도 10:00까지 수령 · 결제수단, 보험, 통행료(ETC) 확인</div></div></li>
       <li><time>09:10~10:00</time><div><div class="t">후쿠오카 → 유후인 방향 출발</div></div></li>
       <li><time>10:00 전후</time><div><div class="t">휴게소 1회 정차</div><div class="d">화장실 + 커피/주먹밥/우동으로 아침</div></div></li>
       <li><time>10:30~11:30</time><div><div class="t">유후인 도착</div><div class="d">교통에 따라 변동 · 주차장 위치 미리 확인</div><div class="loc"><b>タイムズ湯布院金鱗湖第2駐車場</b><span>📍 大分県由布市湯布院町川上</span><span>🧭 맵코드 <code>269 359 671*78</code></span><span>🅿️ 24시간 · 약 24대 · 주차 후보 (금린호 쪽)</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E6%B9%AF%E5%B8%83%E9%99%A2%E9%87%91%E9%B1%97%E6%B9%96%E7%AC%AC2%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A" target="_blank" rel="noopener">구글지도로 열기</a></div><div class="loc"><b>タイムズ湯布院</b><span>📍 大分県由布市湯布院町川上3021</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>🅿️ 약 67대 · 유노츠보 거리까지 도보 1분 · 평일 700엔, 주말·공휴일 최대 1,200엔 (변동 가능)</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E6%B9%AF%E5%B8%83%E9%99%A2%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A3021" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
@@ -420,7 +432,7 @@ main{min-height:60vh}
       <li><time>14:30</time><div><div class="t">선택 분기: 부모님 컨디션·시간 확인</div></div></li>
       <li class="opt"><time>OPTION A</time><div><div class="t">가마도지옥 30~40분만</div><div class="d">여유 있을 때만. 후쿠오카 복귀 시간이 늦어지므로 아래 점검 참고</div><div class="loc"><b>かまど地獄</b><span>📍 〒874-0045 大分県別府市大字鉄輪621</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 0977-66-0178</span><span>🅿️ 무료 주차 약 50대 · 영업 08:00~17:00 · 입장 대인 400엔</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%81%8B%E3%81%BE%E3%81%A9%E5%9C%B0%E7%8D%84%20874-0045%20%E5%A4%A7%E5%88%86%E7%9C%8C%E5%88%A5%E5%BA%9C%E5%B8%82%E5%A4%A7%E5%AD%97%E9%89%84%E8%BC%AA621" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>OPTION B</time><div><div class="t">후쿠오카 직행</div><div class="d">사파리를 충분히 즐겼거나 피곤하면 바로 복귀</div></div></li>
-      <li><time>18:00~19:00</time><div><div class="t">호텔 몬토레 후쿠오카 · 부모님 + 캐리어 먼저 하차</div><div class="loc"><b>ホテルモントレ福岡</b><span>📍 〒810-0004 福岡県福岡市中央区渡辺通3-4-13</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%E7%A6%8F%E5%B2%A1%20810-0004%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%B8%A1%E8%BE%BA%E9%80%9A3-4-13" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
+      <li><time>18:00~19:00</time><div><div class="t">호텔 몬토레 후쿠오카 · 부모님 + 캐리어 먼저 하차</div><div class="loc"><b>ホテルモントレ福岡</b><span>📍 〒810-0004 福岡県福岡市中央区渡辺通3-4-13</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 092-734-7111</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%E7%A6%8F%E5%B2%A1%20810-0004%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%B8%A1%E8%BE%BA%E9%80%9A3-4-13" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>이후</time><div><div class="t">주유 → 텐진키타점</div></div></li>
       <li><time>20:00</time><div><div class="t">렌터카 반납 (시간 고정)</div><div class="loc"><b>バジェット・レンタカー 天神北店</b><span>📍 福岡県福岡市中央区舞鶴1-2-3</span><span>🧭 맵코드 <code>13 317 496*08</code></span><span>📞 092-752-0543</span><span>🕗 영업 08:00~20:00 · 반납은 시간 엄수</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%90%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%BB%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E5%A4%A9%E7%A5%9E%E5%8C%97%E5%BA%97%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%88%9E%E9%B6%B41-2-3" target="_blank" rel="noopener">구글지도로 열기</a></div></div></li>
       <li><time>20:00 이후</time><div><div class="t">돈키호테 본쇼핑 (혼자)</div><div class="d">술/과자/선물</div></div></li>
@@ -473,20 +485,20 @@ main{min-height:60vh}
     <button type="button" role="tab" aria-selected="false" data-rsv="cost"><span class="em">💴</span><span>비용·지출</span><small class="rsv-n"></small></button>
   </div>
   <div class="rsv-pane on" data-rsv-pane="air">
-<div class="card rsv" data-count="1"><div class="rsv-h"><b>에어서울 왕복 (인천 ↔ 후쿠오카)</b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>가는 편</dt><dd>10/4(일) 08:05 인천 → 09:30 후쿠오카</dd></div><div><dt>오는 편</dt><dd>10/7(수) 17:00 후쿠오카 → 18:35 인천</dd></div><div><dt>인원</dt><dd>3명</dd></div></dl></div>
+<div class="card rsv" data-count="1"><div class="rsv-h"><b>에어서울 왕복 (인천 ↔ 후쿠오카)</b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>가는 편</dt><dd>10/4(일) 08:05 인천 → 09:30 후쿠오카<br>편명 <b>RS723</b> · 좌석 <b>19D · 19E · 19F</b></dd></div><div><dt>오는 편</dt><dd>10/7(수) 17:00 후쿠오카 → 18:35 인천<br>편명·좌석은 아직 없어요</dd></div><div><dt>인원</dt><dd>3명</dd></div></dl><div class="rsv-doc" data-doc="air" data-label="항공권"></div></div>
 <div class="card rsv"><div class="rsv-h"><b>인천공항 T2 예약주차장</b><span class="pill mid">확인 필요</span></div><div class="rsv-sub">예약 여부와 예약번호는 아직 적지 않았어요</div><dl class="rsv-d"><div><dt>10/4</dt><dd>05:20~05:30 도착 → 셔틀로 공항 이동, 출국 수속</dd></div><div><dt>10/7</dt><dd>귀국 후 T2 예약주차장 셔틀 · 출국장 5A 정류장</dd></div></dl></div>
 <div class="card rsv"><div class="rsv-h"><b>CARGO PASS (호텔 → 공항 수하물)</b><span class="pill mid">확인 필요</span></div><dl class="rsv-d"><div><dt>접수</dt><dd>10/7 호텔 프런트에서 10:00 이전 · 접수 마감은 미리 확인</dd></div><div><dt>수령</dt><dd>공항에서 받아서 체크인 · 수하물 위탁</dd></div><div><dt>짐</dt><dd>기내용 1 + 26인치 2 예상</dd></div><div><dt>예상 비용</dt><dd>약 2,750엔 (기내용 550엔 + 26인치 1,100엔×2)</dd></div></dl></div>
-<p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>예약번호 · 편명 · 좌석 · 무료 수하물 무게 · 결제 금액, 주차장 예약번호</p>
+<p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>오는 편 편명·좌석 · 항공 예약번호 · 무료 수하물 무게 · 결제 금액 · 주차장 예약번호</p>
   </div>
   <div class="rsv-pane" data-rsv-pane="car">
-<div class="card rsv" data-count="1"><div class="rsv-h"><b>Budget Rent a Car · 텐진키타점</b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>수령</dt><dd>10/5(월) 09:00</dd></div><div><dt>반납</dt><dd>10/6(화) 20:00 · 시간 엄수 (총 35시간)</dd></div><div><dt>차종</dt><dd>경차</dd></div><div><dt>요금</dt><dd>16,385엔 · 현장 결제</dd></div></dl><div class="loc"><b>バジェット・レンタカー 天神北店</b><span>📍 福岡県福岡市中央区舞鶴1-2-3</span><span>🧭 맵코드 <code>13 317 496*08</code></span><span>📞 092-752-0543</span><span>🕗 영업 08:00~20:00</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%90%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%BB%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E5%A4%A9%E7%A5%9E%E5%8C%97%E5%BA%97%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%88%9E%E9%B6%B41-2-3" target="_blank" rel="noopener">구글지도로 열기</a></div><p class="rsv-note">수령할 때 결제수단 · 보험 · 통행료(ETC) 방식을 확인하세요. 경차 트렁크에 짐이 다 안 들어갈 수 있어요(점검 탭).</p></div>
-<p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>예약번호 · 예약 확인서에 적힌 회사명과 매장 주소 · 보험(면책보상) 가입 여부 · 운전자 이름 · 국제운전면허증</p>
+<div class="card rsv" data-count="1"><div class="rsv-h"><b>Budget Rent a Car · 텐진키타점</b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>확인 번호</dt><dd><code>00010895563</code></dd></div><div><dt>수령</dt><dd>10/5(월) 09:00 · 예약 시간부터 <b>1시간 뒤(10:00)까지만</b> 차를 잡아 둬요. 도착이 늦어지면 안 돼요</dd></div><div><dt>반납</dt><dd>10/6(화) 20:00 · 시간 엄수 (총 35시간)</dd></div><div><dt>차량</dt><dd>경차 · 차량 종류 코드 JSKN</dd></div><div><dt>요금</dt><dd>16,385엔 (세금 포함) · 현장 결제</dd></div><div><dt>가져갈 것</dt><dd>국내 운전면허증 + 여권 + <b>국제운전허가증(IDP) 원본</b> (PDF·카드형은 안 돼요)</dd></div></dl><div class="loc"><b>バジェット・レンタカー 天神北店</b><span>📍 福岡県福岡市中央区舞鶴1-2-3</span><span>🧭 맵코드 <code>13 317 496*08</code></span><span>📞 092-752-0543</span><span>🕗 영업 08:00~20:00</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%90%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%BB%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E5%A4%A9%E7%A5%9E%E5%8C%97%E5%BA%97%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%88%9E%E9%B6%B41-2-3" target="_blank" rel="noopener">구글지도로 열기</a></div><p class="rsv-note">수령할 때 결제수단 · 보험 · 통행료(ETC) 방식을 확인하세요. 경차 트렁크에 짐이 다 안 들어갈 수 있어요(점검 탭). <a href="http://www.budgetrentacar.co.jp/sp/kr/shop/0019/?wh=before" target="_blank" rel="noopener">매장 안내 페이지 (모바일)</a></p><div class="rsv-doc" data-doc="car" data-label="렌트카 확인서"></div></div>
+<p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>보험(면책보상) 가입 여부 · 운전할 사람</p>
   </div>
   <div class="rsv-pane" data-rsv-pane="stay">
-<div class="card rsv" data-count="1"><div class="rsv-h"><b>호텔 몬토레 라 스루 후쿠오카 <small>ホテルモントレ ラ・スール福岡</small></b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>숙박</dt><dd>10/4(일) → 10/5(월) · 1박</dd></div><div><dt>금액</dt><dd>250,122원 · Trip.com</dd></div><div><dt>메모</dt><dd>공항에서 먼저 짐 보관 → 오후 체크인 · 10/5 아침 체크아웃</dd></div></dl><div class="loc"><b>ホテルモントレ ラ・スール福岡</b><span>📍 福岡県福岡市中央区大名2-8-27</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 092-726-7111</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%20%E3%83%A9%E3%83%BB%E3%82%B9%E3%83%BC%E3%83%AB%E7%A6%8F%E5%B2%A1%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A7%E5%90%8D2-8-27" target="_blank" rel="noopener">구글지도로 열기</a></div></div>
-<div class="card rsv" data-count="1"><div class="rsv-h"><b>山のホテル 夢想園 <small>무소우엔 · 유후인</small></b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>숙박</dt><dd>10/5(월) → 10/6(화) · 1박 · 1실 · 성인 3명</dd></div><div><dt>예약번호</dt><dd><code>29692</code></dd></div><div><dt>방</dt><dd>신관 코보우테이(弘法亭) 일본식 8장+8장</dd></div><div><dt>플랜</dt><dd>「오이타 와규」 샤브샤브 회석 (조식·석식 포함)</dd></div><div><dt>금액</dt><dd>132,000엔 → 현대카드 <b>1,153,104원</b> 결제 완료</dd></div><div><dt>현장 현금</dt><dd>입탕세 약 750엔만</dd></div><div><dt>체크인·아웃</dt><dd>15:00부터 · 11:00까지 (18시 넘어 도착하면 전화)</dd></div><div><dt>취소 규정</dt><dd>7일 전(9/28)부터 20%(26,400엔) · 당일 70%(92,400엔) · 불참 100%</dd></div><div><dt>알레르기</dt><dd>있으면 10/4까지 전화로 상담</dd></div></dl><div class="loc"><b>山のホテル 夢想園</b><span>📍 〒879-5103 大分県由布市湯布院町川南1243</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 0977-84-2171</span><span>🔖 예약번호 <code>29692</code></span><span>🅿️ 무료 주차 약 60대</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B1%B1%E3%81%AE%E3%83%9B%E3%83%86%E3%83%AB%20%E5%A4%A2%E6%83%B3%E5%9C%92%20879-5103%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%971243" target="_blank" rel="noopener">구글지도로 열기</a></div></div>
-<div class="card rsv" data-count="1"><div class="rsv-h"><b>호텔 몬토레 후쿠오카 <small>ホテルモントレ福岡</small></b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>숙박</dt><dd>10/6(화) → 10/7(수) · 1박</dd></div><div><dt>금액</dt><dd>273,543원 · Trip.com</dd></div><div><dt>메모</dt><dd>10/6 저녁 부모님 + 캐리어 먼저 하차 · 10/7 체크아웃 후 CARGO PASS 접수(10:00 이전)</dd></div></dl><div class="loc"><b>ホテルモントレ福岡</b><span>📍 〒810-0004 福岡県福岡市中央区渡辺通3-4-13</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%E7%A6%8F%E5%B2%A1%20810-0004%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%B8%A1%E8%BE%BA%E9%80%9A3-4-13" target="_blank" rel="noopener">구글지도로 열기</a></div></div>
-<p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>호텔 두 곳의 예약번호 · 체크인/체크아웃 시간 · 취소 규정 · 조식 포함 여부 · 주차 가능 여부</p>
+<div class="card rsv" data-count="1"><div class="rsv-h"><b>호텔 몬토레 라 스루 후쿠오카 <small>ホテルモントレ ラ・スール福岡</small></b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>예약번호</dt><dd><code>1400829431686220</code> (Trip.com)</dd></div><div><dt>숙박</dt><dd>10/4(일) 15:00 이후 체크인 → 10/5(월) 11:00 이전 체크아웃 · 1박</dd></div><div><dt>객실</dt><dd>트리플룸 · 성인 3명 · 식사 불포함</dd></div><div><dt>금액</dt><dd>250,122원 온라인 사전 결제 완료 (서비스 요금 35,173원 + 부가세 19,541원 포함)</dd></div><div><dt>현장 결제</dt><dd>숙박세 (체크인 인원 수 기준)</dd></div><div><dt>취소</dt><dd>체크인하지 않으면 취소 수수료가 있어요 (자세한 규정은 바우처에서)</dd></div><div><dt>메모</dt><dd>공항에서 먼저 짐 보관 → 오후 체크인 · 10/5 아침 체크아웃</dd></div></dl><div class="loc"><b>ホテルモントレ ラ・スール福岡</b><span>📍 福岡県福岡市中央区大名2-8-27</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 092-726-7111</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%20%E3%83%A9%E3%83%BB%E3%82%B9%E3%83%BC%E3%83%AB%E7%A6%8F%E5%B2%A1%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A7%E5%90%8D2-8-27" target="_blank" rel="noopener">구글지도로 열기</a></div><div class="rsv-doc" data-doc="stay1" data-label="바우처"></div></div>
+<div class="card rsv" data-count="1"><div class="rsv-h"><b>山のホテル 夢想園 <small>무소우엔 · 유후인</small></b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>숙박</dt><dd>10/5(월) → 10/6(화) · 1박 · 1실 · 성인 3명</dd></div><div><dt>예약번호</dt><dd><code>29692</code></dd></div><div><dt>방</dt><dd>신관 코보우테이(弘法亭) 일본식 8장+8장</dd></div><div><dt>플랜</dt><dd>「오이타 와규」 샤브샤브 회석 (조식·석식 포함)</dd></div><div><dt>금액</dt><dd>132,000엔 → 현대카드 <b>1,153,104원</b> 결제 완료</dd></div><div><dt>현장 현금</dt><dd>입탕세 약 750엔만</dd></div><div><dt>체크인·아웃</dt><dd>15:00부터 · 11:00까지 (18시 넘어 도착하면 전화)</dd></div><div><dt>취소 규정</dt><dd>7일 전(9/28)부터 20%(26,400엔) · 당일 70%(92,400엔) · 불참 100%</dd></div><div><dt>알레르기</dt><dd>있으면 10/4까지 전화로 상담</dd></div></dl><div class="loc"><b>山のホテル 夢想園</b><span>📍 〒879-5103 大分県由布市湯布院町川南1243</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 0977-84-2171</span><span>🔖 예약번호 <code>29692</code></span><span>🅿️ 무료 주차 약 60대</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B1%B1%E3%81%AE%E3%83%9B%E3%83%86%E3%83%AB%20%E5%A4%A2%E6%83%B3%E5%9C%92%20879-5103%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%971243" target="_blank" rel="noopener">구글지도로 열기</a></div><div class="rsv-doc" data-doc="stay2" data-label="예약 확인 메일"></div></div>
+<div class="card rsv" data-count="1"><div class="rsv-h"><b>호텔 몬토레 후쿠오카 <small>ホテルモントレ福岡</small></b><span class="pill ok">완료</span></div><dl class="rsv-d"><div><dt>예약번호</dt><dd><code>1400829431709454</code> (Trip.com)</dd></div><div><dt>숙박</dt><dd>10/6(화) 15:00~24:00 체크인 → 10/7(수) 05:00~11:00 체크아웃 · 1박</dd></div><div><dt>객실</dt><dd>트리플룸 · 싱글 침대 3개 · 성인 3명 · 식사 불포함</dd></div><div><dt>금액</dt><dd>273,543원 온라인 사전 결제 완료 (부가세 21,370원 + 서비스 요금 38,466원 포함)</dd></div><div><dt>현장 결제</dt><dd>숙박세 (체크인 인원 수 기준)</dd></div><div><dt>취소</dt><dd>체크인하지 않으면 취소 수수료가 있어요 (자세한 규정은 바우처에서)</dd></div><div><dt>메모</dt><dd>10/6 저녁 부모님 + 캐리어 먼저 하차 · 10/7 체크아웃 후 CARGO PASS 접수(10:00 이전)</dd></div></dl><div class="loc"><b>ホテルモントレ福岡</b><span>📍 〒810-0004 福岡県福岡市中央区渡辺通3-4-13</span><span>🧭 맵코드 미확인 · 내비에서 전화번호로 검색</span><span>📞 092-734-7111</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9B%E3%83%86%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%88%E3%83%AC%E7%A6%8F%E5%B2%A1%20810-0004%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%B8%A1%E8%BE%BA%E9%80%9A3-4-13" target="_blank" rel="noopener">구글지도로 열기</a></div><div class="rsv-doc" data-doc="stay3" data-label="바우처"></div></div>
+<p class="rsv-need"><b>알려 주시면 적어 둘 정보</b><br>두 호텔의 무료 취소 마감일 · 주차 가능 여부</p>
   </div>
   <div class="rsv-pane" data-rsv-pane="food">
 <div class="card rsv"><div class="rsv-h"><b>스시사카바사시스 텐진점</b><span class="pill mid">오픈런</span></div><div class="rsv-sub">예약 없이 줄서는 계획이에요</div><dl class="rsv-d"><div><dt>일시</dt><dd>10/4(일) 점심 · 11시 오픈에 맞춰 도보 이동</dd></div></dl></div>
@@ -533,6 +545,12 @@ main{min-height:60vh}
 <section id="check" class="page">
   <h2>⚠️ 계획 점검 (확인 필요한 곳)</h2>
   <p class="muted">GPT와 정리한 계획을 훑어보고 빈틈이나 위험한 곳을 골랐습니다. 소요시간과 요금은 제 추정이라 출발 전 지도 앱으로 확인하세요.</p>
+
+  <div class="card risk high">
+    <h3><span class="pill todo">높음</span> 렌터카: 국제운전허가증 원본이 없으면 차를 못 빌려요</h3>
+    <p>수령할 때 <b>국내 운전면허증 + 여권 + 국제운전허가증(IDP) 원본</b>이 모두 필요해요. 스캔본(PDF)이나 카드형은 안 돼요. 예약한 이름의 운전자가 챙기세요.</p>
+    <p>예약 차량은 예약 시간(10/5 09:00)부터 <b>1시간 뒤(10:00)까지만</b> 확보돼요. 도착이 늦어지면 차가 없어질 수 있으니 10:00 전에 매장에 도착하는 동선인지 확인하세요. 확인 번호는 <code>00010895563</code>이에요.</p>
+  </div>
 
   <div class="card risk high">
     <h3><span class="pill todo">높음</span> 경차 트렁크에 3명 + 캐리어 2.5개는 들어가지 않을 가능성이 큼</h3>
@@ -698,7 +716,7 @@ main{min-height:60vh}
 
   <details class="fold"><summary><h2>✅ 출발 전 할 일 <span class="buy-count fold-count"></span></h2></summary>
   <div class="card checks">
-    <label><input type="checkbox" data-k="t1"><span>무소우엔 입탕세(약 750엔)는 현장에서 현금으로 — 엔화 현금 준비</span></label>
+    <label><input type="checkbox" data-k="t1"><span>현장에서 낼 현금: 무소우엔 입탕세(약 750엔) + 호텔 두 곳 숙박세 (체크인 때) — 엔화 현금 준비</span></label>
     <label><input type="checkbox" data-k="t8"><span>무소우엔 식사 알레르기 있으면 10/4까지 전화 (0977-84-2171)</span></label>
     <label><input type="checkbox" data-k="t2"><span>경차 짐 문제 해결 (택배 / 압축 / 차종 변경)</span></label>
     <label><input type="checkbox" data-k="t3"><span>Visit Japan Web 등록</span></label>
@@ -706,6 +724,7 @@ main{min-height:60vh}
     <label><input type="checkbox" data-k="t5"><span>오징어회 식당 후보 선정 / 예약 가능 여부</span></label>
     <label><input type="checkbox" data-k="t6"><span>10/6 저녁 식사 계획 정하기</span></label>
     <label><input type="checkbox" data-k="t7"><span>렌터카 수령 시 결제수단, ETC, 보험 확인</span></label>
+    <label><input type="checkbox" data-k="t9"><span>렌터카: 국제운전허가증(IDP) 원본 + 국내 운전면허증 + 여권 챙기기 (수령은 늦어도 10:00까지)</span></label>
     <label><input type="checkbox" data-k="t8"><span>텐진 → 유후인 휴게소 1곳 확정</span></label>
     <label><input type="checkbox" data-k="t9"><span>10/6 사파리 운영시간 · 입장 마감 재확인</span></label>
     <label><input type="checkbox" data-k="t10"><span>인천공항 터미널(T1/T2) 확인</span></label>
@@ -770,7 +789,7 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-03-b</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-03-c</div></div></footer>
 
 <div class="saved-flash" id="saved-flash" role="status" aria-live="polite" hidden>✓ 저장됨</div>
 <div class="stale warn" id="store-warn" role="alert" hidden><span></span><button type="button">닫기</button></div>
@@ -1958,12 +1977,12 @@ main{min-height:60vh}
   shopBtns.forEach(function(b){ b.addEventListener('click', function(){ showShop(b.dataset.shop) }) });
   showShop(S.get('shop') === 'buy' ? 'buy' : 'gift');
   giftList.render(); buyList.render();
-  pOpen(function(){ if(giftList.hasPhotos() || buyList.hasPhotos()){ giftList.render(); buyList.render(); } });
+  pOpen(function(){ idbTried = true; if(giftList.hasPhotos() || buyList.hasPhotos()){ giftList.render(); buyList.render(); } setTimeout(docsAll, 0); });
   renderLog();
 
   // ===== Backup / restore: everything lives in this browser only, so keep a file copy =====
   var bkInfo = document.getElementById('bk-info'), bkStatus = document.getElementById('bk-status');
-  var BK_KEYS = /^(g_list|buy_list|x_list|x_cats|plan_edit|memo|shop|day|first_seen|s_[a-z])$|^c_|^gi_/;
+  var BK_KEYS = /^(g_list|buy_list|x_list|x_cats|plan_edit|memo|shop|day|first_seen|s_[a-z])$|^c_|^gi_|^doc_[a-z0-9]+$/;
   var bkTopStatus = document.getElementById('bk-top-status'), bkTop = document.getElementById('bk-save-top'), bkLast = document.getElementById('bk-last');
   function bkSay(t, err){
     bkStatus.textContent = t || ''; bkStatus.className = 'gstatus' + (err ? ' err' : '');
@@ -2010,8 +2029,12 @@ main{min-height:60vh}
       withIdb(function(){
         if(!pIdb){ fin(null); return; }
         try{
-          var rq = pIdb.transaction('imgs', 'readonly').objectStore('imgs').count();
-          rq.onsuccess = function(){ fin(rq.result) };
+          var rq = pIdb.transaction('imgs', 'readonly').objectStore('imgs').getAllKeys();
+          rq.onsuccess = function(){
+            var d = 0, all = rq.result || [];
+            all.forEach(function(k){ if(String(k).indexOf('doc:') === 0) d++ });
+            fin({p: all.length - d, d: d});       // photos and (private) documents are counted apart
+          };
           rq.onerror = function(){ fin(null) };
         }catch(e){ fin(null) }
       });
@@ -2080,7 +2103,7 @@ main{min-height:60vh}
     bkInfo.style.whiteSpace = 'pre-line';
     idbCount(function(n){
       if(n == null) return;
-      bkInfo.textContent = lines.concat('사진 ' + n + '장').join('\n');
+      bkInfo.textContent = lines.concat('사진 ' + n.p + '장' + (n.d ? ' · 서류 ' + n.d + '개' : '')).join('\n');
     });
   }
   document.getElementById('backup').addEventListener('toggle', function(){ if(this.open) bkRefresh() });
@@ -2196,6 +2219,77 @@ main{min-height:60vh}
   document.querySelectorAll('.rsv-chk input').forEach(function(i){ i.addEventListener('change', rsvCounts) });
   showRsv(['air', 'car', 'stay', 'food', 'vjw', 'cost'].indexOf(S.get('rsv')) >= 0 ? S.get('rsv') : 'air');
   rsvCounts();
+
+  // ===== 예약 서류(바우처·확인서): 파일은 이 폰에만 저장해요. PIN 같은 개인정보가 있어서 공개 사이트에는 올리지 않아요 =====
+  var docUrls = {}, idbTried = false;
+  function docsAll(){ document.querySelectorAll('.rsv-doc').forEach(docRender) }
+  function docMeta(k){ try{ return JSON.parse(S.get('doc_' + k) || 'null') }catch(e){ return null } }
+  function docPick(label, onFile, cls){
+    var l = mk('label', cls || 'rsv-up'), fi = document.createElement('input');
+    fi.type = 'file'; fi.accept = 'application/pdf,image/*';
+    fi.setAttribute('aria-label', label);
+    fi.addEventListener('change', function(){ if(fi.files && fi.files[0]) onFile(fi.files[0]) });
+    return {label: l, input: fi};
+  }
+  function docSave(box, file){
+    var k = box.dataset.doc;
+    if(file.size > 15 * 1024 * 1024){ window.alert('파일이 너무 커요. 15MB 이하로 올려 주세요.'); return; }
+    box.textContent = '저장 중…';
+    pRead(file, 'buf', function(buf){
+      if(!buf){ window.alert('파일을 읽지 못했어요. 다시 골라 주세요.'); docRender(box); return; }
+      var type = file.type || (/\.pdf$/i.test(file.name) ? 'application/pdf' : 'application/octet-stream');
+      pIdbPut({id: 'doc:' + k, fullBuf: buf, fullType: type, thumbBuf: new ArrayBuffer(0), thumbType: type, w: 0, h: 0, shrunk: false, kind: 'doc'}, function(ok){
+        if(!ok){ window.alert('이 브라우저에서는 파일을 저장하지 못했어요. 비공개 탭이면 일반 탭으로 열어 주세요.'); docRender(box); return; }
+        S.set('doc_' + k, JSON.stringify({name: file.name || '', type: type, size: file.size, at: Date.now()}));
+        markDirty(true);
+        docRender(box);
+      });
+    });
+  }
+  function docRender(box){
+    var k = box.dataset.doc, label = box.dataset.label || '서류', meta = docMeta(k);
+    box.textContent = '';
+    if(!docUrls) docUrls = {};          // (the photo store can answer before this script has finished when it is unavailable)
+    if(docUrls[k]){ try{ URL.revokeObjectURL(docUrls[k]) }catch(e){} delete docUrls[k]; }
+    box.classList.toggle('has', !!meta);
+    if(!meta){
+      var up = docPick(label + ' 올리기', function(f){ docSave(box, f) });
+      up.label.appendChild(mk('span', '', '📎 ' + label + ' 올리기'));
+      up.label.appendChild(up.input);
+      box.appendChild(up.label);
+      box.appendChild(mk('div', 'rsv-doc-note', 'PIN 같은 개인정보가 들어 있어서 공개 사이트에는 올리지 않고, 이 폰에만 저장돼요.'));
+      return;
+    }
+    var open = mk('a', 'rsv-open wait', '📄 ' + label + ' 열기');
+    open.target = '_blank'; open.rel = 'noopener';
+    box.appendChild(open);
+    box.appendChild(mk('div', 'rsv-doc-name', (meta.name || '파일') + (meta.size ? ' · ' + (meta.size >= 1048576 ? (meta.size / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(meta.size / 1024)) + 'KB') : '')));
+    var acts = mk('div', 'rsv-doc-acts'), swap = mk('span', 'pf-mini', '바꾸기'), del = mk('button', 'pf-mini', '삭제');
+    var sp = docPick(label + ' 바꾸기', function(f){ docSave(box, f) }, 'rsv-swap');
+    swap.appendChild(sp.input);
+    del.type = 'button';
+    del.addEventListener('click', function(){
+      if(!window.confirm(label + ' 파일을 이 폰에서 지울까요?')) return;
+      pDel('doc:' + k);
+      try{ localStorage.removeItem('doc_' + k) }catch(e){}
+      markDirty(true);
+      docRender(box);
+    });
+    acts.appendChild(swap);
+    acts.appendChild(del);
+    box.appendChild(acts);
+    if(!pIdb && !idbTried){ open.textContent = '📄 ' + label + ' 불러오는 중…'; return; }     // the photo store is still opening: docsAll() runs again when it is ready
+    pGet('doc:' + k, function(rec){
+      if(!rec || !rec.full || typeof rec.full === 'string'){
+        open.textContent = '파일을 찾지 못했어요 — 다시 올려 주세요';
+        return;
+      }
+      docUrls[k] = URL.createObjectURL(rec.full);
+      open.href = docUrls[k];
+      open.classList.remove('wait');
+    });
+  }
+  docsAll();
 
   // Memo
   var memo = document.getElementById('memo');
