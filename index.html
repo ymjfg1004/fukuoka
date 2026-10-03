@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.04~10.07 후쿠오카·유후인 가족여행 일정표, 예약 정보, 점검 포인트, 준비물">
 <meta name="theme-color" content="#111111">
 <meta name="color-scheme" content="light">
-<meta name="app-version" content="2026-10-03-a">
+<meta name="app-version" content="2026-10-03-b">
 <style>
 :root{
   --bg:#fff; --card:#fff; --text:#111; --muted:#6b6b6b; --line:#e6e6e6;
@@ -137,6 +137,9 @@ h3{font-size:1.05rem;margin:0 0 8px}
 .gq-date{padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px;font-weight:700}
 .gprice{display:inline-flex;align-items:center;gap:6px}
 .stale.warn{bottom:auto;top:calc(10px + env(safe-area-inset-top));background:var(--bad);color:#fff;z-index:70}
+.saved-flash{position:fixed;top:calc(10px + env(safe-area-inset-top));right:12px;z-index:65;padding:6px 12px;border-radius:999px;background:var(--fill);color:var(--on-fill);font-size:.8rem;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+.saved-flash.on{opacity:.92}
+.saved-flash[hidden]{display:none}
 .bk-top{display:flex;align-items:center;gap:12px;margin:0 0 12px}
 .bk-top .xadd{flex:none;padding:10px 18px;font-size:.92rem}
 .bk-last{min-width:0;color:var(--muted);font-size:.8rem;line-height:1.45;overflow-wrap:anywhere}
@@ -727,7 +730,7 @@ main{min-height:60vh}
   </div>
     <div class="shop-pane on" data-pane="gift">
       <div class="card">
-        <p class="muted" style="margin:0">사진을 여러 장 고르면 한 장마다 항목이 하나씩 만들어져요. 사진을 누르면 1:1 크기로 볼 수 있고, 산 것은 체크하면 글에 줄이 그어져요(사진은 그대로 남아요). 금액(엔)을 적고 체크하면 가계부(예약·비용 탭)에 지출로 들어가요. 큰 사진은 자동으로 줄이고, 내용과 사진은 이 폰의 브라우저에만 저장돼요. 사파리 비공개 탭에서는 탭을 닫으면 모두 사라지니 일반 탭으로 여세요.</p>
+        <p class="muted" style="margin:0">쓰는 즉시 저장돼요. 사진은 고르면 바로 저장되어 한 장마다 항목이 하나씩 만들어지고, 이름·수량·금액은 항목에서 적어도 돼요. 사진을 누르면 1:1 크기로 볼 수 있고, 산 것은 체크하면 글에 줄이 그어져요(사진은 그대로 남아요). 금액(엔)을 적고 체크하면 가계부(예약·비용 탭)에 지출로 들어가요. 큰 사진은 자동으로 줄이고, 내용과 사진은 이 폰의 브라우저에만 저장돼요. 사파리 비공개 탭에서는 탭을 닫으면 모두 사라지니 일반 탭으로 여세요.</p>
         <form class="gform" id="gform" autocomplete="off">
           <input type="text" id="gtext" maxlength="120" placeholder="누구에게 · 무엇을 (예: 엄마 · 시세이도 선크림)" aria-label="내용">
           <div class="gqty"><span>수량</span><span id="gqty"></span></div>
@@ -742,7 +745,7 @@ main{min-height:60vh}
     </div>
     <div class="shop-pane" data-pane="buy">
       <div class="card">
-        <p class="muted" style="margin:0">사진을 여러 장 고르면 한 장마다 항목이 하나씩 만들어져요. 사진을 누르면 1:1 크기로 볼 수 있고, 산 것은 체크하면 글에 줄이 그어져요(사진은 그대로 남아요). 금액(엔)을 적고 체크하면 가계부(예약·비용 탭)에 지출로 들어가요. 큰 사진은 자동으로 줄이고, 내용과 사진은 이 폰의 브라우저에만 저장돼요. 사파리 비공개 탭에서는 탭을 닫으면 모두 사라지니 일반 탭으로 여세요.</p>
+        <p class="muted" style="margin:0">쓰는 즉시 저장돼요. 사진은 고르면 바로 저장되어 한 장마다 항목이 하나씩 만들어지고, 이름·수량·금액은 항목에서 적어도 돼요. 사진을 누르면 1:1 크기로 볼 수 있고, 산 것은 체크하면 글에 줄이 그어져요(사진은 그대로 남아요). 금액(엔)을 적고 체크하면 가계부(예약·비용 탭)에 지출로 들어가요. 큰 사진은 자동으로 줄이고, 내용과 사진은 이 폰의 브라우저에만 저장돼요. 사파리 비공개 탭에서는 탭을 닫으면 모두 사라지니 일반 탭으로 여세요.</p>
         <form class="gform" id="bform" autocomplete="off">
           <input type="text" id="btext" maxlength="120" placeholder="살 것 (예: 돈키호테 · 핫아이즈 안약)" aria-label="내용">
           <div class="gqty"><span>수량</span><span id="bqty"></span></div>
@@ -767,8 +770,9 @@ main{min-height:60vh}
 </section>
 </main>
 
-<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-03-a</div></div></footer>
+<footer><div class="wrap">후쿠오카 · 유후인 가족여행 · 인쇄하면 전체 일정이 한 번에 출력됩니다<div class="ver">버전 2026-10-03-b</div></div></footer>
 
+<div class="saved-flash" id="saved-flash" role="status" aria-live="polite" hidden>✓ 저장됨</div>
 <div class="stale warn" id="store-warn" role="alert" hidden><span></span><button type="button">닫기</button></div>
 <div class="stale" id="stale" role="status" hidden><span>🔄 새 버전이 나왔어요</span><button type="button" id="stale-go">새로고침</button></div>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기" hidden>
@@ -791,7 +795,15 @@ main{min-height:60vh}
   function warnStore(msg){ warnEl.firstElementChild.textContent = msg; warnEl.hidden = false; }
   warnEl.querySelector('button').addEventListener('click', function(){ warnEl.hidden = true });
   var onDirty = null;                   // set by the backup block: refreshes the "last saved" label
-  function markDirty(){ S.set('bk_dirty', '1'); if(onDirty) onDirty(); }
+  var flashEl = document.getElementById('saved-flash'), flashT = 0, flashT2 = 0;
+  function flashSaved(){               // a small "✓ 저장됨" so it is clear that typing / picking is stored right away
+    if(!flashEl) return;
+    clearTimeout(flashT); clearTimeout(flashT2);
+    flashEl.hidden = false;
+    flashEl.classList.add('on');
+    flashT = setTimeout(function(){ flashEl.classList.remove('on'); flashT2 = setTimeout(function(){ flashEl.hidden = true }, 300) }, 1400);
+  }
+  function markDirty(ok){ S.set('bk_dirty', '1'); if(ok !== false) flashSaved(); if(onDirty) onDirty(); }
   var storageOK = true;                 // can this browser keep anything at all? (private tabs and blocked storage cannot)
   try{ localStorage.setItem('_t', '1'); storageOK = localStorage.getItem('_t') === '1'; localStorage.removeItem('_t'); }catch(e){ storageOK = false; }
   if(!storageOK) warnStore('⚠️ 이 브라우저는 저장이 막혀 있어요(비공개 모드일 수 있어요). 새로고침하면 적은 내용이 사라져요.');
@@ -892,7 +904,7 @@ main{min-height:60vh}
   }
   function planSave(){
     var ok = S.set('plan_edit', JSON.stringify(planEdits));
-    markDirty();
+    markDirty(ok);
     if(!ok) warnStore('⚠️ 일정 변경을 이 폰에 저장하지 못했어요(' + S.err + '). 쇼핑 탭의 저장 버튼으로 백업해 두세요.');
   }
   function planSay(t){ planStatus.textContent = t || ''; }
@@ -1160,6 +1172,7 @@ main{min-height:60vh}
     pages.forEach(function(p){p.classList.toggle('on', p.id===id)});
     links.forEach(function(a){a.classList.toggle('on', a.hash==='#'+id)});
     document.body.classList.toggle('home', id===pages[0].id);
+    S.set('page', id);
     if(toTop) window.scrollTo(0, 0);
   }
   links.forEach(function(a){
@@ -1173,7 +1186,11 @@ main{min-height:60vh}
     if(viewerOpen){ closeViewer(); return; }
     openPage(location.hash.slice(1), true);
   });
-  openPage(location.hash.slice(1), false);
+  var startPage = location.hash.slice(1) || S.get('page') || '';
+  openPage(startPage, false);
+  if(!location.hash && startPage && (alias[startPage] || startPage) !== pages[0].id && byId[alias[startPage] || startPage]){
+    try{ history.replaceState(null, '', '#' + (alias[startPage] || startPage)) }catch(e){}
+  }
 
   // Checkboxes
   document.querySelectorAll('.checks input').forEach(function(c){
@@ -1226,7 +1243,7 @@ main{min-height:60vh}
   function parts(md){ return /^(\d+)\/(\d+)$/.exec(md || '') }
   function weekday(md){ var m = parts(md); return m ? WEEK[new Date(2026, m[1] - 1, m[2]).getDay()] : '' }
   function dayKey(md){ var m = parts(md); return m ? Number(m[1]) * 100 + Number(m[2]) : -1 }
-  function save(){ var ok = S.set('x_list', JSON.stringify(entries)); markDirty(); if(!ok) warnStore('⚠️ 지출 기록을 이 폰에 저장하지 못했어요(' + S.err + '). 아래 쇼핑 탭의 백업을 저장해 두세요.') }
+  function save(){ var ok = S.set('x_list', JSON.stringify(entries)); markDirty(ok); if(!ok) warnStore('⚠️ 지출 기록을 이 폰에 저장하지 못했어요(' + S.err + '). 아래 쇼핑 탭의 백업을 저장해 두세요.') }
 
   function renderDates(){
     var box = document.getElementById('xdates');
@@ -1235,7 +1252,7 @@ main{min-height:60vh}
       var b = mk('button', 'cat', d + ' ' + weekday(d));
       b.type = 'button';
       b.setAttribute('aria-pressed', String(d === selectedDate));
-      b.addEventListener('click', function(){ selectedDate = d; renderDates() });
+      b.addEventListener('click', function(){ selectedDate = d; renderDates(); saveXDraft(); });
       box.appendChild(b);
     });
   }
@@ -1247,7 +1264,7 @@ main{min-height:60vh}
       var b = mk('button', 'cat', emojiOf(name) + ' ' + name);
       b.type = 'button';
       b.setAttribute('aria-pressed', String(name === selected));
-      b.addEventListener('click', function(){ selected = name; renderCats() });
+      b.addEventListener('click', function(){ selected = name; renderCats(); saveXDraft(); });
       box.appendChild(b);
     });
     var add = mk('button', 'cat', '＋ 추가');
@@ -1339,8 +1356,20 @@ main{min-height:60vh}
     save();
     amtEl.value = '';
     memoEl.value = '';
+    S.set('draft_x', '');
     renderLog();
   });
+  function saveXDraft(){ S.set('draft_x', (amtEl.value || memoEl.value) ? JSON.stringify({a: amtEl.value, m: memoEl.value, d: selectedDate, c: selected}) : '') }
+  amtEl.addEventListener('input', saveXDraft);
+  memoEl.addEventListener('input', saveXDraft);
+  (function(){
+    var d = load('draft_x', null);
+    if(!d || typeof d !== 'object') return;
+    if(typeof d.a === 'string') amtEl.value = d.a;
+    if(typeof d.m === 'string') memoEl.value = d.m;
+    if(TRIP.indexOf(d.d) >= 0) selectedDate = d.d;
+    if(catNames().indexOf(d.c) >= 0) selected = d.c;
+  })();
   renderDates();
   renderCats();
   renderLog();
@@ -1684,12 +1713,25 @@ main{min-height:60vh}
     var textEl = document.getElementById(cfg.p + 'text'), fileEl = document.getElementById(cfg.p + 'file');
     var pickEl = document.getElementById(cfg.p + 'pick-label'), statusEl = document.getElementById(cfg.p + 'status');
     var pending = [], self = {};
-    var formQty = makeQty(1);
+    var draftKey = 'draft_' + cfg.p;
+    function saveDraft(){              // what is typed into the add form survives the page being reloaded
+      var d = {t: textEl.value, q: formQty.get(), p: priceEl.value};
+      S.set(draftKey, (d.t || d.p || d.q > 1) ? JSON.stringify(d) : '');
+    }
+    var formQty = makeQty(1, function(){ saveDraft() });
     document.getElementById(cfg.p + 'qty').appendChild(formQty.el);
     var priceEl = document.getElementById(cfg.p + 'price'), sumEl = document.getElementById(cfg.p + 'sum');
-    priceEl.addEventListener('input', function(){ var v = priceEl.value.replace(/[^0-9]/g, ''); if(v !== priceEl.value) priceEl.value = v });
+    priceEl.addEventListener('input', function(){ var v = priceEl.value.replace(/[^0-9]/g, ''); if(v !== priceEl.value) priceEl.value = v; saveDraft(); });
+    textEl.addEventListener('input', saveDraft);
+    (function(){
+      var d = load(draftKey, null);
+      if(!d || typeof d !== 'object') return;
+      if(typeof d.t === 'string') textEl.value = d.t;
+      if(typeof d.p === 'string') priceEl.value = d.p.replace(/[^0-9]/g, '');
+      formQty.set(d.q);
+    })();
     function changed(){ save(); updateCount(); renderLog() }
-    function save(){ var ok = S.set(cfg.key, JSON.stringify(items)); markDirty(); if(!ok) warnStore('⚠️ 목록을 이 폰에 저장하지 못했어요(' + S.err + '). 새로고침하면 방금 적은 게 사라질 수 있어요. 쇼핑 탭 아래 백업을 저장해 두세요.') }
+    function save(){ var ok = S.set(cfg.key, JSON.stringify(items)); markDirty(ok); if(!ok) warnStore('⚠️ 목록을 이 폰에 저장하지 못했어요(' + S.err + '). 새로고침하면 방금 적은 게 사라질 수 있어요. 쇼핑 탭 아래 백업을 저장해 두세요.') }
     (function(){                         // one photo per item: older items holding several photos are split up
       var out = [], split = false;
       items.forEach(function(it){
@@ -1859,16 +1901,12 @@ main{min-height:60vh}
       updateCount();
     };
 
-    fileEl.addEventListener('change', function(){
-      pending = Array.prototype.slice.call(fileEl.files);
-      pickEl.textContent = pending.length ? '📷 사진 ' + pending.length + '장 선택됨' + (pending.length > 1 ? ' · ' + pending.length + '개로 추가' : '') : '📷 사진 올리기';
-      setStatus(pending.length ? '선택됨: ' + describe(pending) : '');
-    });
-    document.getElementById(cfg.p + 'form').addEventListener('submit', function(ev){
-      ev.preventDefault();
+    function addFromForm(){
+      var btn = document.getElementById(cfg.p + 'form').querySelector('.xadd');
+      if(btn.disabled) return;
       var text = textEl.value.trim();
       if(!text && !pending.length){ textEl.focus(); return; }
-      var btn = ev.target.querySelector('.xadd'), label = btn.textContent, wanted = pending.length, qty = formQty.get(), price = parsePrice(priceEl.value);
+      var label = btn.textContent, wanted = pending.length, qty = formQty.get(), price = parsePrice(priceEl.value);
       btn.disabled = true;
       btn.textContent = '저장 중…';
       function finish(ids, failed){
@@ -1883,15 +1921,26 @@ main{min-height:60vh}
         fileEl.value = '';
         formQty.set(1);
         priceEl.value = '';
+        S.set(draftKey, '');
         pending = [];
         pickEl.textContent = '📷 사진 올리기';
         self.render();
         if(failed){ setStatus('⚠️ ' + failText(failed).replace(/\n/g, ' '), true); window.alert(failText(failed)); }
-        else setStatus(ids.length > 1 ? '✓ 사진 ' + ids.length + '장 → ' + made.length + '개 항목으로 추가했어요' : (ids.length ? '✓ 사진 1장 저장 완료' : ''));
+        else setStatus(ids.length > 1 ? '✓ 사진 ' + ids.length + '장이 ' + made.length + '개 항목으로 저장됐어요 · 이름과 금액은 항목에서 적어요' : (ids.length ? '✓ 사진이 저장됐어요 · 이름과 금액은 항목에서 적어요' : ''));
       }
       try{
         pAddImages(pending, finish, function(i, n, stage){ setStatus('사진 ' + i + '/' + n + ' ' + stage + ' 중…') });
       }catch(e){ pErr(e); finish([], wanted) }
+    }
+    fileEl.addEventListener('change', function(){      // choosing photos saves them straight away
+      pending = Array.prototype.slice.call(fileEl.files);
+      pickEl.textContent = pending.length ? '📷 사진 ' + pending.length + '장 저장 중…' : '📷 사진 올리기';
+      setStatus(pending.length ? '선택됨: ' + describe(pending) : '');
+      if(pending.length) addFromForm();
+    });
+    document.getElementById(cfg.p + 'form').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      addFromForm();
     });
     shopLists.push(self);
     return self;
@@ -2023,7 +2072,8 @@ main{min-height:60vh}
   }
   function bkRefresh(){
     var first = Number(S.get('first_seen')), d = first ? new Date(first) : null;
-    var lines = ['주소: ' + location.host,
+    var standalone = (window.navigator.standalone === true) || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+    var lines = ['주소: ' + location.host, '열린 방식: ' + (standalone ? '홈 화면 앱 (사파리 탭과 저장소가 따로예요)' : '브라우저 탭'),
       '이 브라우저에 처음 저장된 때: ' + (d ? (d.getMonth() + 1) + '/' + d.getDate() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) : '저장이 막혀 있어요'),
       '저장된 것: 선물 ' + load('g_list', []).length + ' · 구매리스트 ' + load('buy_list', []).length + ' · 지출 ' + entries.length + '건'];
     bkInfo.textContent = lines.join('\n');
@@ -2151,6 +2201,38 @@ main{min-height:60vh}
   var memo = document.getElementById('memo');
   memo.value = S.get('memo') || '';
   memo.addEventListener('input',function(){S.set('memo', memo.value)});
+
+  // Coming back to the page (iOS often reloads a tab that was in the background): same tab, same place, same open folds
+  var foldState = {};
+  try{ foldState = JSON.parse(S.get('folds') || '{}') || {} }catch(e){}
+  document.querySelectorAll('details.fold').forEach(function(d, i){
+    var key = d.id || ('f' + i);
+    if(foldState[key]) d.open = true;
+    d.addEventListener('toggle', function(){ foldState[key] = d.open ? 1 : 0; S.set('folds', JSON.stringify(foldState)); });
+  });
+  function curPageId(){ var p = document.querySelector('main .page.on'); return p ? p.id : ''; }
+  function saveScroll(){ S.set('scroll', JSON.stringify({p: curPageId(), y: Math.round(window.pageYOffset), t: Date.now()})); }
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') saveScroll(); });
+  window.addEventListener('pagehide', saveScroll);
+  (function(){
+    var sc = null;
+    try{ sc = JSON.parse(S.get('scroll') || 'null') }catch(e){}
+    if(!sc || sc.p !== curPageId() || !(sc.y > 0) || Date.now() - sc.t > 6 * 3600 * 1000) return;
+    function go(){
+      var root = document.documentElement;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, sc.y);
+      root.style.scrollBehavior = '';
+    }
+    go();
+    // the browser scrolls to the #page anchor once the page has loaded; keep putting the saved position back until the user touches the screen
+    var touched = false, until = Date.now() + 1800;
+    ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(function(ev){ window.addEventListener(ev, function(){ touched = true }, {passive: true, once: true}); });
+    function hold(){ if(!touched && Date.now() < until && Math.abs(window.pageYOffset - sc.y) > 4) go(); }
+    window.addEventListener('scroll', hold);
+    window.addEventListener('load', function(){ setTimeout(hold, 30); setTimeout(hold, 300); });
+    setTimeout(function(){ window.removeEventListener('scroll', hold) }, 1900);
+  })();
 })();
 
 // 새 버전 알림: 열어 둔 탭이 옛 화면이면 알려 준다
